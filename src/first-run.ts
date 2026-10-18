@@ -476,7 +476,7 @@ async function main() {
   }
 
   // 1. Isolation: temp folder + temp DB.
-  const tmpBase = join(tmpdir(), "opencode", "leadscout-first-run");
+  const tmpBase = join(tmpdir(), "leadscout-first-run");
   mkdirSync(tmpBase, { recursive: true });
   report.tmpDir = mkdtempSync(join(tmpBase, "run-"));
   report.dbPath = join(report.tmpDir, "leadscout.db");

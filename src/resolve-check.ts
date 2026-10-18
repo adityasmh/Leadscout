@@ -493,7 +493,7 @@ async function pipelineChecks(): Promise<void> {
 // --------------------------------------------------------------------------- main
 
 async function main(): Promise<void> {
-  const CHECK_DIR = mkdtempSync(join(tmpdir(), "opencode", "resolve-check-"));
+  const CHECK_DIR = mkdtempSync(join(tmpdir(), "resolve-check-"));
   // BEFORE any module that touches SQLite is imported. Never a live data/leadscout.db path.
   process.env.LEADSCOUT_DB = join(CHECK_DIR, "resolve-check.db");
   process.env.LEADSCOUT_LLM_OFF = "1"; // keep the pipeline checks fully offline

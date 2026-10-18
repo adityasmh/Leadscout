@@ -372,7 +372,7 @@ function execRecordingWin(map: Record<string, string>): { exec: ReachExecFile; c
   try {
     // clearly fake stand-in path, never the real one
     process.env.AGENT_REACH_CMD = "C:\\fake-standin\\agent-reach.cmd";
-    const rcOverride = reachCommand(["doctor", "--json"]);
+    const rcOverride = reachCommand(["doctor", "--json"], "win32"); // the cmd.exe wrapper only exists on win32
     check("AGENT_REACH_CMD override replaces the tool command", rcOverride.args.join(" ").includes("C:\\fake-standin\\agent-reach.cmd doctor --json"), JSON.stringify(rcOverride));
     const rcMedian = reachCommand(["doctor", "--json"], "win32", "C:\\fake-standin\\agent-reach.cmd");
     check("AGENT_REACH_CMD env arg override reaches cmd.exe first arg", rcMedian.file === "cmd.exe" && rcMedian.args[3] === "C:\\fake-standin\\agent-reach.cmd", JSON.stringify(rcMedian));
