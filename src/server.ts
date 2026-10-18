@@ -1441,17 +1441,22 @@ export function createServer(): Server {
   });
 }
 
-export function startServer(port?: number): Server {
+/** Interface to bind: the explicit argument, else env LEADSCOUT_HOST, else 127.0.0.1 (this machine only). */
+export function resolveHost(explicit?: string, env: NodeJS.ProcessEnv = process.env): string {
+  return String(explicit ?? "").trim() || String(env.LEADSCOUT_HOST ?? "").trim() || "127.0.0.1";
+}
+
+export function startServer(port?: number, host?: string): Server {
   const server = createServer();
   const fromEnv = Number(process.env.LEADSCOUT_PORT ?? 8790);
   const chosen = port ?? (Number.isFinite(fromEnv) && fromEnv > 0 ? fromEnv : 8790);
   // Loopback by default: Leadscout holds lead data and has no login. Set LEADSCOUT_HOST=0.0.0.0 only
   // behind a reverse proxy / firewall you control (the Docker image does this and publishes to 127.0.0.1).
-  const host = String(process.env.LEADSCOUT_HOST ?? "").trim() || "127.0.0.1";
-  server.listen(chosen, host, () => {
+  const bindHost = resolveHost(host);
+  server.listen(chosen, bindHost, () => {
     const address = server.address();
     const shown = typeof address === "object" && address ? address.port : chosen;
-    console.log(`leadscout listening on http://${host === "127.0.0.1" ? "localhost" : host}:${shown}`);
+    console.log(`leadscout listening on http://${bindHost === "127.0.0.1" ? "localhost" : bindHost}:${shown}`);
   });
   return server;
 }
