@@ -1,0 +1,12 @@
+{
+  "name": "bizKey name-city fallback",
+  "raw": {
+    "name": "Fixture NameCity Store",
+    "category": "store",
+    "city": "Testville",
+    "country": "IN",
+    "source": "osm",
+    "sourceUrl": "https://example.test/bizkey-namecity"
+  },
+  "expected": { "bizKey": "fixture namecity store|testville" }
+}

@@ -1,0 +1,630 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pitch brief | Leadscout</title>
+<style>
+  :root{
+    --bg:#f6f3ee;
+    --panel:#ffffff;
+    --fg:#1b1d22;
+    --muted:#6c6a66;
+    --border:#e6e0d7;
+    --ink:#12161f;
+    --ink-2:#1e2734;
+    --accent:#c2410c;
+    --accent-ink:#7c2d12;
+    --accent-soft:#fbe8d8;
+    --ring-track:#ece5db;
+    --shadow:0 1px 2px rgba(24,20,14,.04), 0 8px 24px rgba(24,20,14,.06);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#0f1217;
+      --panel:#171c24;
+      --fg:#e9e6e1;
+      --muted:#9aa0aa;
+      --border:#272e39;
+      --ink:#0b0e13;
+      --ink-2:#161d28;
+      --accent:#fb923c;
+      --accent-ink:#fcd0a5;
+      --accent-soft:#38240f;
+      --ring-track:#2b323d;
+      --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 30px rgba(0,0,0,.35);
+    }
+  }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
+  body{
+    background:var(--bg);
+    color:var(--fg);
+    font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{ color:inherit; }
+
+  .hero{ background:linear-gradient(135deg,var(--ink) 0%,var(--ink-2) 100%); color:#f4f1ec; }
+  .hero-inner{ max-width:920px; margin:0 auto; padding:34px 22px 38px; }
+  .hero .brand{ font-size:13px; letter-spacing:.18em; text-transform:uppercase; color:#d6a679; font-weight:700; margin:0; }
+  .hero h1{ margin:10px 0 0; font-size:30px; line-height:1.12; font-weight:800; letter-spacing:-.02em; color:#ffffff; }
+  .hero .meta{ margin:8px 0 0; font-size:15px; color:#cfc9c0; font-weight:500; }
+  .hero-nav{ margin-top:18px; display:flex; flex-wrap:wrap; gap:10px; }
+  .hero-nav a{
+    font-size:13px; font-weight:600; text-decoration:none; color:#f0ebe3;
+    border:1px solid rgba(255,255,255,.24); border-radius:999px; padding:7px 14px;
+  }
+  .hero-nav a:hover{ border-color:rgba(255,255,255,.5); }
+
+  .wrap{ max-width:920px; margin:0 auto; padding:24px 22px 56px; }
+
+  section.panel{
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:22px;
+    box-shadow:var(--shadow);
+    margin-top:20px;
+  }
+  .wrap > section.panel:first-child{ margin-top:0; }
+  h2.sec{ margin:0 0 14px; font-size:18px; letter-spacing:-.01em; }
+  .muted{ color:var(--muted); }
+
+  .chip{
+    display:inline-flex; align-items:center; background:var(--accent-soft); color:var(--accent-ink);
+    border-radius:999px; padding:4px 12px; font-size:12px; font-weight:600; white-space:nowrap;
+  }
+
+  .facts{ display:flex; flex-wrap:wrap; gap:14px 28px; }
+  .fact .k{ color:var(--muted); font-size:11.5px; text-transform:uppercase; letter-spacing:.04em; }
+  .fact .v{ font-size:15px; }
+
+  .score-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
+  .score-box{ text-align:center; padding:14px 8px; border:1px solid var(--border); border-radius:10px; background:var(--bg); }
+  .score-box .n{ font-size:26px; font-weight:800; font-variant-numeric:tabular-nums; }
+  .score-box .l{ font-size:11.5px; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; }
+  .reasons{ margin:14px 0 0; padding-left:20px; color:var(--muted); font-size:14px; }
+
+  .badge{
+    display:inline-block; font-size:11.5px; font-weight:700; text-transform:uppercase;
+    letter-spacing:.04em; padding:4px 10px; border-radius:999px;
+    background:var(--accent-soft); color:var(--accent-ink);
+  }
+  .gap-head{ margin:10px 0 0; font-size:16px; }
+
+  .say{
+    margin:0; padding:14px 16px; border:1px solid var(--border); border-radius:10px;
+    background:var(--bg); white-space:pre-wrap; word-break:break-word; font-family:inherit; font-size:15px;
+  }
+
+  .offer{ border:1px solid var(--border); border-radius:12px; padding:16px 18px; margin-bottom:14px; background:var(--bg); }
+  .offer:last-child{ margin-bottom:0; }
+  .offer h3{ margin:0; font-size:16px; }
+  .offer .free{ background:var(--accent-soft); color:var(--accent-ink); padding:3px 10px; border-radius:999px; font-size:11.5px; font-weight:700; margin-left:8px; }
+  .offer .lab{ font-size:11.5px; font-weight:600; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); margin-top:10px; }
+  .offer .row{ font-size:14.5px; }
+  .offer .assume{ margin-top:8px; font-size:13px; color:var(--muted); }
+
+  .works-banner{ font-size:13.5px; color:var(--muted); border-left:3px solid var(--border); padding-left:12px; margin:0 0 14px; }
+  .works-list{ margin:0; padding-left:20px; }
+  .works-list li{ margin-bottom:6px; }
+
+  .evlist{ list-style:none; padding:0; margin:0; }
+  .evlist li{ border-bottom:1px solid var(--border); padding:11px 0; }
+  .evlist li:last-child{ border-bottom:none; }
+  .evlist .tag{ font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); font-weight:700; }
+  .evlist .val{ font-size:15px; word-break:break-word; }
+
+  .refs a{ color:var(--accent-ink); text-decoration:none; font-weight:600; font-size:12px; }
+  .refs a:hover{ text-decoration:underline; }
+
+  details.captures{
+    background:var(--panel); border:1px solid var(--border); border-radius:12px;
+    padding:16px 20px; margin-top:20px; box-shadow:var(--shadow);
+  }
+  details.captures > summary{ cursor:pointer; font-weight:700; font-size:15px; }
+  .caplist{ list-style:none; padding:0; margin:12px 0 0; }
+  .caplist li{ padding:10px 0; border-bottom:1px solid var(--border); font-size:13.5px; color:var(--muted); word-break:break-word; }
+  .caplist li:last-child{ border-bottom:none; }
+  .caplist .tag{ display:block; font-size:11px; text-transform:uppercase; letter-spacing:.04em; font-weight:700; color:var(--muted); margin-bottom:3px; }
+
+  .notice{ margin-top:20px; padding:16px 18px; border:1px solid var(--border); border-left:4px solid var(--accent); border-radius:10px; background:var(--panel); }
+  .notice .why{ margin:0 0 12px; }
+
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:6px;
+    border:1px solid var(--accent); border-radius:9px; padding:10px 16px;
+    font:inherit; font-size:13px; font-weight:600; cursor:pointer; background:var(--accent); color:#fff;
+  }
+  .btn:disabled{ opacity:.6; cursor:not-allowed; }
+
+  .footer{ max-width:920px; margin:0 auto; padding:0 22px 48px; color:var(--muted); font-size:13px; }
+  .message-card{ text-align:center; color:var(--muted); font-size:15px; padding:44px 24px; }
+
+  @media (max-width:700px){
+    .score-grid{ grid-template-columns:repeat(2,1fr); }
+  }
+
+  @media print{
+    :root{ --bg:#fff; --panel:#fff; --border:#bbb; --fg:#000; --muted:#333; --accent-soft:#fff; --accent-ink:#000; }
+    body{ background:#fff; color:#000; }
+    .hero{ background:#fff; color:#000; border-bottom:2px solid #000; }
+    .hero .brand, .hero .meta{ color:#000; }
+    .hero h1{ color:#000; }
+    .no-print, .hero-nav, .btn{ display:none !important; }
+    section.panel{ border:1px solid #bbb; box-shadow:none; break-inside:avoid; page-break-inside:avoid; }
+    details.captures{ display:none; }
+    a{ color:#000; text-decoration:none; }
+  }
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="hero-inner">
+    <p class="brand">Leadscout</p>
+    <h1 id="biz-name">Pitch brief</h1>
+    <p class="meta" id="biz-meta">Loading...</p>
+    <div class="hero-nav no-print">
+      <a id="back-link" href="showcase2.html?ws=">Back to overview</a>
+    </div>
+  </div>
+</header>
+
+<div class="wrap" id="app">
+  <section class="panel" id="p-facts" hidden></section>
+  <section class="panel" id="p-score" hidden></section>
+  <section class="panel" id="p-gap" hidden></section>
+  <section class="panel" id="p-say" hidden></section>
+  <section class="panel" id="p-offers" hidden></section>
+  <section class="panel" id="p-works" hidden></section>
+  <section class="panel" id="p-evidence" hidden></section>
+  <details class="captures no-print" id="p-captures" hidden>
+    <summary>Source captures (for audit)</summary>
+    <ul class="caplist" id="cap-list"></ul>
+  </details>
+  <div id="notice" hidden></div>
+</div>
+
+<footer class="footer">Generated from the lead dossier. <span id="footer-ws"></span></footer>
+<div id="error" class="message-card" hidden></div>
+
+<script>
+(function(){
+  "use strict";
+
+  var params = new URLSearchParams(window.location.search);
+  var WS = params.get("ws") || "";
+  var LEAD = params.get("lead") || "";
+  var fmt = {};
+
+  function txt(v){ return v === null || v === undefined ? "" : String(v); }
+  function el(tag, cls, text){
+    var n = document.createElement(tag);
+    if (cls) n.className = cls;
+    if (text !== undefined && text !== null) n.textContent = String(text);
+    return n;
+  }
+  function clear(node){ while (node && node.firstChild) node.removeChild(node.firstChild); }
+  function section(id){ var s = document.getElementById(id); clear(s); s.hidden = false; return s; }
+  function collapseWs(s){ return txt(s).replace(/\s+/g, " ").trim(); }
+
+  function friendlyName(id){
+    var t = String(id === null || id === undefined ? "" : id).replace(/-/g, " ").toLowerCase().replace(/\s+/g, " ").trim();
+    if (!t) return "";
+    return t.charAt(0).toUpperCase() + t.slice(1);
+  }
+
+  function dedupeAddress(text){
+    var s = String(text === null || text === undefined ? "" : text);
+    if (!s) return "";
+    var parts = s.split(",");
+    var out = [];
+    for (var i = 0; i < parts.length; i++) {
+      var p = parts[i].trim();
+      if (out.length > 0 && p.toLowerCase() === out[out.length - 1].toLowerCase()) { continue; }
+      out.push(p);
+    }
+    return out.join(", ");
+  }
+
+  function friendlyId(id){
+    return friendlyName(id);
+  }
+
+  var FIELD_LABELS = {
+    name: "Business name", phone: "Phone", website: "Website", email: "Email",
+    address: "Address", area: "Area", city: "City", locality: "Locality", "no-website": "Website"
+  };
+  function friendlyField(field){
+    var key = txt(field).replace(/^signal:/i, "").trim().toLowerCase();
+    if (!key) return "";
+    if (FIELD_LABELS[key]) return FIELD_LABELS[key];
+    return friendlyName(key);
+  }
+
+  // A capture is hidden when its quote looks like a stored fetch error (raw JSON
+  // with a code/status/error/message field, or a rate-limit / captcha / 403 page).
+  function looksLikeStoredError(quote){
+    var q = txt(quote);
+    if (!q) return false;
+    try {
+      var j = JSON.parse(q);
+      if (j && typeof j === "object" &&
+          (j.code !== undefined || j.status !== undefined || j.error !== undefined || j.message !== undefined)) {
+        return true;
+      }
+    } catch (e) { /* not JSON */ }
+    return /RateLimit|rate limit|429|Access Denied|Just a moment|captcha|403 Forbidden/i.test(q);
+  }
+
+  function stripMarkdown(s){
+    var t = txt(s);
+    t = t.replace(/!\[([^\]]*)\]\([^)]*\)/g, "$1");
+    t = t.replace(/\[([^\]]*)\]\([^)]*\)/g, "$1");
+    return t;
+  }
+  function shorten(s, max){
+    var t = collapseWs(s);
+    if (t.length <= max) return t;
+    var cut = t.slice(0, max);
+    var sp = cut.lastIndexOf(" ");
+    if (sp > max * 0.6) cut = cut.slice(0, sp);
+    return cut.replace(/[\s,;:.\-]+$/, "") + "\u2026";
+  }
+  function readableCapture(q){
+    return shorten(stripMarkdown(collapseWs(q)), 240);
+  }
+
+  // "visible" = kind listing/verification and not untrusted; "capture" = shown in
+  // the collapsed audit section; "hidden" = error-like/empty capture.
+  function classify(item){
+    if (!item) return "hidden";
+    var kind = txt(item.kind);
+    if (item.untrusted !== true && (kind === "listing" || kind === "verification")) return "visible";
+    var raw = txt(item.quote);
+    if (!raw || looksLikeStoredError(raw)) return "hidden";
+    var text = readableCapture(raw);
+    if (!text) return "hidden";
+    try { var p = JSON.parse(text); if (p && typeof p === "object") return "hidden"; } catch (e) { /* plain text */ }
+    return "capture";
+  }
+
+  function buildFmt(evidence){
+    fmt = {};
+    (evidence || []).forEach(function(item){
+      var id = txt(item && item.id);
+      if (!id) return;
+      var c = classify(item);
+      if (c === "visible") fmt[id] = "ev-" + id;
+      else if (c === "capture") fmt[id] = "cap-" + id;
+      else fmt[id] = "p-captures";
+    });
+  }
+
+  function refs(ids){
+    var f = document.createDocumentFragment();
+    if (!ids || !ids.length) return f;
+    var span = el("span", "refs");
+    span.appendChild(document.createTextNode(" ["));
+    for (var i = 0; i < ids.length; i++) {
+      if (i > 0) span.appendChild(document.createTextNode(", "));
+      var id = txt(ids[i]);
+      var a = el("a", null, id);
+      a.setAttribute("href", "#" + (fmt[id] || "p-captures"));
+      span.appendChild(a);
+    }
+    span.appendChild(document.createTextNode("]"));
+    f.appendChild(span);
+    return f;
+  }
+
+  function appendCited(parent, label, cited){
+    parent.appendChild(el("div", "lab", label));
+    var row = el("div", "row");
+    if (!cited || cited.value === null || cited.value === undefined) {
+      row.appendChild(document.createTextNode("Not recorded."));
+      parent.appendChild(row);
+      return;
+    }
+    row.appendChild(document.createTextNode(txt(cited.value)));
+    row.appendChild(refs(cited.evidence));
+    parent.appendChild(row);
+  }
+
+  function listingName(dossier){
+    var ev = (dossier && dossier.evidence) || [];
+    for (var i = 0; i < ev.length; i++) {
+      var item = ev[i];
+      if (item && item.kind === "listing" && item.field === "name" && item.quote) return collapseWs(item.quote);
+    }
+    return "";
+  }
+  function areaName(dossier){
+    var facts = dossier && dossier.facts;
+    if (facts && facts.area && facts.area.value !== null && facts.area.value !== undefined) return dedupeAddress(txt(facts.area.value));
+    return "";
+  }
+
+  function renderIdentity(dossier, explainer){
+    var name = listingName(dossier) || "This business";
+    document.getElementById("biz-name").textContent = name;
+    document.title = name + " - Pitch brief";
+    var bits = [];
+    if (explainer && explainer.category) bits.push(friendlyName(explainer.category));
+    var area = areaName(dossier);
+    if (area) bits.push(dedupeAddress(area));
+    document.getElementById("biz-meta").textContent = bits.length ? bits.join(" \u00b7 ") : "Pitch brief";
+  }
+
+  function renderFacts(dossier){
+    var s = section("p-facts");
+    s.appendChild(el("h2", "sec", "Facts"));
+    var facts = dossier ? dossier.facts : null;
+    var entries = facts ? [["Owner", facts.owner], ["Since", facts.sinceYear], ["Rating", facts.rating], ["Reviews", facts.reviewCount], ["Area", facts.area]] : [];
+    var box = el("div", "facts");
+    var any = false;
+    for (var i = 0; i < entries.length; i++) {
+      var cited = entries[i][1];
+      if (!cited || cited.value === null || cited.value === undefined) continue;
+      any = true;
+      var fact = el("div", "fact");
+      fact.appendChild(el("div", "k", entries[i][0]));
+      var v = el("div", "v");
+      var shown = entries[i][0] === "Area" ? dedupeAddress(txt(cited.value)) : txt(cited.value);
+      v.appendChild(document.createTextNode(shown));
+      v.appendChild(refs(cited.evidence));
+      fact.appendChild(v);
+      box.appendChild(fact);
+    }
+    if (any) s.appendChild(box);
+    else s.appendChild(el("p", "muted", "No verified facts for this business."));
+  }
+
+  function renderScore(score){
+    var s = section("p-score");
+    s.appendChild(el("h2", "sec", "Score"));
+    if (!score) { s.appendChild(el("p", "muted", "No score available for this business.")); return; }
+    var grid = el("div", "score-grid");
+    var boxes = [["Total", score.total], ["Fit", score.fit], ["Reach", score.reach], ["Timing", score.timing]];
+    boxes.forEach(function(pair){
+      var b = el("div", "score-box");
+      b.appendChild(el("div", "n", (pair[1] === null || pair[1] === undefined) ? "-" : txt(pair[1])));
+      b.appendChild(el("div", "l", pair[0]));
+      grid.appendChild(b);
+    });
+    s.appendChild(grid);
+    if (score.reasons && score.reasons.length) {
+      var ul = el("ul", "reasons");
+      score.reasons.forEach(function(r){ ul.appendChild(el("li", null, txt(r))); });
+      s.appendChild(ul);
+    }
+  }
+
+  function renderGap(gap){
+    var s = section("p-gap");
+    s.appendChild(el("h2", "sec", "The gap"));
+    var head = gap && gap.headline;
+    if (!head || head.value === null || head.value === undefined) {
+      s.appendChild(el("p", "muted", "No evidenced gap identified for this business."));
+      return;
+    }
+    if (gap.tag) s.appendChild(el("span", "badge", txt(gap.tag)));
+    var p = el("p", "gap-head");
+    p.appendChild(document.createTextNode(txt(head.value)));
+    p.appendChild(refs(head.evidence));
+    s.appendChild(p);
+  }
+
+  function renderSay(dossier){
+    var s = section("p-say");
+    s.appendChild(el("h2", "sec", "Say this"));
+    var say = dossier ? dossier.sayThis : null;
+    if (!say || say.value === null || say.value === undefined) {
+      s.appendChild(el("p", "muted", "No suggested wording recorded yet."));
+      return;
+    }
+    s.appendChild(el("p", "say", txt(say.value)));
+    s.appendChild(refs(say.evidence));
+  }
+
+  function renderOffers(offers){
+    var s = section("p-offers");
+    s.appendChild(el("h2", "sec", "Offers"));
+    if (!offers || !offers.length) { s.appendChild(el("p", "muted", "No offers available for this business.")); return; }
+    offers.forEach(function(offer){
+      var d = el("div", "offer");
+      var head = el("div");
+      head.appendChild(el("h3", null, txt(offer.rank) + ". " + txt(offer.title || friendlyName(offer.service))));
+      if (offer.doorOpener) head.appendChild(el("span", "free", "Free door-opener"));
+      d.appendChild(head);
+      if (offer.service) d.appendChild(el("p", "muted", "Service: " + friendlyName(offer.service)));
+      appendCited(d, "What we would build", offer.description);
+      appendCited(d, "Why it matters", offer.whyItMatters);
+      d.appendChild(el("div", "lab", "Build time"));
+      if (offer.buildDays && offer.buildDays.length === 2) {
+        var lo = offer.buildDays[0], hi = offer.buildDays[1];
+        d.appendChild(el("div", "row", lo === hi ? txt(lo) + " days" : txt(lo) + " to " + txt(hi) + " days"));
+      } else {
+        d.appendChild(el("div", "row muted", "Not set"));
+      }
+      d.appendChild(el("div", "lab", "Quote"));
+      if (offer.quote === null || offer.quote === undefined) {
+        d.appendChild(el("div", "row muted", "Price not set"));
+      } else {
+        var q = offer.quote;
+        d.appendChild(el("div", "row", (q.min !== null && q.min !== undefined && q.max !== null && q.max !== undefined) ? collapseWs(q.currency) + " " + txt(q.min) + " to " + txt(q.max) : "Price not set"));
+      }
+      if (offer.assumption) d.appendChild(el("div", "assume", txt(offer.assumption)));
+      s.appendChild(d);
+    });
+  }
+
+  function renderWorks(explainer){
+    var s = section("p-works");
+    s.appendChild(el("h2", "sec", "How this business works"));
+    if (!explainer || !explainer.howItWorks || !explainer.howItWorks.length) {
+      s.appendChild(el("p", "muted", "No category explainer available."));
+      return;
+    }
+    var cat = friendlyName(explainer.category) || "this category";
+    var country = collapseWs(explainer.country) || "this country";
+    s.appendChild(el("p", "works-banner", "General to " + cat + " in " + country + ", not about this business."));
+    var ol = el("ol", "works-list");
+    explainer.howItWorks.forEach(function(item){ ol.appendChild(el("li", null, txt(item))); });
+    s.appendChild(ol);
+  }
+
+  function evidenceLabel(item){
+    if (txt(item.kind) === "verification") return "Verification";
+    return friendlyField(item.field) || "Listing";
+  }
+  function evidenceValue(item){
+    var kind = txt(item.kind);
+    var q = collapseWs(item.quote);
+    if (kind === "verification") {
+      var field = txt(item.field).toLowerCase();
+      if (field === "website-status" || /website status/i.test(q)) {
+        if (/alive/i.test(q)) return "Website is live";
+        if (/dead/i.test(q)) return "Website is not reachable";
+        if (/none/i.test(q)) return "No website on the public listing";
+        return q || "Website status not recorded";
+      }
+      var phone = q.match(/^Phone\s+(.+?):\s*([A-Za-z-]+)\s*$/);
+      if (phone) {
+        var res = phone[2].toLowerCase();
+        var phrase = res === "mobile" ? "a mobile number" : (res === "landline" ? "a landline number" : (res === "invalid" ? "not a valid number" : "a " + res + " number"));
+        return "Phone " + phone[1] + " is " + phrase;
+      }
+      var mx = q.match(/^MX for\s+(.+?):\s*([A-Za-z-]+)\s*$/);
+      if (mx) return "Email domain " + mx[1] + " is " + (mx[2].toLowerCase() === "ok" ? "reachable" : mx[2]);
+      var lab = friendlyField(item.field);
+      return q ? (lab ? lab + ": " + q : q) : "Verification not recorded";
+    }
+    if (!q) return "Not recorded";
+    if (txt(item.field).toLowerCase() === "no-website") return q;
+    var label = friendlyField(item.field);
+    var shown = (txt(item.field).toLowerCase() === "address" || txt(item.field).toLowerCase() === "area") ? dedupeAddress(q) : q;
+    return label ? label + ": " + shown : shown;
+  }
+
+  function renderEvidence(evidence){
+    var list = evidence || [];
+    var visible = list.filter(function(item){ return classify(item) === "visible"; });
+    var s = section("p-evidence");
+    s.appendChild(el("h2", "sec", "Evidence"));
+    if (!visible.length) {
+      s.appendChild(el("p", "muted", "No listing or verification evidence for this business."));
+    } else {
+      var ul = el("ul", "evlist");
+      visible.forEach(function(item){
+        var id = txt(item.id);
+        var li = el("li");
+        if (id) li.id = "ev-" + id;
+        li.appendChild(el("span", "tag", evidenceLabel(item)));
+        var v = el("div", "val", evidenceValue(item));
+        if (id) v.appendChild(refs([id]));
+        li.appendChild(v);
+        ul.appendChild(li);
+      });
+      s.appendChild(ul);
+    }
+
+    var det = document.getElementById("p-captures");
+    var capList = document.getElementById("cap-list");
+    clear(capList);
+    var captures = list.filter(function(item){ return classify(item) === "capture"; });
+    var nonVisible = list.filter(function(item){ return classify(item) !== "visible"; });
+    captures.forEach(function(item){
+      var id = txt(item.id);
+      var li = el("li");
+      if (id) li.id = "cap-" + id;
+      li.appendChild(el("span", "tag", (id ? id + " - " : "") + friendlyName(item.kind || "source")));
+      li.appendChild(document.createTextNode(readableCapture(item.quote)));
+      capList.appendChild(li);
+    });
+    if (!captures.length && nonVisible.length) capList.appendChild(el("li", "muted", "No readable source captures."));
+    det.hidden = nonVisible.length === 0;
+  }
+
+  function getJson(path){
+    return fetch(path, { headers: { "accept": "application/json" } }).then(function(res){
+      return res.text().then(function(textBody){
+        var body = null;
+        try { body = textBody ? JSON.parse(textBody) : null; } catch (e) { body = null; }
+        return { status: res.status, body: body };
+      });
+    });
+  }
+
+  function postGenerate(){
+    return fetch("/api/workspaces/" + encodeURIComponent(WS) + "/leads/" + encodeURIComponent(LEAD) + "/dossier", {
+      method: "POST",
+      headers: { "accept": "application/json" }
+    });
+  }
+
+  function showError(msg){
+    var e = document.getElementById("error");
+    clear(e);
+    e.hidden = false;
+    e.textContent = txt(msg);
+  }
+
+  function renderNotice(reason){
+    var host = document.getElementById("notice");
+    clear(host);
+    host.hidden = false;
+    var box = el("div", "notice");
+    box.appendChild(el("p", "why", txt(reason) || "This dossier is not ready yet. Press Process to build it."));
+    var btn = el("button", "btn", "Process");
+    btn.type = "button";
+    btn.addEventListener("click", function(){
+      btn.disabled = true;
+      btn.textContent = "Processing...";
+      postGenerate().then(function(){ load(); }, function(){
+        showError("Could not process this lead.");
+        btn.disabled = false;
+        btn.textContent = "Process";
+      });
+    });
+    box.appendChild(btn);
+    host.appendChild(box);
+  }
+
+  function renderBrief(data){
+    var dossier = data.dossier || null;
+    buildFmt(dossier ? dossier.evidence : null);
+    renderIdentity(dossier, data.explainer);
+    renderFacts(dossier);
+    renderScore(data.score);
+    renderGap(dossier ? dossier.gap : null);
+    renderSay(dossier);
+    renderOffers(dossier ? dossier.offers : null);
+    renderWorks(data.explainer);
+    renderEvidence(dossier ? dossier.evidence : null);
+    if (data.ready === false) renderNotice(data.reason);
+  }
+
+  function load(){
+    var back = document.getElementById("back-link");
+    back.setAttribute("href", "showcase2.html?ws=" + encodeURIComponent(WS));
+    document.getElementById("footer-ws").textContent = WS ? "Workspace " + WS + "." : "";
+    if (!WS || !LEAD) {
+      showError("This page needs a workspace and a lead in the link (add ?ws=...&lead=...).");
+      return;
+    }
+    getJson("/api/workspaces/" + encodeURIComponent(WS) + "/leads/" + encodeURIComponent(LEAD) + "/dossier").then(function(res){
+      if (res.status === 404) { showError("This lead was not found in this workspace."); return; }
+      if (res.status !== 200 || !res.body) { showError("We could not load this brief right now. Check the link and reload."); return; }
+      renderBrief(res.body);
+    }, function(){
+      showError("We could not load this brief right now. Check the link and reload.");
+    });
+  }
+
+  load();
+})();
+</script>
+</body>
+</html>

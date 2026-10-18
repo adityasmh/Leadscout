@@ -1,0 +1,29 @@
+{
+  "name": "future-year",
+  "raw": {
+    "name": "Fixture Future Year",
+    "category": "coaching",
+    "city": "Navi Mumbai",
+    "website": "https://fixture-future.example",
+    "source": "osm",
+    "sourceUrl": "https://www.openstreetmap.org/node/7777777777"
+  },
+  "enrichment": {
+    "summary": "Fixture coaching centre with a future year typo.",
+    "emails": [],
+    "phones": ["+919876577777"],
+    "socials": {},
+    "signals": []
+  },
+  "pages": [
+    {
+      "url": "https://fixture-future.example/",
+      "body": "<!DOCTYPE html><html><head><title>Fixture Future Year</title></head><body><h1>About</h1><p>Established 2099, we are the future of coaching in Navi Mumbai.</p></body></html>",
+      "fetchedAt": "2026-10-07T00:00:00.000Z"
+    }
+  ],
+  "expected": {
+    "bizKey": "fixture-future.example",
+    "hasSinceYearFact": false
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "note": "Fake invalid fixture: has seven howItWorks bullets.",
+  "category": "demo-category",
+  "country": "FA",
+  "howItWorks": [
+    "One",
+    "Two",
+    "Three",
+    "Four",
+    "Five",
+    "Six",
+    "Seven"
+  ],
+  "whereAutomationHelps": [
+    { "service": "automation", "point": "One short sentence." }
+  ]
+}

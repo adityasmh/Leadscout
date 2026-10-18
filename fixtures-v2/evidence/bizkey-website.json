@@ -1,0 +1,13 @@
+{
+  "name": "bizKey website host priority",
+  "raw": {
+    "name": "Fixture Website Cafe",
+    "category": "cafe",
+    "city": "Testville",
+    "country": "IN",
+    "website": "https://www.fixturecafe.example",
+    "source": "test-fixture",
+    "sourceUrl": "https://example.test/bizkey-website"
+  },
+  "expected": { "bizKey": "fixturecafe.example" }
+}

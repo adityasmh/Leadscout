@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "workspaceName": "India Seed",
+  "pilot": {
+    "cities": ["Navi Mumbai", "Pune"],
+    "categories": ["dental-clinic", "clinic", "coaching-centre", "salon"],
+    "limit": 25
+  },
+  "phases": [
+    {
+      "name": "A",
+      "cityCount": 10,
+      "categories": ["dental-clinic", "clinic", "diagnostic-lab", "physiotherapist", "coaching-centre", "school", "real-estate-agent", "travel-agency", "salon", "gym", "restaurant", "hotel"],
+      "limit": 50
+    },
+    {
+      "name": "B",
+      "cityCount": 40,
+      "categories": ["dental-clinic", "clinic", "diagnostic-lab", "physiotherapist", "coaching-centre", "school", "real-estate-agent", "travel-agency", "salon", "gym", "restaurant", "hotel"],
+      "limit": 30
+    }
+  ],
+  "spacing": {
+    "overpassSeconds": 60,
+    "maxJobsPerRun": 10
+  },
+  "budget": {
+    "maxTokensPerJob": 30000
+  }
+}

@@ -1,0 +1,81 @@
+{
+  "name": "over-cap",
+  "raw": {
+    "name": "Fixture Over Cap",
+    "category": "real estate",
+    "city": "Navi Mumbai",
+    "address": "Sector 19, Nerul, Navi Mumbai",
+    "phone": "+91 98765 40000",
+    "email": "lead@fixture-overcap.example",
+    "website": "https://fixture-overcap.example",
+    "source": "osm",
+    "sourceUrl": "https://www.openstreetmap.org/node/1010101010"
+  },
+  "enrichment": {
+    "summary": "Fixture real estate firm with many pages.",
+    "emails": ["lead@fixture-overcap.example"],
+    "phones": ["+919876540000"],
+    "socials": {},
+    "signals": ["no-online-booking", "no-chat-widget", "no-contact-form"]
+  },
+  "pages": [
+    {
+      "url": "https://fixture-overcap.example/",
+      "body": "<!DOCTYPE html><html><head><title>Fixture Over Cap - Premium Realty</title><meta name=\"description\" content=\"Buy, sell and rent properties in Navi Mumbai with Fixture Over Cap, the trusted local real estate partner since 2010.\"><script type=\"application/ld+json\">{\"@context\":\"https://schema.org\",\"@type\":\"Organization\",\"name\":\"Fixture Over Cap\",\"aggregateRating\":{\"@type\":\"AggregateRating\",\"ratingValue\":\"4.7\",\"reviewCount\":\"85\"}}</script></head><body><h1>Fixture Over Cap</h1><h2>Your Property Partner</h2><p>Founded by Mr. Rajesh Kapoor, we have helped thousands of families find homes in Navi Mumbai.</p><p>Now open: our new branch in Vashi.</p><p>© 2010-2026 Fixture Over Cap. All rights reserved.</p></body></html>",
+      "fetchedAt": "2026-10-07T00:00:00.000Z"
+    },
+    {
+      "url": "https://fixture-overcap.example/about",
+      "body": "<!DOCTYPE html><html><head><title>About Fixture Over Cap</title><meta name=\"description\" content=\"Learn about our journey and mission at Fixture Over Cap.\"></head><body><h1>About Us</h1><h2>Our Story</h2><p>Fixture Over Cap was established in 2010 with a simple mission: make property search transparent in Navi Mumbai. Owner Mr. Rajesh Kapoor believes in ethical deals.</p><p>We are hiring experienced property consultants.</p><p>© 2023 Fixture Over Cap.</p></body></html>",
+      "fetchedAt": "2026-10-07T00:00:00.000Z"
+    },
+    {
+      "url": "https://fixture-overcap.example/services",
+      "body": "<!DOCTYPE html><html><head><title>Services - Fixture Over Cap</title><meta name=\"description\" content=\"Explore our real estate services in Navi Mumbai.\"></head><body><h1>Our Services</h1><h2>Residential Sales</h2><p>We handle flats, bungalows and plots across Navi Mumbai. Since 2010 our team has closed over one thousand transactions.</p><p>New branch opening shortly in Panvel.</p><p>© Fixture Over Cap.</p></body></html>",
+      "fetchedAt": "2026-10-07T00:00:00.000Z"
+    },
+    {
+      "url": "https://fixture-overcap.example/contact",
+      "body": "<!DOCTYPE html><html><head><title>Contact - Fixture Over Cap</title><meta name=\"description\" content=\"Reach Fixture Over Cap for property enquiries.\"></head><body><h1>Contact Us</h1><h2>Visit Our Office</h2><p>Call us on +91 98765 40000 or email lead@fixture-overcap.example. Office hours: 9 AM to 7 PM.</p><p>Founded by Mr. Rajesh Kapoor.</p><p>© 2024 Fixture Over Cap.</p></body></html>",
+      "fetchedAt": "2026-10-07T00:00:00.000Z"
+    },
+    {
+      "url": "https://fixture-overcap.example/listings",
+      "body": "<!DOCTYPE html><html><head><title>Listings - Fixture Over Cap</title><meta name=\"description\" content=\"Browse the latest property listings in Navi Mumbai.\"></head><body><h1>Latest Listings</h1><h2>Featured Properties</h2><p>Explore verified resale flats and rental homes. Since 2010 we list only owner-verified properties.</p><p>We are hiring field associates.</p><p>© Fixture Over Cap 2026.</p></body></html>",
+      "fetchedAt": "2026-10-07T00:00:00.000Z"
+    },
+    {
+      "url": "https://fixture-overcap.example/testimonials",
+      "body": "<!DOCTYPE html><html><head><title>Testimonials - Fixture Over Cap</title><meta name=\"description\" content=\"Read what clients say about Fixture Over Cap.\"></head><body><h1>Client Testimonials</h1><h2>Happy Home Owners</h2><p>Fixture Over Cap made our home search effortless. Established 2010, they know Navi Mumbai inside out.</p><p>Now open on weekends.</p><p>© 2025 Fixture Over Cap.</p></body></html>",
+      "fetchedAt": "2026-10-07T00:00:00.000Z"
+    },
+    {
+      "url": "https://fixture-overcap.example/faq",
+      "body": "<!DOCTYPE html><html><head><title>FAQ - Fixture Over Cap</title><meta name=\"description\" content=\"Frequently asked questions about buying and renting with Fixture Over Cap.\"></head><body><h1>FAQs</h1><h2>Buying Process</h2><p>We guide buyers from shortlisting to registration. Founded by Mr. Rajesh Kapoor, our firm maintains complete paperwork transparency.</p><p>Opening soon in Kharghar.</p><p>© Fixture Over Cap.</p></body></html>",
+      "fetchedAt": "2026-10-07T00:00:00.000Z"
+    },
+    {
+      "url": "https://fixture-overcap.example/blog",
+      "body": "<!DOCTYPE html><html><head><title>Blog - Fixture Over Cap</title><meta name=\"description\" content=\"Real estate insights from Fixture Over Cap.\"></head><body><h1>Real Estate Blog</h1><h2>Market Updates</h2><p>The Navi Mumbai property market continues to grow. Since 2010 we have published honest analysis for buyers and investors.</p><p>Hiring content writers.</p><p>© 2026 Fixture Over Cap.</p></body></html>",
+      "fetchedAt": "2026-10-07T00:00:00.000Z"
+    }
+  ],
+  "verification": {
+    "bizKey": "fixture-overcap.example",
+    "checkedAt": "2026-10-07T00:00:00.000Z",
+    "website": "alive",
+    "httpStatus": 200,
+    "emails": [{"value": "lead@fixture-overcap.example", "result": "ok"}],
+    "phones": [{"value": "+91 98765 40000", "e164": "+919876540000", "result": "mobile"}],
+    "whatsapp": false,
+    "contactable": true,
+    "reasons": ["website alive", "ok email", "valid mobile"]
+  },
+  "expected": {
+    "bizKey": "fixture-overcap.example",
+    "itemCount": 14,
+    "hasListing": true,
+    "hasAbsence": true,
+    "hasVerification": true
+  }
+}

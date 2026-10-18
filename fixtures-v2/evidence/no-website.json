@@ -1,0 +1,24 @@
+{
+  "name": "no-website",
+  "raw": {
+    "name": "Fixture Clinic NoSite",
+    "category": "dental clinic",
+    "city": "Navi Mumbai",
+    "phone": "+91 98765 43213",
+    "source": "osm",
+    "sourceUrl": "https://www.openstreetmap.org/node/3333333333"
+  },
+  "enrichment": {
+    "summary": "Fixture clinic with no website.",
+    "emails": [],
+    "phones": ["+919876543213"],
+    "socials": {},
+    "signals": ["no-website"]
+  },
+  "pages": [],
+  "expected": {
+    "bizKey": "osm:node/3333333333",
+    "hasNoWebsiteItem": true,
+    "hasAbsenceItems": true
+  }
+}

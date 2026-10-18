@@ -1,0 +1,5 @@
+﻿{
+  "extends": "./tsconfig.json",
+  "include": ["src", "plugins", "adapters", "scripts", "deploy"],
+  "exclude": []
+}

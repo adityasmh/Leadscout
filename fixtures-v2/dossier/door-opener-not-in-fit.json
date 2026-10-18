@@ -1,0 +1,86 @@
+{
+  "name": "door-opener not in lead.fit",
+  "expected": { "doorOpenerService": "social-media-audit", "maxOffers": 5 },
+  "input": {
+    "lead": {
+      "id": "lead-no-door-in-fit",
+      "workspaceId": "ws-test",
+      "name": "Fixture Bakery No DoorOpener Fit",
+      "category": "bakery",
+      "city": "Testpur",
+      "country": "India",
+      "source": "fixture",
+      "sourceUrl": "https://fixture-bakery-nodoor.example.com/",
+      "summary": "Fake bakery whose fit services are all paid; the door-opener is elsewhere in the price book.",
+      "emails": ["hello@fixture-bakery-nodoor.example.com"],
+      "phones": ["+91 98765 43299"],
+      "socials": {},
+      "signals": ["appointment-based", "no-online-booking"],
+      "score": 70,
+      "fit": [
+        { "service": "website", "score": 80, "reason": "site could be stronger" },
+        { "service": "seo", "score": 75, "reason": "local search matters" },
+        { "service": "crm-setup", "score": 65, "reason": "enquiry tracking helps" },
+        { "service": "content-marketing", "score": 55, "reason": "regular posts drive repeat visits" }
+      ],
+      "angle": "",
+      "status": "new",
+      "notes": "",
+      "createdAt": "2026-10-07T00:00:00.000Z"
+    },
+    "evidence": [
+      {
+        "id": "E1",
+        "kind": "page-text",
+        "url": "https://fixture-bakery-nodoor.example.com/",
+        "quote": "Order custom cakes by calling or visiting our Testpur shop.",
+        "field": "signal:appointment-based",
+        "fetchedAt": "2026-10-07T00:00:00.000Z"
+      },
+      {
+        "id": "E2",
+        "kind": "absence",
+        "url": "https://fixture-bakery-nodoor.example.com/",
+        "quote": "Checked home, menu and order pages; no online booking widget found.",
+        "field": "signal:no-online-booking",
+        "fetchedAt": "2026-10-07T00:00:00.000Z"
+      }
+    ],
+    "facts": {},
+    "score": { "total": 70, "fit": 80, "reach": 80, "timing": 50, "gate": "template", "reasons": [] },
+    "priceBook": {
+      "workspaceId": "ws-test",
+      "version": 3,
+      "updatedAt": "2026-10-07T00:00:00.000Z",
+      "items": [
+        { "service": "website", "label": "Website", "description": "A new website built for the business.", "buildDays": [5, 10], "price": { "currency": "INR", "min": 15000, "max": 25000 }, "assumption": "Final quote after a short call.", "doorOpener": false },
+        { "service": "seo", "label": "Local SEO", "description": "Fix titles, map listings and schema.", "buildDays": [2, 4], "price": { "currency": "INR", "min": 8000, "max": 12000 }, "assumption": "Customer provides photos and copy.", "doorOpener": false },
+        { "service": "crm-setup", "label": "CRM setup", "description": "Set up a CRM to track leads and customers.", "buildDays": [3, 5], "price": { "currency": "INR", "min": 10000, "max": 18000 }, "assumption": "Up to 500 contacts and one user seat.", "doorOpener": false },
+        { "service": "content-marketing", "label": "Content marketing", "description": "Publish seasonal posts and email them.", "buildDays": [1, 2], "price": null, "assumption": "Four posts per month, customer approves copy.", "doorOpener": false },
+        { "service": "social-media-audit", "label": "Free social media audit", "description": "Review current social profiles and list quick wins.", "buildDays": [1, 1], "price": { "currency": "INR", "min": 0, "max": 0 }, "assumption": "Free of charge.", "doorOpener": true }
+      ]
+    },
+    "explainer": {
+      "id": "explainer-bakery-in-en",
+      "category": "bakery",
+      "country": "India",
+      "language": "en",
+      "howItWorks": ["Customers discover bakeries through maps, social posts and walk-by traffic."],
+      "whereAutomationHelps": [
+        { "service": "website", "point": "Online menus and pre-orders reduce phone load." },
+        { "service": "seo", "point": "Local SEO brings in people searching 'bakery near me'." },
+        { "service": "crm-setup", "point": "A simple CRM stops follow-ups falling through cracks." },
+        { "service": "content-marketing", "point": "Scheduled posts keep regulars informed." },
+        { "service": "social-media-audit", "point": "A quick audit shows where social engagement is lost." }
+      ],
+      "promptVersion": "2026-10-07-1",
+      "tokensIn": 0,
+      "tokensOut": 0,
+      "createdAt": "2026-10-07T00:00:00.000Z",
+      "reviewed": true
+    },
+    "workspaceName": "Test Workspace",
+    "offer": { "services": ["website", "seo", "crm-setup", "content-marketing", "social-media-audit"], "description": "Test offer" },
+    "senderName": "Test Sender"
+  }
+}

@@ -1,0 +1,1365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dossier | Leadscout</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --fg: #111827;
+      --panel-bg: #f8fafc;
+      --card-bg: #ffffff;
+      --border: #d1d5db;
+      --accent: #2563eb;
+      --accent-text: #ffffff;
+      --focus: #f59e0b;
+      --error-bg: #fee2e2;
+      --error-fg: #991b1b;
+      --muted: #6b7280;
+      --success-bg: #dcfce7;
+      --success-fg: #14532d;
+      --badge-bg: #e0e7ff;
+      --badge-fg: #3730a3;
+      --font: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      color-scheme: light dark;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0f172a;
+        --fg: #e5e7eb;
+        --panel-bg: #1e293b;
+        --card-bg: #1e293b;
+        --border: #334155;
+        --accent: #60a5fa;
+        --accent-text: #0f172a;
+        --focus: #fbbf24;
+        --error-bg: #450a0a;
+        --error-fg: #fecaca;
+        --muted: #94a3b8;
+        --badge-bg: #312e81;
+        --badge-fg: #c7d2fe;
+        --success-bg: #064e3b;
+        --success-fg: #bbf7d0;
+      }
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--fg);
+      line-height: 1.55;
+      padding: 1rem;
+    }
+    :focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+    .hidden { display: none !important; }
+    a { color: var(--accent); }
+    a:hover, a:focus { text-decoration: underline; }
+    button, select, input {
+      font: inherit;
+      color: inherit;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 0.375rem;
+      padding: 0.5rem 0.75rem;
+    }
+    button {
+      background: var(--accent);
+      color: var(--accent-text);
+      border-color: var(--accent);
+      cursor: pointer;
+      font-weight: 500;
+    }
+    button.secondary { background: var(--card-bg); color: var(--fg); border-color: var(--border); }
+    button:disabled { opacity: 0.55; cursor: not-allowed; }
+    select { width: 100%; max-width: 24rem; }
+    .container { max-width: 800px; margin: 0 auto; }
+    .report-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem;
+      border: 1px solid var(--border);
+      border-radius: 0.5rem;
+      margin-bottom: 1rem;
+      background: var(--panel-bg);
+      flex-wrap: wrap;
+    }
+    .report-header img { max-height: 3rem; max-width: 8rem; object-fit: contain; }
+    .report-header .brand-name { font-size: 1.25rem; font-weight: 700; }
+    .report-header .brand-contact { font-size: 0.875rem; color: var(--muted); }
+    .report-list { margin-bottom: 1rem; }
+    .report-list h2 { font-size: 1rem; margin: 0 0 0.5rem; }
+    .report-item {
+      border: 1px solid var(--border);
+      border-radius: 0.5rem;
+      padding: 0.75rem 1rem;
+      margin-bottom: 0.5rem;
+      cursor: pointer;
+      background: var(--card-bg);
+    }
+    .report-item:hover, .report-item:focus-within { border-color: var(--accent); }
+    .report-item h3 { font-size: 1rem; margin: 0 0 0.25rem; }
+    .report-item .tag { display: inline-block; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; padding: 0.125rem 0.5rem; border-radius: 999px; background: var(--badge-bg); color: var(--badge-fg); margin-right: 0.5rem; }
+    .report-item .headline { color: var(--muted); font-size: 0.875rem; }
+    section {
+      border: 1px solid var(--border);
+      border-radius: 0.5rem;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      background: var(--card-bg);
+    }
+    h1, h2, h3, h4 { margin: 0 0 0.5rem; line-height: 1.3; }
+    h1 { font-size: 1.5rem; }
+    h2 { font-size: 1.125rem; }
+    h3 { font-size: 1rem; }
+    .identity h1 { margin-bottom: 0.25rem; }
+    .meta { color: var(--muted); font-size: 0.9375rem; margin-bottom: 0.75rem; }
+    .contacts { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .contacts a {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      padding: 0.375rem 0.625rem;
+      border: 1px solid var(--border);
+      border-radius: 0.375rem;
+      text-decoration: none;
+      font-size: 0.875rem;
+      background: var(--panel-bg);
+      color: var(--fg);
+    }
+    .facts { display: flex; flex-wrap: wrap; gap: 0.75rem 1.25rem; }
+    .fact { font-size: 0.9375rem; }
+    .fact-label { color: var(--muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.03em; }
+    .score-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
+    .score-box { text-align: center; padding: 0.75rem; border: 1px solid var(--border); border-radius: 0.375rem; background: var(--panel-bg); }
+    .score-box .number { font-size: 1.5rem; font-weight: 700; }
+    .score-box .label { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; }
+    .reasons { margin: 0.75rem 0 0; padding-left: 1.25rem; font-size: 0.9375rem; color: var(--muted); }
+    .badge {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      padding: 0.25rem 0.625rem;
+      border-radius: 999px;
+      background: var(--badge-bg);
+      color: var(--badge-fg);
+    }
+    .copy-row { display: flex; gap: 0.5rem; align-items: start; }
+    .copy-row blockquote, .copy-row pre {
+      flex: 1;
+      margin: 0;
+      padding: 0.75rem;
+      border: 1px solid var(--border);
+      border-radius: 0.375rem;
+      background: var(--panel-bg);
+      white-space: pre-wrap;
+      word-break: break-word;
+      font-family: inherit;
+      font-size: 0.9375rem;
+    }
+    .copy-feedback { font-size: 0.875rem; color: var(--muted); margin-top: 0.25rem; }
+    .offer { border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 1rem; }
+    .offer:last-child { margin-bottom: 0; }
+    .offer-header { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.5rem; }
+    .offer-header h3 { margin: 0; }
+    .offer .label { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; color: var(--muted); }
+    .offer .free { background: var(--success-bg); color: var(--success-fg); padding: 0.125rem 0.5rem; border-radius: 999px; font-size: 0.75rem; font-weight: 700; }
+    .price-not-set { font-style: italic; color: var(--muted); }
+    .works-banner {
+      font-size: 0.875rem;
+      color: var(--muted);
+      border-left: 3px solid var(--border);
+      padding-left: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+    .works-list { margin: 0; padding-left: 1.25rem; }
+    .works-list li { margin-bottom: 0.375rem; }
+    .evidence-list { list-style: none; padding: 0; margin: 0; }
+    .evidence-list li { border-bottom: 1px solid var(--border); padding: 0.75rem 0; }
+    .evidence-list li:last-child { border-bottom: none; }
+    .evidence-list .num { font-weight: 700; min-width: 2rem; display: inline-block; }
+    .evidence-list .kind { font-size: 0.75rem; text-transform: uppercase; color: var(--muted); }
+    .evidence-list .quote { margin: 0.25rem 0; word-break: break-word; }
+    .evidence-list .source { font-size: 0.875rem; }
+    .evidence-list .fetched { font-size: 0.75rem; color: var(--muted); }
+    .evidence-refs { font-size: 0.875rem; margin-left: 0.25rem; }
+    .evidence-refs a { margin-left: 0.25rem; }
+    .status-row { display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; }
+    .status-row .saved { font-size: 0.875rem; color: var(--muted); }
+    .generate-row { display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; }
+    .note { padding: 0.75rem; border-radius: 0.375rem; background: var(--success-bg); color: var(--success-fg); margin-top: 0.75rem; }
+    .level { font-size: 0.875rem; color: var(--muted); }
+    details { border: 1px solid var(--border); border-radius: 0.5rem; padding: 0.75rem 1rem; margin-bottom: 1rem; background: var(--card-bg); }
+    summary { cursor: pointer; font-weight: 600; }
+    .dropped-list { margin: 0.5rem 0 0; padding-left: 1.25rem; font-size: 0.9375rem; }
+    footer {
+      text-align: center;
+      font-size: 0.875rem;
+      color: var(--muted);
+      padding: 1rem;
+      border-top: 1px solid var(--border);
+      margin-top: 1rem;
+    }
+    #id-error {
+      position: fixed;
+      bottom: 1rem;
+      left: 50%;
+      transform: translateX(-50%);
+      max-width: 90vw;
+      padding: 0.75rem 1rem;
+      border-radius: 0.5rem;
+      background: var(--error-bg);
+      color: var(--error-fg);
+      z-index: 30;
+    }
+    #id-error:empty { display: none; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0; }
+    @media (max-width: 600px) {
+      body { padding: 0.75rem; }
+      .score-grid { grid-template-columns: 1fr; }
+      .copy-row { flex-direction: column; }
+      .copy-row blockquote, .copy-row pre { width: 100%; }
+    }
+    @media print {
+      body { padding: 0; background: #fff; color: #000; }
+      section, details, .report-header, .report-item { break-inside: avoid; }
+      #id-error, .report-list, #id-generate, #id-callstatus { display: none !important; }
+      a { text-decoration: none; color: #000; }
+      .contacts a { border: 1px solid #999; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <p id="active-ws" class="active-ws" aria-live="polite"></p>
+    <header id="id-report-brand" class="report-header hidden" aria-label="Report branding"></header>
+    <nav id="id-report-list" class="report-list hidden" aria-label="Dossier list"></nav>
+    <section id="id-lead-picker" class="lead-picker hidden" aria-label="Choose a lead"></section>
+
+    <main id="id-dossier-view" class="hidden">
+      <section id="id-identity" class="identity" aria-label="Identity"></section>
+      <section id="id-facts" aria-label="Facts"></section>
+      <section id="id-score" aria-label="Score"></section>
+      <section id="id-gap" aria-label="The gap"></section>
+      <section id="id-say" aria-label="Say this"></section>
+      <section id="id-pushback" aria-label="Pushback"></section>
+      <section id="id-offers" aria-label="Offers"></section>
+      <section id="id-works" aria-label="How this business works"></section>
+      <section id="id-evidence" aria-label="Evidence"></section>
+      <section id="id-callstatus" class="internal-only" aria-label="Call status"></section>
+      <section id="id-generate" class="internal-only" aria-label="Generate dossier"></section>
+      <div id="id-note" class="internal-only" aria-live="polite"></div>
+      <div id="id-notice" class="internal-only" aria-live="polite"></div>
+      <div id="id-level" class="level" aria-label="Dossier level"></div>
+      <details id="id-dropped">
+        <summary>Dropped claims</summary>
+        <ol class="dropped-list"></ol>
+      </details>
+    </main>
+
+    <footer id="id-footer">
+      <p>(c) OpenStreetMap contributors</p>
+    </footer>
+  </div>
+
+  <div id="id-error" role="status" aria-live="polite"></div>
+
+  <script>
+    // =========================================================================
+    // Mock fixtures — clearly fake data used only when ?mock=1
+    // =========================================================================
+    const EVIDENCE_BASE = [
+      { id: "E1", kind: "listing", url: "https://www.openstreetmap.org/node/9999999999", quote: "Mock Cafe, Example Road, Faketown", fetchedAt: "2026-01-01T00:00:00Z" },
+      { id: "E2", kind: "page-text", url: "https://example-mock-cafe.example/about", quote: "Founded by A. Tester in 2010. We serve mock coffee.", fetchedAt: "2026-01-01T00:00:00Z" },
+      { id: "E3", kind: "structured-data", url: "https://example-mock-cafe.example/", quote: "AggregateRating ratingValue 4.2 reviewCount 37", fetchedAt: "2026-01-01T00:00:00Z" },
+      { id: "E4", kind: "absence", url: "https://example-mock-cafe.example/", quote: "No online booking widget found on homepage or menu page.", fetchedAt: "2026-01-01T00:00:00Z" },
+      { id: "E5", kind: "verification", url: "https://example-mock-cafe.example/", quote: "Website responded 200 OK, final URL https://example-mock-cafe.example/", fetchedAt: "2026-01-01T00:00:00Z" }
+    ];
+
+    const MOCK_LEAD_BASE = {
+      name: "Mock Cafe Faketown",
+      category: "cafe",
+      area: "Faketown",
+      country: "Mockland",
+      phone: "+1-555-0100",
+      email: "hello@example-mock-cafe.example",
+      website: "https://example-mock-cafe.example/"
+    };
+
+    // MOCK_LEVEL1: model-polished, citation-checked dossier
+    const MOCK_LEVEL1 = {
+      dossier: {
+        leadId: "lead-mock-1",
+        workspaceId: "ws-mock",
+        bizKey: "mockcafe-faketown",
+        level: 1,
+        facts: {
+          owner: { value: "A. Tester", evidence: ["E2"] },
+          sinceYear: { value: 2010, evidence: ["E2"] },
+          rating: { value: 4.2, evidence: ["E3"] },
+          reviewCount: { value: 37, evidence: ["E3"] },
+          area: { value: "Faketown", evidence: ["E1"] }
+        },
+        gap: { headline: { value: "Mock Cafe takes bookings by phone only; online orders are missed.", evidence: ["E4"] }, tag: "LEAKING" },
+        sayThis: { value: "Hi, I noticed Mock Cafe's site doesn't take online bookings yet — would a free booking link help you capture after-hours enquiries?", evidence: ["E4", "E1"] },
+        pushback: { value: "If you're short on time, may I send a one-page mock-up of how a booking link would look on your site?", evidence: ["E4"] },
+        offers: [
+          { rank: 1, service: "website", title: "Mini website with booking", description: { value: "Add a mobile-first page that lets customers book a table or order ahead.", evidence: ["E4"] }, whyItMatters: { value: "Captures enquiries when the shop is closed or the line is busy.", evidence: ["E4"] }, buildDays: [5, 7], quote: { currency: "INR", min: 12000, max: 18000 }, assumption: "Assumes one landing page and a third-party booking form.", doorOpener: true },
+          { rank: 2, service: "chat-widget", title: "WhatsApp chat button", description: { value: "Place a WhatsApp button on every page so visitors can message instantly.", evidence: ["E5"] }, whyItMatters: { value: "Turns mobile visitors into conversations without a phone call.", evidence: ["E5"] }, buildDays: [1, 2], quote: { currency: "INR", min: 3000, max: 5000 }, assumption: "Uses the business's existing WhatsApp number.", doorOpener: false },
+          { rank: 3, service: "seo", title: "Local SEO pass", description: { value: "Fix titles, map listings and schema so the cafe shows up for 'cafe near me'.", evidence: ["E1", "E3"] }, whyItMatters: { value: "Brings in people already searching for a nearby cafe.", evidence: ["E1"] }, buildDays: [2, 4], quote: { currency: "INR", min: 8000, max: 12000 }, assumption: "Customer provides photos and menu copy.", doorOpener: false },
+          { rank: 4, service: "crm-setup", title: "Simple lead log", description: { value: "Track where each enquiry came from in a lightweight sheet or CRM.", evidence: ["E2"] }, whyItMatters: { value: "Shows which marketing actually drives calls.", evidence: ["E2"] }, buildDays: [2, 3], quote: { currency: "INR", min: 4000, max: 6000 }, assumption: "Up to 500 contacts and one user seat.", doorOpener: false },
+          { rank: 5, service: "content-marketing", title: "Monthly menu update", description: { value: "Publish seasonal menu posts and email them to subscribers.", evidence: ["E2"] }, whyItMatters: { value: "Keeps regulars informed and gives new visitors a reason to return.", evidence: ["E2"] }, buildDays: [1, 2], quote: { currency: "INR", min: 5000, max: 8000 }, assumption: "Four posts per month, customer approves copy.", doorOpener: false }
+        ],
+        evidence: EVIDENCE_BASE,
+        callStatus: "not-called",
+        dropped: [],
+        inputHash: "mock-hash-level1",
+        promptVersion: "mock-prompt-1",
+        model: "mock-model",
+        tokensIn: 3200,
+        tokensOut: 1100,
+        createdAt: "2026-01-01T00:00:00Z"
+      },
+      explainer: {
+        id: "explainer-cafe-mockland",
+        category: "cafe",
+        country: "Mockland",
+        language: "en",
+        howItWorks: [
+          "Customers discover cafes through maps, social posts and walk-by traffic.",
+          "Peak demand is breakfast, lunch and weekend coffee runs.",
+          "Most enquiries are 'are you open?', 'do you take bookings?' and menu requests.",
+          "Staff answer the phone while serving, so missed calls mean lost revenue.",
+          "Repeat visits depend on ambience, speed and easy reordering."
+        ],
+        whereAutomationHelps: [{ service: "website", point: "Online menus and booking reduce phone load." }],
+        promptVersion: "mock-explainer-1",
+        tokensIn: 100,
+        tokensOut: 90,
+        createdAt: "2026-01-01T00:00:00Z",
+        reviewed: true
+      },
+      score: {
+        total: 82,
+        fit: 88,
+        reach: 80,
+        timing: 75,
+        gate: "llm",
+        reasons: ["has-website", "no-online-booking", "valid phone", "peak season nearby"]
+      },
+      verification: {
+        bizKey: "mockcafe-faketown",
+        checkedAt: "2026-01-01T00:00:00Z",
+        website: "alive",
+        finalUrl: "https://example-mock-cafe.example/",
+        httpStatus: 200,
+        emails: [{ value: "hello@example-mock-cafe.example", result: "ok" }],
+        phones: [{ value: "+1-555-0100", e164: "+15550100", result: "mobile" }],
+        whatsapp: false,
+        contactable: true,
+        reasons: ["valid mobile", "website alive"]
+      },
+      branding: {
+        displayName: "Mock Agency",
+        logoUrl: "",
+        accent: "#2563eb",
+        contactLine: "mock@example-agency.example",
+        reportFooter: "This is a mock report footer.",
+        senderName: "Mock Seller",
+        hidePoweredBy: false
+      },
+      lead: MOCK_LEAD_BASE
+    };
+
+    // MOCK_LEVEL0: rules-only dossier
+    const MOCK_LEVEL0 = {
+      dossier: {
+        leadId: "lead-mock-0",
+        workspaceId: "ws-mock",
+        bizKey: "mockgym-faketown",
+        level: 0,
+        facts: {
+          area: { value: "Faketown", evidence: ["E1"] },
+          sinceYear: { value: 2015, evidence: ["E2"] }
+        },
+        gap: { headline: { value: "Mock Gym has no chat widget; enquiries may drop off the site.", evidence: ["E4"] }, tag: "LEAKING" },
+        sayThis: { value: "Hi, I saw Mock Gym's site doesn't have a chat option. Would a free WhatsApp button help you answer membership questions faster?", evidence: ["E4", "E1"] },
+        pushback: { value: "If you're busy, may I send a 30-second mock-up of the button on your homepage?", evidence: ["E4"] },
+        offers: [
+          { rank: 1, service: "chat-widget", title: "WhatsApp chat button", description: { value: "Add a WhatsApp chat button to the site.", evidence: ["E4"] }, whyItMatters: { value: "Lets visitors ask questions without calling.", evidence: ["E4"] }, buildDays: [1, 2], quote: { currency: "INR", min: 3000, max: 5000 }, assumption: "Uses existing WhatsApp number.", doorOpener: true },
+          { rank: 2, service: "website", title: "Landing page", description: { value: "Create a simple landing page with timetable and pricing.", evidence: ["E5"] }, whyItMatters: { value: "Gives prospects the basics before they call.", evidence: ["E5"] }, buildDays: [3, 5], quote: { currency: "INR", min: 10000, max: 15000 }, assumption: "Customer provides timetable and photos.", doorOpener: false },
+          { rank: 3, service: "crm-setup", title: "Lead tracker", description: { value: "Log trial enquiries in a simple CRM.", evidence: ["E2"] }, whyItMatters: { value: "Stops follow-ups falling through the cracks.", evidence: ["E2"] }, buildDays: [2, 3], quote: { currency: "INR", min: 4000, max: 6000 }, assumption: "Up to 500 contacts.", doorOpener: false }
+        ],
+        evidence: EVIDENCE_BASE,
+        callStatus: "not-called",
+        dropped: [{ field: "owner", reason: "No cited evidence found." }],
+        inputHash: "mock-hash-level0",
+        promptVersion: "mock-prompt-1",
+        tokensIn: 0,
+        tokensOut: 0,
+        createdAt: "2026-01-01T00:00:00Z"
+      },
+      explainer: {
+        id: "explainer-gym-mockland",
+        category: "gym",
+        country: "Mockland",
+        language: "en",
+        howItWorks: [
+          "Gyms convert most members through trial visits and tours.",
+          "Enquiries peak in January and before summer.",
+          "Staff spend much of the day on the floor, so front-desk coverage is thin."
+        ],
+        whereAutomationHelps: [{ service: "chat-widget", point: "Chat captures enquiries during workouts." }],
+        promptVersion: "mock-explainer-1",
+        tokensIn: 0,
+        tokensOut: 0,
+        createdAt: "2026-01-01T00:00:00Z",
+        reviewed: false
+      },
+      score: {
+        total: 58,
+        fit: 70,
+        reach: 60,
+        timing: 40,
+        gate: "template",
+        reasons: ["has-website", "no-chat-widget"]
+      },
+      verification: {
+        bizKey: "mockgym-faketown",
+        checkedAt: "2026-01-01T00:00:00Z",
+        website: "alive",
+        finalUrl: "https://example-mock-gym.example/",
+        httpStatus: 200,
+        emails: [{ value: "info@example-mock-gym.example", result: "ok" }],
+        phones: [{ value: "+1-555-0200", e164: "+15550200", result: "landline" }],
+        whatsapp: false,
+        contactable: true,
+        reasons: ["ok email", "website alive"]
+      },
+      branding: {
+        displayName: "Mock Agency",
+        logoUrl: "",
+        accent: "#2563eb",
+        contactLine: "mock@example-agency.example",
+        reportFooter: "This is a mock report footer.",
+        senderName: "Mock Seller",
+        hidePoweredBy: false
+      },
+      lead: {
+        name: "Mock Gym Faketown",
+        category: "gym",
+        area: "Faketown",
+        country: "Mockland",
+        phone: "+1-555-0200",
+        email: "info@example-mock-gym.example",
+        website: "https://example-mock-gym.example/"
+      }
+    };
+
+    // MOCK_NULLGAP: null gap and null prices
+    const MOCK_NULLGAP = {
+      dossier: {
+        leadId: "lead-mock-null",
+        workspaceId: "ws-mock",
+        bizKey: "mockshop-faketown",
+        level: 1,
+        facts: {
+          area: { value: "Faketown", evidence: ["E1"] }
+        },
+        gap: null,
+        sayThis: null,
+        pushback: null,
+        offers: [
+          { rank: 1, service: "website", title: "Website review", description: { value: "Review the current site and list quick wins.", evidence: ["E5"] }, whyItMatters: { value: "Identifies the highest-impact changes first.", evidence: ["E5"] }, buildDays: [1, 1], quote: null, assumption: "Price to be confirmed after scoping.", doorOpener: true },
+          { rank: 2, service: "seo", title: "SEO audit", description: { value: "Check technical SEO and local ranking factors.", evidence: ["E1"] }, whyItMatters: { value: "Finds why the shop may not appear in local search.", evidence: ["E1"] }, buildDays: [2, 3], quote: null, assumption: "Customer shares current analytics if available.", doorOpener: false }
+        ],
+        evidence: EVIDENCE_BASE,
+        callStatus: "not-called",
+        dropped: [],
+        inputHash: "mock-hash-null",
+        promptVersion: "mock-prompt-1",
+        tokensIn: 0,
+        tokensOut: 0,
+        createdAt: "2026-01-01T00:00:00Z"
+      },
+      explainer: null,
+      score: {
+        total: 45,
+        fit: 55,
+        reach: 50,
+        timing: 30,
+        gate: "template",
+        reasons: ["has-website"]
+      },
+      verification: {
+        bizKey: "mockshop-faketown",
+        checkedAt: "2026-01-01T00:00:00Z",
+        website: "alive",
+        finalUrl: "https://example-mock-shop.example/",
+        httpStatus: 200,
+        emails: [{ value: "shop@example-mock-shop.example", result: "ok" }],
+        phones: [{ value: "+1-555-0300", e164: "+15550300", result: "mobile" }],
+        whatsapp: true,
+        contactable: true,
+        reasons: ["valid mobile", "WhatsApp link", "website alive"]
+      },
+      branding: {
+        displayName: "Mock Agency",
+        logoUrl: "",
+        accent: "#2563eb",
+        contactLine: "mock@example-agency.example",
+        reportFooter: "This is a mock report footer.",
+        senderName: "Mock Seller",
+        hidePoweredBy: false
+      },
+      lead: {
+        name: "Mock Shop Faketown",
+        category: "retail",
+        area: "Faketown",
+        country: "Mockland",
+        phone: "+1-555-0300",
+        email: "shop@example-mock-shop.example",
+        website: "https://example-mock-shop.example/"
+      }
+    };
+
+    // MOCK_REPORT: fake client report containing two dossiers
+    const MOCK_REPORT = {
+      branding: {
+        displayName: "Mock Client Report",
+        logoUrl: "",
+        accent: "#059669",
+        contactLine: "report@example-agency.example",
+        reportFooter: "Mock footer for report mode.",
+        senderName: "Mock Seller",
+        hidePoweredBy: true
+      },
+      dossiers: [
+        { ...MOCK_LEVEL1.dossier, lead: MOCK_LEVEL1.lead },
+        { ...MOCK_NULLGAP.dossier, lead: MOCK_NULLGAP.lead }
+      ],
+      explainers: [MOCK_LEVEL1.explainer, MOCK_NULLGAP.explainer].filter(Boolean)
+    };
+
+    // =========================================================================
+    // Helpers
+    // =========================================================================
+    function escapeHtml(str) {
+      return String(str == null ? "" : str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    function el(tag, attrs, children) {
+      const node = document.createElement(tag);
+      if (attrs) {
+        for (const [k, v] of Object.entries(attrs)) {
+          if (k === "className") node.className = v;
+          else if (k === "textContent") node.textContent = v;
+          else if (v != null) node.setAttribute(k, v);
+        }
+      }
+      if (children) {
+        for (const c of children) {
+          if (c == null) continue;
+          if (c.nodeType) node.appendChild(c);
+          else node.appendChild(document.createTextNode(String(c)));
+        }
+      }
+      return node;
+    }
+
+    function clear(node) {
+      while (node.firstChild) node.removeChild(node.firstChild);
+    }
+
+    function setVisible(node, visible) {
+      node.classList.toggle("hidden", !visible);
+    }
+
+    function normalizeUrl(raw) {
+      const s = String(raw == null ? "" : raw).trim();
+      if (!s) return "";
+      if (/^https?:\/\//i.test(s)) return s;
+      return "https://" + s;
+    }
+
+    // UI1-shared-start: one workspace-selection rule shared by index.html, settings.html and dossier.html.
+    function workspaceChoiceKey() { return "leadscout.workspace"; }
+    function wsStored(key) {
+      try { return localStorage.getItem(key || workspaceChoiceKey()) || ""; } catch (e) { return ""; }
+    }
+    function wsRemember(id, key) {
+      try { localStorage.setItem(key || workspaceChoiceKey(), String(id || "")); } catch (e) {}
+    }
+    function pickWorkspaceId(paramWs, stored, list) {
+      if (paramWs) return String(paramWs);
+      if (stored) return String(stored);
+      var arr = Array.isArray(list) ? list.slice() : [];
+      if (!arr.length) return "";
+      function countOf(w) {
+        var cand = [w && w.leadsCount, w && w.leadCount, w && w.total];
+        for (var i = 0; i < cand.length; i++) { if (typeof cand[i] === "number") return cand[i]; }
+        return null;
+      }
+      function newest(pool) {
+        var best = pool[pool.length - 1];
+        for (var i = 0; i < pool.length; i++) {
+          var t = pool[i] && pool[i].createdAt ? String(pool[i].createdAt) : "";
+          var bt = best && best.createdAt ? String(best.createdAt) : "";
+          if (t && (!bt || t > bt)) best = pool[i];
+        }
+        return best;
+      }
+      var countsKnown = arr.some(function (w) { return countOf(w) != null; });
+      if (countsKnown) {
+        var withLeads = arr.filter(function (w) { var c = countOf(w); return typeof c === "number" && c >= 1; });
+        if (withLeads.length) return String(newest(withLeads).id);
+      }
+      var nonDemo = arr.filter(function (w) { return String((w && w.name) || "").trim().toLowerCase() !== "demo"; });
+      var pool = nonDemo.length ? nonDemo : arr;
+      var picked = newest(pool);
+      return picked ? String(picked.id) : "";
+    }
+    // UI1-shared-end
+
+    function evidenceAnchor(num) {
+      const a = el("a", { href: "#ev-" + num, "aria-label": "Scroll to evidence " + num }, ["E" + num]);
+      a.addEventListener("click", (e) => {
+        e.preventDefault();
+        const target = document.getElementById("ev-" + num);
+        if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+      return a;
+    }
+
+    function evidenceRefs(ids) {
+      const span = el("span", { className: "evidence-refs" });
+      if (!ids || !ids.length) return span;
+      span.appendChild(document.createTextNode(" ["));
+      ids.forEach((id, idx) => {
+        const num = String(id).replace(/^E/i, "");
+        span.appendChild(evidenceAnchor(num));
+        if (idx < ids.length - 1) span.appendChild(document.createTextNode(", "));
+      });
+      span.appendChild(document.createTextNode("]"));
+      return span;
+    }
+
+    function renderCited(container, cited) {
+      if (!cited || cited.value == null) {
+        container.appendChild(document.createTextNode("—"));
+        return;
+      }
+      const text = el("span", { className: "cited-text" }, [String(cited.value)]);
+      container.appendChild(text);
+      container.appendChild(evidenceRefs(cited.evidence));
+    }
+
+    function copyButton(textGetter, label) {
+      const btn = el("button", { type: "button" }, ["Copy"]);
+      const feedback = el("span", { className: "copy-feedback", "aria-live": "polite" });
+      btn.addEventListener("click", async () => {
+        const text = textGetter();
+        try {
+          if (navigator.clipboard && window.isSecureContext) {
+            await navigator.clipboard.writeText(text);
+          } else {
+            const ta = el("textarea", { "aria-hidden": "true" });
+            ta.value = text;
+            document.body.appendChild(ta);
+            ta.select();
+            const ok = document.execCommand("copy");
+            document.body.removeChild(ta);
+            if (!ok) throw new Error("copy failed");
+          }
+          btn.textContent = "Copied";
+          feedback.textContent = "Copied to clipboard";
+          setTimeout(() => { btn.textContent = "Copy"; feedback.textContent = ""; }, 1500);
+        } catch (err) {
+          btn.textContent = "Failed";
+          feedback.textContent = "Could not copy";
+          showError("Could not copy to clipboard.");
+          setTimeout(() => { btn.textContent = "Copy"; feedback.textContent = ""; }, 1500);
+        }
+      });
+      return { btn, feedback };
+    }
+
+    function showError(msg) {
+      const region = document.getElementById("id-error");
+      region.textContent = msg ? String(msg) : "";
+      if (msg) setTimeout(() => { region.textContent = ""; }, 8000);
+    }
+
+    // =========================================================================
+    // Shared dossier renderer
+    // =========================================================================
+    function renderDossierView(view) {
+      const { mode, dossier, lead, explainer, score, verification, branding, note } = view;
+      const isReport = mode === "report";
+
+      setVisible(document.getElementById("id-dossier-view"), true);
+      renderIdentity(lead);
+      renderFacts(dossier ? dossier.facts : null);
+      renderScore(score);
+      renderGap(dossier ? dossier.gap : null);
+      renderSay(dossier ? dossier.sayThis : null, "id-say", "SAY THIS");
+      renderSay(dossier ? dossier.pushback : null, "id-pushback", "IF SHORT ON TIME OR PUSHBACK");
+      renderOffers(dossier ? dossier.offers : null);
+      renderWorks(explainer, lead);
+      renderEvidence(dossier ? dossier.evidence : null);
+
+      const callStatusSection = document.getElementById("id-callstatus");
+      const generateSection = document.getElementById("id-generate");
+      const noteSection = document.getElementById("id-note");
+
+      if (isReport) {
+        setVisible(callStatusSection, false);
+        setVisible(generateSection, false);
+        setVisible(noteSection, false);
+      } else {
+        setVisible(callStatusSection, true);
+        setVisible(generateSection, true);
+        setVisible(noteSection, true);
+        renderCallStatus(dossier, view.workspaceId, view.leadId);
+        renderGenerate(view.workspaceId, view.leadId, note);
+      }
+
+      renderLevel(dossier);
+      renderDropped(dossier ? dossier.dropped : null);
+      renderReportBranding(branding, isReport);
+    }
+
+    // UI1-identity-start: the identity fields shown for a lead (name, category, address, phone, website).
+    function leadIdentityFields(lead) {
+      if (!lead) return null;
+      return {
+        name: String(lead.name || ""),
+        category: String(lead.category || ""),
+        address: String(lead.address || ""),
+        phone: String(lead.phone || ""),
+        website: String(lead.website || ""),
+        email: String(lead.email || "")
+      };
+    }
+    // UI1-identity-end
+
+    function renderIdentity(lead) {
+      const section = document.getElementById("id-identity");
+      clear(section);
+      const fields = leadIdentityFields(lead);
+      if (!fields) {
+        section.appendChild(el("p", {}, ["No lead identity available."]));
+        return;
+      }
+      section.appendChild(el("h1", { textContent: fields.name || "Unnamed lead" }));
+      const meta = [fields.category, fields.address, lead.area, lead.country].filter(Boolean).join(" · ");
+      if (meta) section.appendChild(el("p", { className: "meta" }, [meta]));
+
+      const contacts = el("div", { className: "contacts" });
+      if (fields.phone) {
+        contacts.appendChild(el("a", { href: "tel:" + fields.phone, target: "_blank", rel: "noopener" }, ["Call"]));
+        const digits = fields.phone.replace(/\D/g, "");
+        if (digits) contacts.appendChild(el("a", { href: "https://wa.me/" + digits, target: "_blank", rel: "noopener" }, ["WhatsApp"]));
+      }
+      if (fields.email) contacts.appendChild(el("a", { href: "mailto:" + fields.email }, ["Email"]));
+      if (fields.website) {
+        const url = normalizeUrl(fields.website);
+        if (url) contacts.appendChild(el("a", { href: url, target: "_blank", rel: "noopener" }, ["Website"]));
+      }
+      if (!contacts.firstChild) contacts.appendChild(el("span", { className: "muted" }, ["No contact routes"]));
+      section.appendChild(contacts);
+    }
+
+    function renderFacts(facts) {
+      const section = document.getElementById("id-facts");
+      clear(section);
+      section.appendChild(el("h2", {}, ["Facts"]));
+      if (!facts) {
+        section.appendChild(el("p", {}, ["No facts available."]));
+        return;
+      }
+      const list = el("div", { className: "facts" });
+      const entries = [
+        ["Owner", facts.owner],
+        ["Since", facts.sinceYear],
+        ["Rating", facts.rating],
+        ["Reviews", facts.reviewCount],
+        ["Area", facts.area]
+      ];
+      let any = false;
+      for (const [label, cited] of entries) {
+        if (!cited || cited.value == null) continue;
+        any = true;
+        const fact = el("div", { className: "fact" });
+        fact.appendChild(el("div", { className: "fact-label" }, [label]));
+        const value = el("div");
+        renderCited(value, cited);
+        fact.appendChild(value);
+        list.appendChild(fact);
+      }
+      if (!any) list.appendChild(el("p", {}, ["No verified facts for this business."]));
+      section.appendChild(list);
+    }
+
+    function renderScore(score) {
+      const section = document.getElementById("id-score");
+      clear(section);
+      section.appendChild(el("h2", {}, ["Score"]));
+      if (!score) {
+        section.appendChild(el("p", {}, ["No score available."]));
+        return;
+      }
+      const grid = el("div", { className: "score-grid" });
+      grid.appendChild(el("div", { className: "score-box" }, [el("div", { className: "number" }, [String(score.total ?? "—")]), el("div", { className: "label" }, ["Total"])]));
+      grid.appendChild(el("div", { className: "score-box" }, [el("div", { className: "number" }, [String(score.fit ?? "—")]), el("div", { className: "label" }, ["Fit"])]));
+      grid.appendChild(el("div", { className: "score-box" }, [el("div", { className: "number" }, [String(score.reach ?? "—")]), el("div", { className: "label" }, ["Reach"])]));
+      grid.appendChild(el("div", { className: "score-box" }, [el("div", { className: "number" }, [String(score.timing ?? "—")]), el("div", { className: "label" }, ["Timing"])]));
+      section.appendChild(grid);
+      if (score.reasons && score.reasons.length) {
+        const ul = el("ul", { className: "reasons" });
+        for (const r of score.reasons) ul.appendChild(el("li", {}, [String(r)]));
+        section.appendChild(ul);
+      }
+    }
+
+    function renderGap(gap) {
+      const section = document.getElementById("id-gap");
+      clear(section);
+      section.appendChild(el("h2", {}, ["THE GAP"]));
+      if (!gap) {
+        section.appendChild(el("p", {}, ["No evidenced gap identified for this business."]));
+        return;
+      }
+      const row = el("div");
+      row.appendChild(el("span", { className: "badge" }, [String(gap.tag)]));
+      const headline = el("p", { style: "margin: 0.5rem 0 0;" });
+      renderCited(headline, gap.headline);
+      row.appendChild(headline);
+      section.appendChild(row);
+    }
+
+    function renderSay(cited, sectionId, heading) {
+      const section = document.getElementById(sectionId);
+      clear(section);
+      section.appendChild(el("h2", {}, [heading]));
+      if (!cited || cited.value == null) {
+        section.appendChild(el("p", {}, ["Not available."]));
+        return;
+      }
+      const row = el("div", { className: "copy-row" });
+      const pre = el("pre", {}, [String(cited.value)]);
+      row.appendChild(pre);
+      const { btn, feedback } = copyButton(() => String(cited.value), "Copy " + heading);
+      row.appendChild(btn);
+      section.appendChild(row);
+      section.appendChild(feedback);
+      section.appendChild(evidenceRefs(cited.evidence));
+    }
+
+    function renderOffers(offers) {
+      const section = document.getElementById("id-offers");
+      clear(section);
+      section.appendChild(el("h2", {}, ["Offers"]));
+      if (!offers || !offers.length) {
+        section.appendChild(el("p", {}, ["No offers available."]));
+        return;
+      }
+      for (const offer of offers) {
+        const div = el("div", { className: "offer" });
+        const header = el("div", { className: "offer-header" });
+        header.appendChild(el("h3", {}, [String(offer.rank) + ". " + String(offer.title || offer.service)]));
+        if (offer.doorOpener) header.appendChild(el("span", { className: "free" }, ["FREE door-opener"]));
+        div.appendChild(header);
+
+        const desc = el("div");
+        desc.appendChild(el("div", { className: "label" }, ["What we would build"]));
+        renderCited(desc, offer.description);
+        div.appendChild(desc);
+
+        const why = el("div", { style: "margin-top: 0.5rem;" });
+        why.appendChild(el("div", { className: "label" }, ["Why it matters"]));
+        renderCited(why, offer.whyItMatters);
+        div.appendChild(why);
+
+        const meta = el("div", { style: "margin-top: 0.75rem;" });
+        meta.appendChild(el("div", { className: "label" }, ["Build time"]));
+        if (offer.buildDays && offer.buildDays.length === 2) {
+          const [min, max] = offer.buildDays;
+          meta.appendChild(el("div", {}, [min === max ? String(min) + " days" : String(min) + "–" + String(max) + " days"]));
+        } else {
+          meta.appendChild(el("div", {}, ["Not set"]));
+        }
+        div.appendChild(meta);
+
+        const price = el("div", { style: "margin-top: 0.5rem;" });
+        price.appendChild(el("div", { className: "label" }, ["Quote"]));
+        if (offer.quote == null) {
+          price.appendChild(el("div", { className: "price-not-set" }, ["price not set"]));
+        } else {
+          const q = offer.quote;
+          const range = q.min != null && q.max != null ? String(q.currency || "") + " " + String(q.min) + "–" + String(q.max) : "price not set";
+          price.appendChild(el("div", {}, [range]));
+        }
+        div.appendChild(price);
+
+        div.appendChild(el("div", { style: "margin-top: 0.5rem; font-size: 0.875rem; color: var(--muted);" }, [String(offer.assumption || "")]));
+        section.appendChild(div);
+      }
+    }
+
+    function renderWorks(explainer, lead) {
+      const section = document.getElementById("id-works");
+      clear(section);
+      section.appendChild(el("h2", {}, ["HOW THIS BUSINESS WORKS"]));
+      if (!explainer || !explainer.howItWorks || !explainer.howItWorks.length) {
+        section.appendChild(el("p", {}, ["No category explainer available."]));
+        return;
+      }
+      const category = lead ? lead.category : explainer.category;
+      const country = lead ? lead.country : explainer.country;
+      section.appendChild(el("p", { className: "works-banner" }, ["General to " + String(category || "this category") + " in " + String(country || "this country") + ", not about this business"]));
+      const ul = el("ol", { className: "works-list" });
+      for (const item of explainer.howItWorks) ul.appendChild(el("li", {}, [String(item)]));
+      section.appendChild(ul);
+    }
+
+    function renderEvidence(evidence) {
+      const section = document.getElementById("id-evidence");
+      clear(section);
+      section.appendChild(el("h2", {}, ["Evidence"]));
+      if (!evidence || !evidence.length) {
+        section.appendChild(el("p", {}, ["No evidence items."]));
+        return;
+      }
+      const ol = el("ol", { className: "evidence-list" });
+      let num = 1;
+      for (const item of evidence) {
+        const li = el("li", { id: "ev-" + num });
+        li.appendChild(el("span", { className: "num" }, [String(num) + ". "]));
+        li.appendChild(el("span", { className: "kind" }, [String(item.kind)]));
+        li.appendChild(el("p", { className: "quote" }, [String(item.quote)]));
+        const source = el("div", { className: "source" });
+        if (item.url) {
+          source.appendChild(el("a", { href: String(item.url), target: "_blank", rel: "noopener" }, ["Source"]));
+        } else {
+          source.appendChild(document.createTextNode("No source URL"));
+        }
+        li.appendChild(source);
+        if (item.fetchedAt) li.appendChild(el("div", { className: "fetched" }, ["Fetched " + String(item.fetchedAt).slice(0, 10)]));
+        ol.appendChild(li);
+        num++;
+      }
+      section.appendChild(ol);
+    }
+
+    function renderCallStatus(dossier, workspaceId, leadId) {
+      const section = document.getElementById("id-callstatus");
+      clear(section);
+      section.appendChild(el("h2", {}, ["Call status"]));
+      const statuses = ["not-called", "queued", "called", "no-answer", "call-back", "not-interested", "meeting-set"];
+      const select = el("select", { "aria-label": "Call status" });
+      for (const s of statuses) {
+        select.appendChild(el("option", { value: s }, [s]));
+      }
+      select.value = dossier ? dossier.callStatus : "not-called";
+      const saved = el("span", { className: "saved" });
+      let saving = false;
+      select.addEventListener("change", async () => {
+        if (saving) return;
+        saving = true;
+        saved.textContent = "Saving…";
+        try {
+          await apiPatchCallStatus(workspaceId, leadId, select.value);
+          saved.textContent = "Saved";
+          setTimeout(() => { saved.textContent = ""; }, 2000);
+        } catch (err) {
+          saved.textContent = "";
+          showError(err.message || "Could not save call status.");
+        } finally {
+          saving = false;
+        }
+      });
+      const row = el("div", { className: "status-row" });
+      row.appendChild(select);
+      row.appendChild(saved);
+      section.appendChild(row);
+    }
+
+    function renderGenerate(workspaceId, leadId, note) {
+      const section = document.getElementById("id-generate");
+      clear(section);
+      section.appendChild(el("h2", {}, ["Generate dossier"]));
+      const row = el("div", { className: "generate-row" });
+      const btn = el("button", { type: "button" }, ["Generate dossier"]);
+      const noteBox = document.getElementById("id-note");
+      clear(noteBox);
+      let busy = false;
+      btn.addEventListener("click", async () => {
+        if (busy) return;
+        busy = true;
+        btn.disabled = true;
+        btn.textContent = "Generating…";
+        clear(noteBox);
+        try {
+          const res = await apiPostGenerate(workspaceId, leadId);
+          if (res && res.dossier) {
+            // Re-render with the new dossier, keeping mode/internal context
+            currentView.dossier = res.dossier;
+            currentView.explainer = res.explainer || currentView.explainer;
+            currentView.score = res.score || currentView.score;
+            currentView.verification = res.verification || currentView.verification;
+            currentView.note = res.note || null;
+            renderDossierView(currentView);
+          } else if (res && res.note) {
+            noteBox.appendChild(el("div", { className: "note" }, [String(res.note)]));
+          }
+        } catch (err) {
+          showError(err.message || "Could not generate dossier.");
+        } finally {
+          busy = false;
+          btn.disabled = false;
+          btn.textContent = "Generate dossier";
+        }
+      });
+      row.appendChild(btn);
+      section.appendChild(row);
+      if (note) noteBox.appendChild(el("div", { className: "note" }, [String(note)]));
+    }
+
+    function renderLevel(dossier) {
+      const div = document.getElementById("id-level");
+      clear(div);
+      if (!dossier) {
+        div.textContent = "";
+        return;
+      }
+      const label = dossier.level === 1 ? "polished and citation-checked" : "rules only";
+      div.textContent = "Dossier level: " + label;
+    }
+
+    function renderDropped(dropped) {
+      const details = document.getElementById("id-dropped");
+      const list = details.querySelector("ol");
+      clear(list);
+      if (!dropped || !dropped.length) {
+        list.appendChild(el("li", {}, ["No claims were dropped."]));
+      } else {
+        for (const item of dropped) {
+          list.appendChild(el("li", {}, [String(item.field) + ": " + String(item.reason)]));
+        }
+      }
+    }
+
+    function renderReportBranding(branding, isReport) {
+      const header = document.getElementById("id-report-brand");
+      clear(header);
+      if (!isReport || !branding) {
+        setVisible(header, false);
+        return;
+      }
+      setVisible(header, true);
+      if (branding.logoUrl) {
+        header.appendChild(el("img", { src: String(branding.logoUrl), alt: "" }));
+      }
+      header.appendChild(el("div", { className: "brand-name" }, [String(branding.displayName || "Report")]));
+      if (branding.contactLine) header.appendChild(el("div", { className: "brand-contact" }, [String(branding.contactLine)]));
+      if (!branding.hidePoweredBy) {
+        const powered = el("div", { style: "margin-left: auto; font-size: 0.75rem; color: var(--muted);" }, ["Powered by Leadscout"]);
+        header.appendChild(powered);
+      }
+    }
+
+    // =========================================================================
+    // API helpers
+    // =========================================================================
+    async function apiFetch(path, options) {
+      const url = path;
+      const res = await fetch(url, {
+        headers: { "Content-Type": "application/json" },
+        ...options
+      });
+      if (!res.ok) {
+        let msg = "Request failed (" + res.status + ")";
+        try {
+          const body = await res.json();
+          msg = body.message || body.error || msg;
+        } catch (e) {
+          // ignore parse error
+        }
+        throw new Error(msg);
+      }
+      if (res.status === 204) return null;
+      return res.json();
+    }
+
+    function apiGetDossier(workspaceId, leadId) {
+      return apiFetch("/api/workspaces/" + encodeURIComponent(workspaceId) + "/leads/" + encodeURIComponent(leadId) + "/dossier");
+    }
+
+    function apiGetLeads(workspaceId) {
+      return apiFetch("/api/workspaces/" + encodeURIComponent(workspaceId) + "/leads?limit=50&offset=0");
+    }
+
+    function apiGetLead(workspaceId, leadId) {
+      return apiFetch("/api/workspaces/" + encodeURIComponent(workspaceId) + "/leads/" + encodeURIComponent(leadId));
+    }
+
+    function apiGetWorkspaces() {
+      return apiFetch("/api/workspaces");
+    }
+
+    function apiPatchCallStatus(workspaceId, leadId, callStatus) {
+      return apiFetch("/api/workspaces/" + encodeURIComponent(workspaceId) + "/leads/" + encodeURIComponent(leadId) + "/dossier", {
+        method: "PATCH",
+        body: JSON.stringify({ callStatus })
+      });
+    }
+
+    function apiPostGenerate(workspaceId, leadId) {
+      return apiFetch("/api/workspaces/" + encodeURIComponent(workspaceId) + "/leads/" + encodeURIComponent(leadId) + "/dossier", {
+        method: "POST"
+      });
+    }
+
+    function apiGetReport(token) {
+      return apiFetch("/api/report/" + encodeURIComponent(token));
+    }
+
+    // =========================================================================
+    // Mode dispatch
+    // =========================================================================
+    let currentView = null;
+    let activeWorkspaceName = "";
+
+    async function loadInternalMode(params) {
+      const isMock = params.get("mock") === "1";
+      const leadId = params.get("lead");
+      const workspaceId = isMock ? (params.get("ws") || "ws-mock") : await resolveWorkspaceId(params.get("ws"));
+      setPickerVisible(false);
+      clearNotice();
+
+      if (!leadId) {
+        await renderLeadPicker(workspaceId, isMock);
+        return;
+      }
+      try {
+        const data = isMock ? MOCK_LEVEL1 : await apiGetDossier(workspaceId, leadId);
+        // UI1: the dossier response has no `lead`; load it from the lead route when needed.
+        let lead = data.lead || null;
+        if (!lead && !isMock && workspaceId && leadId) {
+          try { lead = await apiGetLead(workspaceId, leadId); } catch (e) { lead = null; }
+        }
+        currentView = {
+          mode: "internal",
+          workspaceId,
+          leadId,
+          dossier: data.dossier,
+          lead: lead,
+          explainer: data.explainer,
+          score: data.score,
+          verification: data.verification,
+          branding: data.branding,
+          note: data.note || null
+        };
+        renderDossierView(currentView);
+        if (data.ready === false) renderNotice(data.reason, workspaceId, leadId);
+      } catch (err) {
+        showError(err.message || "Could not load dossier.");
+      }
+    }
+
+    function showActiveWorkspace(workspaceId) {
+      const node = document.getElementById("active-ws");
+      if (!node) return;
+      node.textContent = workspaceId ? "Workspace: " + (activeWorkspaceName || workspaceId) : "";
+    }
+
+    async function resolveWorkspaceId(paramWs) {
+      let list = [];
+      try {
+        const data = await apiGetWorkspaces();
+        list = Array.isArray(data) ? data : (data && data.workspaces) || [];
+      } catch (e) { /* list unavailable; ?ws= or the stored key can still win */ }
+      const chosen = pickWorkspaceId(paramWs, wsStored(), list);
+      if (!chosen) return null;
+      wsRemember(chosen);
+      const ws = list.find(w => w && w.id === chosen);
+      activeWorkspaceName = ws && ws.name ? String(ws.name) : "";
+      showActiveWorkspace(chosen);
+      return chosen;
+    }
+
+    function setPickerVisible(on) {
+      setVisible(document.getElementById("id-lead-picker"), on);
+    }
+
+    async function renderLeadPicker(workspaceId, isMock) {
+      const picker = document.getElementById("id-lead-picker");
+      clear(picker);
+      setPickerVisible(true);
+      picker.appendChild(el("h1", {}, ["Choose a lead"]));
+      if (!workspaceId) {
+        picker.appendChild(el("p", {}, ["No workspace is selected. Open this page from a lead, or add ?ws=<workspace id> to the address."]));
+        return;
+      }
+      picker.appendChild(el("p", { className: "muted" }, ["Workspace " + workspaceId + ". Pick a lead to open its dossier."]));
+      if (isMock) {
+        picker.appendChild(el("p", {}, ["Mock mode has no lead list."]));
+        return;
+      }
+      let leads = [];
+      try {
+        const data = await apiGetLeads(workspaceId);
+        leads = (data && data.leads) || [];
+      } catch (err) {
+        picker.appendChild(el("p", {}, ["Could not load the leads for this workspace. " + (err.message || "")]));
+        return;
+      }
+      if (!leads.length) {
+        picker.appendChild(el("p", {}, ["This workspace has no leads yet. Find leads on the main page first."]));
+        return;
+      }
+      const list = el("ul", { className: "picker-list" });
+      for (const lead of leads) {
+        const li = el("li");
+        li.appendChild(el("a", { href: "dossier.html?ws=" + encodeURIComponent(workspaceId) + "&lead=" + encodeURIComponent(lead.id) }, [String(lead.name || lead.id)]));
+        const meta = [lead.category, lead.city].filter(Boolean).join(" · ");
+        if (meta) li.appendChild(el("span", { className: "muted" }, [" — " + meta]));
+        list.appendChild(li);
+      }
+      picker.appendChild(list);
+    }
+
+    function clearNotice() {
+      const box = document.getElementById("id-notice");
+      if (box) clear(box);
+    }
+
+    function renderNotice(reason, workspaceId, leadId) {
+      const box = document.getElementById("id-notice");
+      clear(box);
+      box.appendChild(el("p", {}, [String(reason || "This dossier is not ready yet. Press Process to build it.")]));
+      const btn = el("button", { type: "button" }, ["Process"]);
+      btn.addEventListener("click", async () => {
+        btn.disabled = true;
+        btn.textContent = "Processing…";
+        try {
+          await apiPostGenerate(workspaceId, leadId);
+          await loadInternalMode(new URLSearchParams(window.location.search));
+        } catch (err) {
+          showError(err.message || "Could not process this lead.");
+          btn.disabled = false;
+          btn.textContent = "Process";
+        }
+      });
+      box.appendChild(btn);
+    }
+
+    function renderReportList(report) {
+      const nav = document.getElementById("id-report-list");
+      clear(nav);
+      setVisible(nav, true);
+      nav.appendChild(el("h2", {}, ["Dossiers"]));
+      if (!report.dossiers || !report.dossiers.length) {
+        nav.appendChild(el("p", {}, ["No dossiers in this report."]));
+        return;
+      }
+      for (const dossier of report.dossiers) {
+        const lead = dossier.lead || {};
+        const item = el("div", { className: "report-item", tabIndex: 0, role: "button", "aria-label": "Open dossier for " + (lead.name || dossier.leadId) });
+        const title = el("h3", {}, [String(lead.name || dossier.leadId)]);
+        item.appendChild(title);
+        if (dossier.gap) {
+          item.appendChild(el("span", { className: "tag" }, [String(dossier.gap.tag)]));
+          item.appendChild(el("span", { className: "headline" }, [String(dossier.gap.headline.value)]));
+        } else {
+          item.appendChild(el("span", { className: "headline" }, ["No gap identified"]));
+        }
+        item.addEventListener("click", () => {
+          currentView = {
+            mode: "report",
+            dossier,
+            lead,
+            explainer: report.explainers ? report.explainers.find(e => e.id === dossier.explainerId) || null : null,
+            score: null,
+            verification: null,
+            branding: report.branding,
+            note: null
+          };
+          renderDossierView(currentView);
+          document.getElementById("id-dossier-view").scrollIntoView({ behavior: "smooth" });
+        });
+        item.addEventListener("keydown", (e) => { if (e.key === "Enter") item.click(); });
+        nav.appendChild(item);
+      }
+    }
+
+    async function loadReportMode(params) {
+      const token = params.get("report") || params.get("token");
+      if (!token) {
+        showError("Please provide a report token in the URL.");
+        return;
+      }
+      try {
+        const report = params.get("mock") === "1" ? MOCK_REPORT : await apiGetReport(token);
+        renderReportList(report);
+        if (report.dossiers && report.dossiers.length) {
+          const dossier = report.dossiers[0];
+          const lead = dossier.lead || {};
+          currentView = {
+            mode: "report",
+            dossier,
+            lead,
+            explainer: report.explainers ? report.explainers.find(e => e.id === dossier.explainerId) || null : null,
+            score: null,
+            verification: null,
+            branding: report.branding,
+            note: null
+          };
+          renderDossierView(currentView);
+        }
+      } catch (err) {
+        showError(err.message || "Could not load report.");
+      }
+    }
+
+    function init() {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get("report") || params.get("token")) {
+        loadReportMode(params);
+        return;
+      }
+      if (params.get("mock") === "1" && !params.get("ws") && !params.get("lead")) {
+        // Backwards-compatible mock default: no parameters means the level 1 sample.
+        currentView = {
+          mode: "internal",
+          workspaceId: "ws-mock",
+          leadId: "lead-mock-1",
+          dossier: MOCK_LEVEL1.dossier,
+          lead: MOCK_LEVEL1.lead,
+          explainer: MOCK_LEVEL1.explainer,
+          score: MOCK_LEVEL1.score,
+          verification: MOCK_LEVEL1.verification,
+          branding: MOCK_LEVEL1.branding,
+          note: null
+        };
+        renderDossierView(currentView);
+        return;
+      }
+      // With or without parameters: show the dossier, or a lead picker when no lead is chosen.
+      loadInternalMode(params);
+    }
+
+    init();
+  </script>
+</body>
+</html>

@@ -1,0 +1,30 @@
+{
+  "name": "jsonld-rating",
+  "raw": {
+    "name": "Fixture Rated Hotel",
+    "category": "hotel",
+    "city": "Navi Mumbai",
+    "website": "https://fixture-rated.example",
+    "source": "osm",
+    "sourceUrl": "https://www.openstreetmap.org/node/4444444444"
+  },
+  "enrichment": {
+    "summary": "Fixture hotel with JSON-LD rating.",
+    "emails": ["stay@fixture-rated.example"],
+    "phones": ["+919876544444"],
+    "socials": {},
+    "signals": []
+  },
+  "pages": [
+    {
+      "url": "https://fixture-rated.example/",
+      "body": "<!DOCTYPE html><html><head><title>Fixture Rated Hotel</title><script type=\"application/ld+json\">{\"@context\":\"https://schema.org\",\"@type\":\"Hotel\",\"name\":\"Fixture Rated Hotel\",\"aggregateRating\":{\"@type\":\"AggregateRating\",\"ratingValue\":\"4.5\",\"reviewCount\":\"128\"}}</script></head><body><h1>Welcome</h1><p>Stay with us.</p></body></html>",
+      "fetchedAt": "2026-10-07T00:00:00.000Z"
+    }
+  ],
+  "expected": {
+    "bizKey": "fixture-rated.example",
+    "rating": 4.5,
+    "reviewCount": 128
+  }
+}

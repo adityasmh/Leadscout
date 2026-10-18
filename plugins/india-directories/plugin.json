@@ -1,0 +1,38 @@
+{
+  "id": "india-directories",
+  "name": "India directories",
+  "description": "Indian consumer, B2B, jobs, real-estate and map directories (JustDial, Zomato, Swiggy, Sulekha, Urban Company, MagicBricks, NoBroker, Naukri, 99acres, travel sites, BookMyShow, Mappls, IndiaMART, Udaan, Practo, Lybrate, ShareChat).",
+  "region": "India",
+  "enable": "LEADSCOUT_PLUGINS=india-directories",
+  "channelFlags": [
+    "LEADSCOUT_BROWSER",
+    "LEADSCOUT_INDIA_TIER_C",
+    "MAPPLS_API_KEY",
+    "CHANNEL_BOOKMYSHOW",
+    "LEADSCOUT_PRACTO",
+    "LEADSCOUT_LYBRATE",
+    "LEADSCOUT_SHARECHAT_ENABLED"
+  ],
+  "channels": [
+    "justdial",
+    "zomato",
+    "swiggy",
+    "sulekha",
+    "urban-company",
+    "magicbricks",
+    "nobroker",
+    "naukri",
+    "ninenine-acres",
+    "jobs-india",
+    "travel",
+    "bookmyshow",
+    "mappls",
+    "indiamart",
+    "udaan",
+    "practo",
+    "lybrate",
+    "sharechat"
+  ],
+  "defaultOn": false,
+  "warning": "Most are Tier C: they only work through the browser backend (`LEADSCOUT_BROWSER`) and a second switch (`LEADSCOUT_INDIA_TIER_C=1`). Mappls is Tier B and needs `MAPPLS_API_KEY`. Directory sites commonly forbid scraping in their terms."
+}

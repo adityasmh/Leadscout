@@ -1,0 +1,21 @@
+{
+  "name": "namecity-bizkey",
+  "raw": {
+    "name": "Fixture Gym 04",
+    "category": "gym",
+    "city": "Navi Mumbai",
+    "source": "manual",
+    "sourceUrl": "https://manual-entry.example/gym-04"
+  },
+  "enrichment": {
+    "summary": "Fixture gym for testing.",
+    "emails": [],
+    "phones": [],
+    "socials": {},
+    "signals": []
+  },
+  "pages": [],
+  "expected": {
+    "bizKey": "fixture gym 04|navi mumbai"
+  }
+}

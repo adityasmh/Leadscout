@@ -1,0 +1,890 @@
+{
+  "version": 1,
+  "sections": [
+    {
+      "id": "seller",
+      "letter": "a",
+      "title": "What you sell",
+      "order": 1,
+      "questions": [
+        {
+          "id": "seller.sellToWhom",
+          "text": "What do you sell today, and to whom?",
+          "type": "text",
+          "required": true,
+          "minWords": 6,
+          "followUp": "Name the exact service and exactly who buys it today, for example 'we build WhatsApp booking bots for clinic and salon owners in Pune'."
+        },
+        {
+          "id": "seller.bestCustomers",
+          "text": "Think of your best past customers. What did they buy, and why did they buy it?",
+          "type": "text",
+          "required": true,
+          "minWords": 8,
+          "followUp": "Describe one or two real past customers: what they bought and the reason they said yes. If details do not come to mind, describe what kind of customer it was."
+        }
+      ]
+    },
+    {
+      "id": "offer",
+      "letter": "b",
+      "title": "Your offer",
+      "order": 2,
+      "questions": [
+        {
+          "id": "offer.services",
+          "text": "List the services you deliver.",
+          "type": "list",
+          "required": true,
+          "minItems": 1,
+          "followUp": "List each service on its own line, for example 'website' or 'WhatsApp automation'."
+        },
+        {
+          "id": "offer.deliveryTime",
+          "text": "How long does a typical delivery take, from start to handover?",
+          "type": "text",
+          "required": false,
+          "followUp": "Give a rough duration such as '1-2 weeks' or '3 days'."
+        },
+        {
+          "id": "offer.priceRange",
+          "text": "What is your price range? Write it in INR or your own currency, exactly as you quote it.",
+          "type": "text",
+          "required": true,
+          "expect": "number",
+          "followUp": "Write the actual range as you quote it, with the currency, for example '20,000 to 60,000 INR per month'."
+        },
+        {
+          "id": "offer.proof",
+          "text": "What proof can you show a prospect: results, testimonials, past work, portfolio?",
+          "type": "text",
+          "required": false,
+          "followUp": "Write anything a prospect can check: an example, a testimonial, a demo. Write 'none yet' if there is nothing."
+        }
+      ]
+    },
+    {
+      "id": "niche",
+      "letter": "c",
+      "title": "Target industry and sub-niche",
+      "order": 3,
+      "questions": [
+        {
+          "id": "niche.industry",
+          "text": "Which target industry do you want to sell into?",
+          "type": "text",
+          "required": true,
+          "minWords": 2,
+          "followUp": "Name the industry, for example dental clinics, salons, gyms or travel agencies."
+        },
+        {
+          "id": "niche.subNiche",
+          "text": "Narrow it to a sub-niche: the exact kind of business you want.",
+          "type": "text",
+          "required": true,
+          "minWords": 3,
+          "followUp": "Be specific: 'dental clinics that do implants' or 'gyms in tier-2 cities', not just 'clinics'."
+        }
+      ]
+    },
+    {
+      "id": "size",
+      "letter": "d",
+      "title": "Size and maturity",
+      "order": 4,
+      "questions": [
+        {
+          "id": "size.staff",
+          "text": "How many staff does a typical target business have?",
+          "type": "number",
+          "required": false,
+          "expect": "number",
+          "followUp": "A rough number is fine, for example 5."
+        },
+        {
+          "id": "size.years",
+          "text": "How many years has a typical target business been operating?",
+          "type": "number",
+          "required": false,
+          "expect": "number",
+          "followUp": "A rough number of years is fine, for example 3."
+        },
+        {
+          "id": "size.branches",
+          "text": "How many locations or branches does a typical target business have?",
+          "type": "number",
+          "required": false,
+          "expect": "number",
+          "followUp": "Enter 1 for a single-location business."
+        },
+        {
+          "id": "size.ticketSize",
+          "text": "What is the typical ticket size of what the target business sells?",
+          "type": "text",
+          "required": false,
+          "expect": "number",
+          "followUp": "Write it as they might quote it, for example 'about 500 INR per visit' or '40,000 INR per case'."
+        },
+        {
+          "id": "size.onlinePresence",
+          "text": "What level of online presence do your target businesses have today?",
+          "type": "choice",
+          "options": [
+            "no website at all",
+            "outdated website",
+            "basic website, not maintained",
+            "decent website, no active marketing",
+            "active website plus ads and social pages"
+          ],
+          "required": false,
+          "followUp": "Pick the level that fits most of your target businesses."
+        }
+      ]
+    },
+    {
+      "id": "geo",
+      "letter": "e",
+      "title": "Geography",
+      "order": 5,
+      "questions": [
+        {
+          "id": "geo.country",
+          "text": "Which country should the search cover?",
+          "type": "text",
+          "required": true,
+          "expect": "place",
+          "followUp": "Name one primary country, for example India."
+        },
+        {
+          "id": "geo.state",
+          "text": "Which state or states, if it matters?",
+          "type": "text",
+          "required": false,
+          "followUp": "Leave blank if the state does not matter."
+        },
+        {
+          "id": "geo.cities",
+          "text": "Which cities should be searched? List them one per line, or give one city plus a radius.",
+          "type": "list",
+          "required": true,
+          "minItems": 1,
+          "expect": "place",
+          "followUp": "One city per line. If you prefer an area instead, write one city plus a radius, for example 'Pune, 30 km'."
+        },
+        {
+          "id": "geo.languages",
+          "text": "Which languages should outreach use?",
+          "type": "list",
+          "required": false,
+          "minItems": 1,
+          "followUp": "One language per line, for example 'English' or 'Hindi'."
+        }
+      ]
+    },
+    {
+      "id": "signals",
+      "letter": "f",
+      "title": "Pain triggers and buying signals",
+      "order": 6,
+      "questions": [
+        {
+          "id": "signals.triggers",
+          "text": "Which pain triggers or buying signals should the matching look for?",
+          "type": "multi",
+          "options": [
+            "no-online-booking",
+            "slow-response",
+            "bad or few reviews",
+            "no-website",
+            "no-contact-form",
+            "new opening",
+            "hiring",
+            "running ads",
+            "seasonal peaks"
+          ],
+          "required": true,
+          "minItems": 1,
+          "followUp": "Pick at least one trigger you want us to watch for."
+        },
+        {
+          "id": "signals.other",
+          "text": "Any other trigger worth watching, in your own words?",
+          "type": "text",
+          "required": false,
+          "followUp": "Describe it plainly, for example 'clinics that pay for ads but do not reply to enquiries'."
+        }
+      ]
+    },
+    {
+      "id": "buyer",
+      "letter": "g",
+      "title": "Decision maker and contact",
+      "order": 7,
+      "questions": [
+        {
+          "id": "buyer.whoDecides",
+          "text": "Who makes the buying decision at these businesses?",
+          "type": "choice",
+          "options": [
+            "owner",
+            "manager",
+            "marketing head",
+            "other (describe below)"
+          ],
+          "required": true,
+          "followUp": "Pick the person who usually signs off on something like this. If it varies, pick the most common case."
+        },
+        {
+          "id": "buyer.decisionOther",
+          "text": "Who else decides? Describe the role.",
+          "type": "text",
+          "required": false,
+          "showIf": { "id": "buyer.whoDecides", "equals": "other (describe below)" },
+          "followUp": "Name the role, for example 'receptionist' or 'franchise head office'."
+        },
+        {
+          "id": "buyer.reach",
+          "text": "How can we best reach the decision maker?",
+          "type": "text",
+          "required": true,
+          "followUp": "Name a concrete channel such as phone, WhatsApp or email, and any detail you know about reaching them."
+        }
+      ]
+    },
+    {
+      "id": "exclusions",
+      "letter": "h",
+      "title": "Exclusions and disqualifiers",
+      "order": 8,
+      "questions": [
+        {
+          "id": "exclusions.list",
+          "text": "What should be excluded from the results: chains, competitors, already-served businesses, categories to avoid?",
+          "type": "list",
+          "required": false,
+          "minItems": 1,
+          "followUp": "One exclusion per line, for example 'chains' or 'businesses we already serve'. Write 'none' if there are truly none."
+        }
+      ]
+    },
+    {
+      "id": "volume",
+      "letter": "i",
+      "title": "Volume and call capacity",
+      "order": 9,
+      "questions": [
+        {
+          "id": "volume.leadsPerWeek",
+          "text": "How many new leads do you want per week?",
+          "type": "number",
+          "required": true,
+          "expect": "number",
+          "followUp": "Give a number of new leads per week, for example 25."
+        },
+        {
+          "id": "volume.callsPerWeek",
+          "text": "How many of those can you realistically contact per week?",
+          "type": "number",
+          "required": true,
+          "expect": "number",
+          "followUp": "Be honest about what you can realistically contact in a week, for example 10."
+        }
+      ]
+    },
+    {
+      "id": "outreach",
+      "letter": "j",
+      "title": "Outreach channels and tone",
+      "order": 10,
+      "questions": [
+        {
+          "id": "outreach.channels",
+          "text": "Which outreach channels should be used?",
+          "type": "multi",
+          "options": [
+            "phone",
+            "whatsapp",
+            "email",
+            "sms",
+            "linkedin",
+            "instagram",
+            "facebook"
+          ],
+          "required": true,
+          "minItems": 1,
+          "followUp": "Pick every channel you want us to use. Anything left unticked will not be used."
+        },
+        {
+          "id": "outreach.tone",
+          "text": "What tone should the outreach have?",
+          "type": "choice",
+          "options": [
+            "plain and direct",
+            "friendly and casual",
+            "formal"
+          ],
+          "required": true,
+          "followUp": "Pick the tone that matches how you talk to customers."
+        },
+        {
+          "id": "outreach.notes",
+          "text": "Anything outreach must always mention, or must never mention?",
+          "type": "text",
+          "required": false,
+          "followUp": "Write any must-say or must-avoid points, for example 'always mention free first call' or 'never mention competitor names'."
+        }
+      ]
+    },
+    {
+      "id": "examples",
+      "letter": "k",
+      "title": "Example ideal-customer websites",
+      "order": 11,
+      "questions": [
+        {
+          "id": "examples.sites",
+          "text": "Give 3 to 5 example websites of ideal customers, one address per line.",
+          "type": "url-list",
+          "required": false,
+          "minItems": 3,
+          "expect": "url",
+          "followUp": "Paste 3 to 5 website addresses of businesses you would call a perfect customer, one per line. If you have no exact examples, paste addresses of prospects you have seen recently."
+        }
+      ]
+    }
+  ],
+  "packs": {
+    "clinic": {
+      "label": "Clinics and hospitals",
+      "match": ["clinic", "hospital", "patient", "healthcare", "practo"],
+      "questions": [
+        {
+          "id": "pack.clinic.beds",
+          "text": "How many consultation rooms, chairs or beds does a typical clinic have?",
+          "type": "number",
+          "required": false,
+          "expect": "number"
+        },
+        {
+          "id": "pack.clinic.specialties",
+          "text": "Which specialties should we focus on?",
+          "type": "multi",
+          "options": ["general practice", "dental", "skin and hair", "eye", "child care", "orthopedic"],
+          "required": false
+        },
+        {
+          "id": "pack.clinic.booking",
+          "text": "How do their patients usually book?",
+          "type": "choice",
+          "options": ["book online", "some book online", "phone or walk-in only"],
+          "required": false
+        },
+        {
+          "id": "pack.clinic.frontDesk",
+          "text": "How many front-desk or reception staff does a typical clinic have?",
+          "type": "number",
+          "required": false,
+          "expect": "number"
+        },
+        {
+          "id": "pack.clinic.patientFlow",
+          "text": "How do new patients find them today?",
+          "type": "text",
+          "required": false,
+          "followUp": "Describe the main channels: walk-in, referrals, ads, or aggregator listings."
+        },
+        {
+          "id": "pack.clinic.seasonal",
+          "text": "Any seasonal patient peaks worth timing outreach around?",
+          "type": "text",
+          "required": false,
+          "followUp": "Write the season and the reason, for example 'winter, cough and fever cases'."
+        }
+      ]
+    },
+    "dental": {
+      "label": "Dental clinics",
+      "match": ["dental", "dentist", "implant", "orthodont"],
+      "questions": [
+        {
+          "id": "pack.dental.chairs",
+          "text": "How many chairs or operatories does a typical clinic run?",
+          "type": "number",
+          "required": false,
+          "expect": "number"
+        },
+        {
+          "id": "pack.dental.treatments",
+          "text": "Which treatments should the profile focus on?",
+          "type": "multi",
+          "options": ["implants", "orthodontics and aligners", "root canal", "cosmetic work", "routine checkups"],
+          "required": false
+        },
+        {
+          "id": "pack.dental.booking",
+          "text": "How do patients usually book?",
+          "type": "choice",
+          "options": ["book online", "some book online", "phone or walk-in only"],
+          "required": false
+        },
+        {
+          "id": "pack.dental.ads",
+          "text": "Do they advertise today?",
+          "type": "choice",
+          "options": ["running ads now", "tried and stopped", "never advertised"],
+          "required": false
+        },
+        {
+          "id": "pack.dental.frontDesk",
+          "text": "How many front-desk staff per clinic?",
+          "type": "number",
+          "required": false,
+          "expect": "number",
+          "followUp": "Enter 0 if the owner answers personally."
+        },
+        {
+          "id": "pack.dental.notes",
+          "text": "Anything worth noting about the ideal dental clinic for your offer?",
+          "type": "text",
+          "required": false,
+          "followUp": "Write one or two specifics about the clinic you want."
+        }
+      ]
+    },
+    "salon": {
+      "label": "Salons and spas",
+      "match": ["salon", "spa", "beauty", "hair", "nail", "barber"],
+      "questions": [
+        {
+          "id": "pack.salon.chairs",
+          "text": "How many chairs or stations does a typical salon have?",
+          "type": "number",
+          "required": false,
+          "expect": "number"
+        },
+        {
+          "id": "pack.salon.services",
+          "text": "Which services should the profile focus on?",
+          "type": "multi",
+          "options": ["hair", "skin and facial", "nails", "spa and massage", "bridal packages"],
+          "required": false
+        },
+        {
+          "id": "pack.salon.booking",
+          "text": "How do customers usually book?",
+          "type": "choice",
+          "options": ["book online", "some book online", "mostly phone or walk-in"],
+          "required": false
+        },
+        {
+          "id": "pack.salon.staff",
+          "text": "How many staff work there typically?",
+          "type": "number",
+          "required": false,
+          "expect": "number"
+        },
+        {
+          "id": "pack.salon.retention",
+          "text": "How do they bring regulars back?",
+          "type": "text",
+          "required": false,
+          "followUp": "Write what they use today: packages, memberships, referral offers, or nothing systematic."
+        },
+        {
+          "id": "pack.salon.ads",
+          "text": "Do they advertise today?",
+          "type": "choice",
+          "options": ["running ads now", "tried and stopped", "never advertised"],
+          "required": false
+        }
+      ]
+    },
+    "gym": {
+      "label": "Gyms and fitness studios",
+      "match": ["gym", "fitness", "yoga", "crossfit", "trainer"],
+      "questions": [
+        {
+          "id": "pack.gym.members",
+          "text": "How many active members does a typical gym have?",
+          "type": "number",
+          "required": false,
+          "expect": "number"
+        },
+        {
+          "id": "pack.gym.plans",
+          "text": "How do they sell memberships?",
+          "type": "choice",
+          "options": ["monthly", "quarterly", "yearly", "mixed"],
+          "required": false
+        },
+        {
+          "id": "pack.gym.trainers",
+          "text": "How many trainers on staff?",
+          "type": "number",
+          "required": false,
+          "expect": "number"
+        },
+        {
+          "id": "pack.gym.source",
+          "text": "Where do new members mostly come from?",
+          "type": "choice",
+          "options": ["walk-ins", "member referrals", "fitness aggregator apps", "social media and ads"],
+          "required": false
+        },
+        {
+          "id": "pack.gym.peaks",
+          "text": "Any enrolment peaks worth timing outreach around?",
+          "type": "text",
+          "required": false,
+          "followUp": "Write the period and the reason, for example 'January, New Year resolutions'."
+        }
+      ]
+    },
+    "school-coaching": {
+      "label": "Schools and coaching centres",
+      "match": ["school", "coaching", "tuition", "academy", "college", "institute"],
+      "questions": [
+        {
+          "id": "pack.school-coaching.students",
+          "text": "How many students are enrolled?",
+          "type": "number",
+          "required": false,
+          "expect": "number"
+        },
+        {
+          "id": "pack.school-coaching.format",
+          "text": "Do they teach in batches or one-to-one?",
+          "type": "choice",
+          "options": ["batches", "one-to-one", "both"],
+          "required": false
+        },
+        {
+          "id": "pack.school-coaching.grades",
+          "text": "Which levels should the profile focus on?",
+          "type": "multi",
+          "options": ["primary", "secondary", "senior secondary", "competitive exams", "hobby and vocational"],
+          "required": false
+        },
+        {
+          "id": "pack.school-coaching.window",
+          "text": "When is the main admission window?",
+          "type": "text",
+          "required": false,
+          "followUp": "Write the period, for example 'April to June, before the academic year'."
+        },
+        {
+          "id": "pack.school-coaching.online",
+          "text": "What do they have online today?",
+          "type": "choice",
+          "options": ["has a website", "social media pages only", "no online presence"],
+          "required": false
+        }
+      ]
+    },
+    "restaurant-cafe": {
+      "label": "Restaurants and cafes",
+      "match": ["restaurant", "cafe", "coffee", "bakery", "diner", "cloud kitchen"],
+      "questions": [
+        {
+          "id": "pack.restaurant-cafe.seats",
+          "text": "How many covers or seats does a typical place have?",
+          "type": "number",
+          "required": false,
+          "expect": "number"
+        },
+        {
+          "id": "pack.restaurant-cafe.dining",
+          "text": "How do customers mostly order?",
+          "type": "choice",
+          "options": ["dine-in only", "takeaway and delivery", "dine-in plus delivery"],
+          "required": false
+        },
+        {
+          "id": "pack.restaurant-cafe.reservations",
+          "text": "How do guests reserve a table?",
+          "type": "choice",
+          "options": ["reservations online", "reservations by phone", "walk-in only"],
+          "required": false
+        },
+        {
+          "id": "pack.restaurant-cafe.delivery",
+          "text": "Where do they sell delivery today?",
+          "type": "multi",
+          "options": ["on aggregator apps", "own delivery partners", "does not deliver"],
+          "required": false
+        },
+        {
+          "id": "pack.restaurant-cafe.busy",
+          "text": "When are they busiest?",
+          "type": "text",
+          "required": false,
+          "followUp": "Write the periods, for example 'weekend evenings' or 'weekday lunch'."
+        }
+      ]
+    },
+    "real-estate": {
+      "label": "Real estate",
+      "match": ["real estate", "realtor", "property", "builder", "broker", "apartment", "flat"],
+      "questions": [
+        {
+          "id": "pack.real-estate.focus",
+          "text": "What is their main business?",
+          "type": "choice",
+          "options": ["residential sales", "rentals", "commercial", "mixed"],
+          "required": false
+        },
+        {
+          "id": "pack.real-estate.listings",
+          "text": "How many live listings do they handle at a time?",
+          "type": "number",
+          "required": false,
+          "expect": "number"
+        },
+        {
+          "id": "pack.real-estate.agents",
+          "text": "How many agents or brokers work there?",
+          "type": "number",
+          "required": false,
+          "expect": "number"
+        },
+        {
+          "id": "pack.real-estate.source",
+          "text": "Where do their leads mostly come from?",
+          "type": "choice",
+          "options": ["listing portals", "walk-ins and referrals", "paid ads", "site visits and events"],
+          "required": false
+        },
+        {
+          "id": "pack.real-estate.online",
+          "text": "What do they use online today?",
+          "type": "choice",
+          "options": ["own website with listings", "portals only", "no online listings"],
+          "required": false
+        },
+        {
+          "id": "pack.real-estate.seasonal",
+          "text": "Any enquiry peaks worth timing outreach around?",
+          "type": "text",
+          "required": false,
+          "followUp": "Write the period, for example 'festive season bookings' or 'quarter-end pushes'."
+        }
+      ]
+    },
+    "travel": {
+      "label": "Travel agencies and tour operators",
+      "match": ["travel", "tourism", "tour operator", "trip", "holiday", "package"],
+      "questions": [
+        {
+          "id": "pack.travel.offers",
+          "text": "What do they mainly sell?",
+          "type": "choice",
+          "options": ["fixed packages", "custom trips", "tickets and visa only", "mixed"],
+          "required": false
+        },
+        {
+          "id": "pack.travel.bookingValue",
+          "text": "What is a typical booking value?",
+          "type": "text",
+          "required": false,
+          "expect": "number",
+          "followUp": "Write it as a typical package is priced, with the currency."
+        },
+        {
+          "id": "pack.travel.season",
+          "text": "Which travel seasons matter for them?",
+          "type": "multi",
+          "options": ["summer holidays", "winter holidays", "festive long weekends", "monsoon off-season"],
+          "required": false
+        },
+        {
+          "id": "pack.travel.online",
+          "text": "How do customers enquire or book today?",
+          "type": "choice",
+          "options": ["books online", "enquiry form only", "phone and WhatsApp only"],
+          "required": false
+        },
+        {
+          "id": "pack.travel.destinations",
+          "text": "Which destinations do they sell most? List one per line.",
+          "type": "list",
+          "required": false,
+          "minItems": 1
+        }
+      ]
+    },
+    "repair-services": {
+      "label": "Repair and home services",
+      "match": ["repair", "plumber", "electrician", "mechanic", "pest control", "cleaning", "ac service"],
+      "questions": [
+        {
+          "id": "pack.repair-services.jobValue",
+          "text": "What is a typical job value?",
+          "type": "text",
+          "required": false,
+          "expect": "number",
+          "followUp": "Write it as they would quote a typical job, with the currency."
+        },
+        {
+          "id": "pack.repair-services.emergency",
+          "text": "Do they take emergency callouts?",
+          "type": "choice",
+          "options": ["yes, round the clock", "yes, limited hours", "no"],
+          "required": false
+        },
+        {
+          "id": "pack.repair-services.fieldStaff",
+          "text": "How many service staff or vans do they run?",
+          "type": "number",
+          "required": false,
+          "expect": "number"
+        },
+        {
+          "id": "pack.repair-services.repeat",
+          "text": "What is the work pattern?",
+          "type": "choice",
+          "options": ["mostly repeat customers", "mixed", "mostly one-off jobs"],
+          "required": false
+        },
+        {
+          "id": "pack.repair-services.trust",
+          "text": "How do they show credibility to new customers?",
+          "type": "text",
+          "required": false,
+          "followUp": "Write what they rely on today: certifications, warranties, reviews, referrals."
+        }
+      ]
+    },
+    "retail": {
+      "label": "Retail shops",
+      "match": ["retail", "shop", "store", "boutique", "supermarket", "dealer"],
+      "questions": [
+        {
+          "id": "pack.retail.footfall",
+          "text": "How many customers does a typical day bring in?",
+          "type": "number",
+          "required": false,
+          "expect": "number"
+        },
+        {
+          "id": "pack.retail.basketValue",
+          "text": "What is the value of one typical purchase?",
+          "type": "text",
+          "required": false,
+          "expect": "number",
+          "followUp": "Write a rough per-bill value, with the currency."
+        },
+        {
+          "id": "pack.retail.channels",
+          "text": "How do they sell today?",
+          "type": "choice",
+          "options": ["own online store", "marketplaces like amazon or flipkart", "in-store only"],
+          "required": false
+        },
+        {
+          "id": "pack.retail.categories",
+          "text": "Which product categories matter most? List one per line.",
+          "type": "list",
+          "required": false,
+          "minItems": 1
+        },
+        {
+          "id": "pack.retail.retention",
+          "text": "How do they keep customers coming back?",
+          "type": "choice",
+          "options": ["loyalty program", "offers over WhatsApp", "nothing systematic"],
+          "required": false
+        }
+      ]
+    },
+    "manufacturing": {
+      "label": "Manufacturing and industrial",
+      "match": ["manufacturing", "factory", "industrial", "fabrication", "machine", "export", "unit"],
+      "questions": [
+        {
+          "id": "pack.manufacturing.products",
+          "text": "What do they make or assemble? List one item per line.",
+          "type": "list",
+          "required": false,
+          "minItems": 1
+        },
+        {
+          "id": "pack.manufacturing.buyers",
+          "text": "Who are their main buyers?",
+          "type": "choice",
+          "options": ["local businesses", "government or tenders", "export customers", "direct consumers"],
+          "required": false
+        },
+        {
+          "id": "pack.manufacturing.orderSize",
+          "text": "What is a typical order size?",
+          "type": "text",
+          "required": false,
+          "expect": "number",
+          "followUp": "Write a rough typical order value, with the currency."
+        },
+        {
+          "id": "pack.manufacturing.headcount",
+          "text": "How many people work there?",
+          "type": "number",
+          "required": false,
+          "expect": "number"
+        },
+        {
+          "id": "pack.manufacturing.online",
+          "text": "What do they have online today?",
+          "type": "choice",
+          "options": ["catalogue website", "marketplace listings only", "no online presence"],
+          "required": false
+        }
+      ]
+    },
+    "legal-accounting": {
+      "label": "Legal and accounting firms",
+      "match": ["legal", "law", "advocate", "lawyer", "chartered", "accountant", "audit", "gst"],
+      "questions": [
+        {
+          "id": "pack.legal-accounting.clients",
+          "text": "Roughly how many active clients do they have?",
+          "type": "number",
+          "required": false,
+          "expect": "number"
+        },
+        {
+          "id": "pack.legal-accounting.engagement",
+          "text": "How do they mostly charge?",
+          "type": "choice",
+          "options": ["retainer", "one-off matters", "mixed"],
+          "required": false
+        },
+        {
+          "id": "pack.legal-accounting.practice",
+          "text": "Which practice areas matter? List one per line.",
+          "type": "list",
+          "required": false,
+          "minItems": 1
+        },
+        {
+          "id": "pack.legal-accounting.teamSize",
+          "text": "How big is the team?",
+          "type": "number",
+          "required": false,
+          "expect": "number"
+        },
+        {
+          "id": "pack.legal-accounting.peak",
+          "text": "Any workload peaks worth timing outreach around?",
+          "type": "text",
+          "required": false,
+          "followUp": "Write the period, for example 'tax-filing season' or 'quarterly compliance deadlines'."
+        },
+        {
+          "id": "pack.legal-accounting.online",
+          "text": "What do they have online today?",
+          "type": "choice",
+          "options": ["has a website", "directory listings only", "referrals only"],
+          "required": false
+        }
+      ]
+    }
+  }
+}

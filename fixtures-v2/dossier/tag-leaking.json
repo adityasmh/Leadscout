@@ -1,0 +1,82 @@
+{
+  "name": "LEAKING fixture",
+  "expected": { "tag": "LEAKING", "evidence": ["E2"] },
+  "input": {
+    "lead": {
+      "id": "lead-leaking",
+      "workspaceId": "ws-test",
+      "name": "Fixture Leaking Clinic",
+      "category": "clinic",
+      "city": "Testpur",
+      "country": "India",
+      "source": "fixture",
+      "sourceUrl": "https://fixture-leaking.example.com/",
+      "summary": "Fake clinic fixture with no booking.",
+      "emails": ["hello@fixture-leaking.example.com"],
+      "phones": ["+91 98765 43211"],
+      "socials": {},
+      "signals": ["appointment-based", "no-online-booking", "has-email", "has-phone"],
+      "score": 75,
+      "fit": [
+        { "service": "booking-system", "score": 85, "reason": "no online booking" },
+        { "service": "automation", "score": 60, "reason": "appointment-based" },
+        { "service": "website", "score": 30, "reason": "site exists" }
+      ],
+      "angle": "",
+      "status": "new",
+      "notes": "",
+      "createdAt": "2026-10-07T00:00:00.000Z"
+    },
+    "evidence": [
+      {
+        "id": "E1",
+        "kind": "page-text",
+        "url": "https://fixture-leaking.example.com/",
+        "quote": "Book your appointment by calling us on +91 98765 43211.",
+        "field": "signal:appointment-based",
+        "fetchedAt": "2026-10-07T00:00:00.000Z"
+      },
+      {
+        "id": "E2",
+        "kind": "absence",
+        "url": "https://fixture-leaking.example.com/",
+        "quote": "Checked home, about and contact pages; no online booking widget found.",
+        "field": "signal:no-online-booking",
+        "fetchedAt": "2026-10-07T00:00:00.000Z"
+      }
+    ],
+    "facts": {},
+    "score": { "total": 75, "fit": 85, "reach": 80, "timing": 50, "gate": "template", "reasons": [] },
+    "priceBook": {
+      "workspaceId": "ws-test",
+      "version": 2,
+      "updatedAt": "2026-10-07T00:00:00.000Z",
+      "items": [
+        { "service": "booking-system", "label": "Booking system", "description": "Add online booking and appointment scheduling.", "buildDays": [4, 7], "price": { "currency": "INR", "min": 15000, "max": 25000 }, "assumption": "Final quote after a short call.", "doorOpener": false },
+        { "service": "automation", "label": "Automation", "description": "Connect tools and automate repetitive workflows.", "buildDays": [3, 6], "price": { "currency": "INR", "min": 20000, "max": 35000 }, "assumption": "Final quote after a short call.", "doorOpener": false },
+        { "service": "website", "label": "Website", "description": "A new website built for the business.", "buildDays": [5, 10], "price": { "currency": "INR", "min": 15000, "max": 25000 }, "assumption": "Final quote after a short call.", "doorOpener": false },
+        { "service": "free-audit", "label": "Free website and enquiry check", "description": "A free review of the website and enquiry flow.", "buildDays": null, "price": { "currency": "INR", "min": 0, "max": 0 }, "assumption": "Free of charge.", "doorOpener": true }
+      ]
+    },
+    "explainer": {
+      "id": "explainer-clinic-in-en",
+      "category": "clinic",
+      "country": "India",
+      "language": "en",
+      "howItWorks": ["Patients search online and call to book."],
+      "whereAutomationHelps": [
+        { "service": "booking-system", "point": "Self-serve booking removes phone back-and-forth." },
+        { "service": "automation", "point": "Automation handles appointment reminders and follow-ups." },
+        { "service": "website", "point": "A website lets patients find clinic hours and book online." }
+      ],
+      "promptVersion": "2026-10-07-1",
+      "tokensIn": 0,
+      "tokensOut": 0,
+      "createdAt": "2026-10-07T00:00:00.000Z",
+      "reviewed": true
+    },
+    "workspaceName": "Test Workspace",
+    "offer": { "services": ["booking-system", "automation", "website", "free-audit"], "description": "Test offer" },
+    "senderName": "Test Sender"
+  }
+}

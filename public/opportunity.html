@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Leadscout opportunity map</title>
+<style>
+body{font-family:system-ui,sans-serif;margin:24px;max-width:960px;color:#111}
+table{border-collapse:collapse;width:100%;margin-top:12px}
+th,td{border:1px solid #ccc;padding:6px 8px;text-align:left;font-size:14px}
+.bar{height:12px;background:#e5e5e5;border-radius:6px;overflow:hidden;min-width:120px}
+.bar>i{display:block;height:100%;background:#2563eb}
+.bar.conf>i{background:#16a34a}
+#msg{padding:10px;border:1px solid #ccc;margin-top:12px}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:12px}
+</style>
+</head>
+<body>
+<h1>Opportunity map</h1>
+<div class="row">
+<label>Workspace <input id="ws" value="default"></label>
+<label>Category filter <select id="cat"><option value="">all</option></select></label>
+<button id="load">Load</button>
+</div>
+<div id="msg" hidden></div>
+<table id="tbl" hidden>
+<thead><tr><th>Locality</th><th>Category</th><th>Leads</th><th>Gap share</th><th>Avg score</th><th>Reachable</th><th>Opportunity</th><th>Confidence</th><th></th></tr></thead>
+<tbody id="rows"></tbody>
+</table>
+<h2>Suggested next searches</h2>
+<ul id="next"></ul>
+<script>
+"use strict";
+function esc(s){return String(s??"").replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];});}
+function showMsg(t){var m=document.getElementById("msg");m.hidden=false;m.textContent=t;}
+function hideMsg(){var m=document.getElementById("msg");m.hidden=true;m.textContent="";}
+function wsId(){return document.getElementById("ws").value.trim()||"default";}
+function bar(pct,cls){var p=Math.max(0,Math.min(100,Number(pct)||0));return '<div class="bar '+cls+'"><i style="width:'+p.toFixed(1)+'%"></i></div>';}
+function confPct(c){return c==="high"?100:c==="medium"?55:20;}
+async function load(){
+  hideMsg();
+  var ws=encodeURIComponent(wsId());
+  var cat=document.getElementById("cat").value;
+  var url="/api/workspaces/"+ws+"/opportunity"+(cat?"?category="+encodeURIComponent(cat):"");
+  var r=await fetch(url);
+  var data=await r.json();
+  if(!r.ok){showMsg("Could not load: "+(data&&data.error||r.status));return;}
+  if(data.tooFew){showMsg("Too few processed leads ("+data.processed+" of at least "+data.minProcessed+"). Run more discovery first.");}
+  else if((data.groups||[]).length===0){showMsg("No processed leads yet for this workspace.");}
+  var sel=document.getElementById("cat");
+  var seen={};(data.groups||[]).forEach(function(g){seen[g.category]=1;});
+  var cur=sel.value;
+  sel.innerHTML='<option value="">all</option>'+Object.keys(seen).sort().map(function(c){return '<option value="'+esc(c)+'"'+(c===cur?' selected':'')+'>'+esc(c)+'</option>';}).join("");
+  var tb=document.getElementById("rows");tb.innerHTML="";
+  (data.groups||[]).forEach(function(g){
+    var maxOpp=1; // opportunity score scale: bar relative to 5 points max
+    var pct=Math.min(100,(Number(g.opportunityScore)||0)/5*100);
+    var tr=document.createElement("tr");
+    tr.innerHTML='<td>'+esc(g.locality)+'</td><td>'+esc(g.category)+'</td><td>'+esc(g.count)+'</td>'
+      +'<td>'+esc(Math.round((Number(g.gapShare)||0)*100))+'%</td><td>'+esc(g.avgScore)+'</td>'
+      +'<td>'+esc(Math.round((Number(g.reachableShare)||0)*100))+'%</td>'
+      +'<td>'+bar(pct,"")+esc(g.opportunityScore)+'</td>'
+      +'<td>'+bar(confPct(g.confidence),"conf")+esc(g.confidence)+' (n='+esc(g.count)+')</td>'
+      +'<td><button data-city="'+esc(g.locality)+'" data-cat="'+esc(g.category)+'">Search here next</button></td>';
+    tb.appendChild(tr);
+  });
+  document.getElementById("tbl").hidden=(data.groups||[]).length===0;
+  tb.querySelectorAll("button").forEach(function(b){b.addEventListener("click",function(){searchNext(b.getAttribute("data-city")||"",b.getAttribute("data-cat")||"");});});
+  var nr=await fetch("/api/workspaces/"+ws+"/opportunity/next?limit=10");
+  var nd=await nr.json();
+  var ul=document.getElementById("next");ul.innerHTML="";
+  (nd.suggestions||[]).forEach(function(s){
+    var li=document.createElement("li");
+    li.innerHTML='<span class="tag">suggestion</span> <b>'+esc(s.city)+' / '+esc(s.category)+'</b> '+esc(s.reason||"")
+      +' <button>Search here next</button>';
+    li.querySelector("button").addEventListener("click",function(){searchNext(s.city,s.category);});
+    ul.appendChild(li);
+  });
+}
+async function searchNext(city,category){
+  hideMsg();
+  var ws=encodeURIComponent(wsId());
+  var r=await fetch("/api/workspaces/"+ws+"/discover",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({category:category,city:city,limit:25})});
+  var data=await r.json().catch(function(){return {};});
+  if(!r.ok&&r.status!==202){showMsg("Discovery failed: "+(data&&data.error||r.status));return;}
+  showMsg("Discovery job started ("+esc(data.jobId||"queued")+").");
+}
+document.getElementById("load").addEventListener("click",load);
+document.getElementById("cat").addEventListener("change",load);
+load();
+</script>
+</body>
+</html>

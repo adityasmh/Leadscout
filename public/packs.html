@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Niche packs - Leadscout</title>
+<style>
+  :root{
+    --bg:#f6f3ee;
+    --panel:#ffffff;
+    --fg:#1b1d22;
+    --muted:#6c6a66;
+    --border:#e6e0d7;
+    --ink:#12161f;
+    --ink-2:#1e2734;
+    --accent:#c2410c;
+    --accent-ink:#7c2d12;
+    --accent-soft:#fbe8d8;
+    --ring-track:#ece5db;
+    --shadow:0 1px 2px rgba(24,20,14,.04), 0 8px 24px rgba(24,20,14,.06);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#0f1217; --panel:#171c24; --fg:#e9e6e1; --muted:#9aa0aa; --border:#272e39;
+      --ink:#0b0e13; --ink-2:#161d28; --accent:#fb923c; --accent-ink:#fcd0a5; --accent-soft:#38240f;
+      --ring-track:#2b323d; --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 30px rgba(0,0,0,.35);
+    }
+  }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
+  body{ background:var(--bg); color:var(--fg); font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif; -webkit-font-smoothing:antialiased; }
+  a{ color:inherit; }
+  .hero{ background:linear-gradient(135deg,var(--ink) 0%,var(--ink-2) 100%); color:#f4f1ec; }
+  .hero-inner{ max-width:1160px; margin:0 auto; padding:38px 22px 42px; }
+  .hero .brand{ font-size:13px; letter-spacing:.18em; text-transform:uppercase; color:#d6a679; font-weight:700; margin:0; }
+  .hero h1{ margin:10px 0 0; font-size:30px; line-height:1.1; font-weight:800; letter-spacing:-.02em; color:#fff; }
+  .hero .tagline{ margin:14px 0 0; font-size:17px; line-height:1.5; color:#ece6dc; max-width:720px; }
+  .hero-nav{ margin-top:20px; display:flex; flex-wrap:wrap; gap:10px; }
+  .hero-nav a{ font-size:13px; font-weight:600; text-decoration:none; color:#f0ebe3; border:1px solid rgba(255,255,255,.24); border-radius:999px; padding:7px 14px; }
+  .hero-nav a:hover{ border-color:rgba(255,255,255,.5); }
+  .wrap{ max-width:1160px; margin:0 auto; padding:26px 22px 56px; }
+  section.panel{ background:var(--panel); border:1px solid var(--border); border-radius:12px; padding:24px; box-shadow:var(--shadow); margin-top:22px; }
+  section.panel:first-child{ margin-top:0; }
+  h2.sec{ margin:0; font-size:19px; letter-spacing:-.01em; }
+  p.secsub{ margin:6px 0 18px; color:var(--muted); font-size:14px; }
+  .row{ display:flex; flex-wrap:wrap; gap:12px; align-items:center; }
+  label.field{ font-size:13px; font-weight:600; color:var(--muted); }
+  select,input[type=file]{ font:inherit; color:var(--fg); background:var(--panel); border:1px solid var(--border); border-radius:9px; padding:9px 12px; }
+  .btn{ display:inline-flex; align-items:center; justify-content:center; gap:6px; border:1px solid var(--border); border-radius:9px; padding:10px 14px; font-size:13px; font-weight:600; text-decoration:none; cursor:pointer; background:var(--panel); color:var(--fg); font-family:inherit; }
+  .btn.primary{ background:var(--accent); border-color:var(--accent); color:#fff; }
+  .btn.ghost{ background:transparent; }
+  .btn.small{ padding:6px 12px; font-size:12px; }
+  .grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:16px; }
+  .card{ background:var(--bg); border:1px solid var(--border); border-radius:12px; padding:16px; display:flex; flex-direction:column; gap:10px; }
+  .card h3{ margin:0; font-size:16px; }
+  .meta{ color:var(--muted); font-size:12.5px; margin:0; }
+  .chip{ display:inline-flex; align-items:center; background:var(--accent-soft); color:var(--accent-ink); border-radius:999px; padding:3px 11px; font-size:12px; font-weight:600; white-space:nowrap; margin-right:6px; }
+  .catlist{ display:flex; flex-wrap:wrap; gap:5px; }
+  .actions{ display:flex; gap:8px; margin-top:auto; }
+  pre.code{ background:var(--ink); color:#f4f1ec; border-radius:10px; padding:16px; overflow:auto; font-size:12.5px; line-height:1.5; }
+  .msg{ border-radius:9px; padding:11px 14px; font-size:13px; margin-top:12px; display:none; }
+  .msg.ok{ background:var(--accent-soft); color:var(--accent-ink); display:block; }
+  .msg.err{ background:#fde8e8; color:#9b1c1c; display:block; }
+  @media (prefers-color-scheme: dark){ .msg.err{ background:#3a1515; color:#ffb4b4; } }
+  .errcard{ color:#9b1c1c; font-size:12.5px; }
+  @media (prefers-color-scheme: dark){ .errcard{ color:#ffb4b4; } }
+  @media (max-width:820px){ .grid{ grid-template-columns:1fr; } section.panel{ padding:18px; } }
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="hero-inner">
+    <p class="brand">Leadscout</p>
+    <h1>Niche packs</h1>
+    <p class="tagline">A niche is an attachment. Every workspace attaches its own pack; the core stays free of niche-specific rules.</p>
+    <nav class="hero-nav">
+      <a href="/showcase2.html">Showcase</a>
+      <a href="/index.html">Home</a>
+      <a href="/packs.html">Niche packs</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="panel">
+    <h2 class="sec">Workspace</h2>
+    <p class="secsub">Pick a workspace to see the packs it has attached and attach or detach packs from the library.</p>
+    <div class="row">
+      <label class="field" for="ws">Workspace</label>
+      <select id="ws"></select>
+      <button class="btn" id="refresh" type="button">Refresh</button>
+    </div>
+    <div class="msg" id="wsmsg"></div>
+  </section>
+
+  <section class="panel">
+    <h2 class="sec">Attached packs</h2>
+    <p class="secsub">Only these packs change what this workspace sees. A private pack of another workspace never appears here.</p>
+    <div class="grid" id="attached"></div>
+  </section>
+
+  <section class="panel">
+    <h2 class="sec">Pack library</h2>
+    <p class="secsub">Shared packs plus this workspace's own private packs.</p>
+    <div class="grid" id="library"></div>
+  </section>
+
+  <section class="panel">
+    <h2 class="sec">Upload a niche pack</h2>
+    <p class="secsub">Choose a pack JSON file (max 512 KB). Validation errors are shown below.</p>
+    <div class="row">
+      <input type="file" id="packfile" accept="application/json,.json">
+      <button class="btn primary" id="upload" type="button">Upload pack</button>
+    </div>
+    <div class="msg" id="uploadmsg"></div>
+    <pre class="code" id="uploaderrors"></pre>
+  </section>
+
+  <section class="panel">
+    <h2 class="sec">How to write a niche pack</h2>
+    <p class="secsub">One file is one niche. The <code>serviceRules</code> block is optional and only adds signals and weights on top of the global rules.</p>
+    <pre class="code" id="example"></pre>
+  </section>
+</main>
+
+<script>
+(function(){
+  "use strict";
+  var EXAMPLE = {
+    id: "example-dental",
+    version: 1,
+    label: "Example dental clinics",
+    owner: "shared",
+    visibility: "shared",
+    categories: [
+      {
+        id: "dental-clinic",
+        label: "Dental clinic",
+        aliases: ["dentist"],
+        buyerReason: "Clinics buy online booking and a modern site.",
+        videoNeed: "medium",
+        need: "bookings",
+        queries: ["dental clinic in {area} {city}", "dentist {city}"]
+      }
+    ],
+    cities: [{ name: "Pune", tier: 1, areas: ["Baner"] }],
+    seasonality: { category: "dental-clinic", country: "India", peakMonths: [6, 7, 8] },
+    signals: [{ id: "aligner-interest", meaning: "the clinic advertises aligners", kind: "context" }],
+    serviceRules: {
+      signals: { "aligner-interest": { kind: "context", phrase: "the clinic advertises aligners" } },
+      services: [{ id: "booking-system", signals: { "aligner-interest": 12 }, reasons: { "aligner-interest": "aligners make consultation booking a fit" } }]
+    },
+    sources: { "dental-clinic": ["websearch", "google-places"] }
+  };
+
+  function esc(value){
+    return String(value === undefined || value === null ? "" : value)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
+  }
+
+  function el(id){ return document.getElementById(id); }
+
+  function showMsg(node, text, ok){
+    node.textContent = text;
+    node.className = "msg " + (ok ? "ok" : "err");
+  }
+  function hideMsg(node){ node.className = "msg"; node.textContent = ""; }
+
+  function api(path, options){
+    return fetch(path, options).then(function(res){
+      return res.json().catch(function(){ return {}; }).then(function(data){
+        if (!res.ok) { throw { status: res.status, data: data }; }
+        return data;
+      });
+    });
+  }
+
+  function currentWs(){ return el("ws").value; }
+
+  function packCard(pack, isAttached){
+    var cats = (pack.categories || []).map(function(c){ return '<span class="chip">' + esc(c) + '</span>'; }).join("");
+    var vis = esc(pack.visibility) + " &middot; owner " + esc(pack.owner);
+    var action = isAttached
+      ? '<button class="btn ghost small" data-detach="' + esc(pack.id) + '" type="button">Detach</button>'
+      : '<button class="btn primary small" data-attach="' + esc(pack.id) + '" type="button">Attach</button>';
+    return '<div class="card">'
+      + '<h3>' + esc(pack.label) + '</h3>'
+      + '<p class="meta">' + esc(pack.id) + ' &middot; v' + esc(pack.version) + ' &middot; ' + vis + '</p>'
+      + '<div class="catlist">' + cats + '</div>'
+      + '<div class="actions">' + action + '</div>'
+      + '</div>';
+  }
+
+  function renderAttached(packs){
+    var node = el("attached");
+    if (!packs.length) { node.innerHTML = '<p class="meta">No packs attached to this workspace.</p>'; return; }
+    node.innerHTML = packs.map(function(p){ return packCard(p, true); }).join("");
+  }
+
+  function renderLibrary(packs, attachedIds){
+    var node = el("library");
+    if (!packs.length) { node.innerHTML = '<p class="meta">No packs in the library.</p>'; return; }
+    node.innerHTML = packs.map(function(p){ return packCard(p, attachedIds.indexOf(p.id) !== -1); }).join("");
+  }
+
+  function loadPacks(){
+    var ws = currentWs();
+    if (!ws) { return Promise.resolve(); }
+    return api("/api/workspaces/" + encodeURIComponent(ws) + "/niche-packs").then(function(data){
+      var attached = data.attached || [];
+      var ids = attached.map(function(p){ return p.id; });
+      renderAttached(attached);
+      renderLibrary(data.library || [], ids);
+      hideMsg(el("wsmsg"));
+    }).catch(function(err){
+      showMsg(el("wsmsg"), "Could not load packs: " + ((err && err.data && err.data.error) || (err && err.status) || "error"), false);
+    });
+  }
+
+  function loadWorkspaces(){
+    return api("/api/workspaces").then(function(list){
+      var ws = el("ws");
+      ws.innerHTML = (list || []).map(function(w){ return '<option value="' + esc(w.id) + '">' + esc(w.name) + '</option>'; }).join("");
+      var wanted = "";
+      try { wanted = new URLSearchParams(window.location.search).get("ws") || ""; } catch (e) { wanted = ""; }
+      if (list && list.length) {
+        var found = false;
+        for (var i = 0; i < list.length; i++) { if (list[i] && list[i].id === wanted) { found = true; break; } }
+        ws.value = found ? wanted : list[0].id;
+      }
+      return loadPacks();
+    }).catch(function(err){
+      showMsg(el("wsmsg"), "Could not load workspaces: " + ((err && err.data && err.data.error) || (err && err.status) || "error"), false);
+    });
+  }
+
+  function attach(id){
+    api("/api/workspaces/" + encodeURIComponent(currentWs()) + "/niche-packs/" + encodeURIComponent(id) + "/attach", { method: "POST" })
+      .then(function(){ return loadPacks(); })
+      .catch(function(err){ showMsg(el("wsmsg"), "Attach failed: " + ((err && err.data && err.data.error) || "error"), false); });
+  }
+
+  function detach(id){
+    api("/api/workspaces/" + encodeURIComponent(currentWs()) + "/niche-packs/" + encodeURIComponent(id) + "/detach", { method: "POST" })
+      .then(function(){ return loadPacks(); })
+      .catch(function(err){ showMsg(el("wsmsg"), "Detach failed: " + ((err && err.data && err.data.error) || "error"), false); });
+  }
+
+  function upload(){
+    var input = el("packfile");
+    var err = el("uploaderrors");
+    err.textContent = "";
+    if (!input.files || !input.files.length) { showMsg(el("uploadmsg"), "Choose a pack JSON file first.", false); return; }
+    var file = input.files[0];
+    if (file.size > 512 * 1024) { showMsg(el("uploadmsg"), "That file is larger than 512 KB.", false); return; }
+    var reader = new FileReader();
+    reader.onload = function(){
+      var text = String(reader.result || "");
+      api("/api/niche-packs", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: text
+      }).then(function(){
+        showMsg(el("uploadmsg"), "Pack uploaded.", true);
+        return loadPacks();
+      }).catch(function(e){
+        var data = (e && e.data) || {};
+        var lines = (data.errors && data.errors.length) ? data.errors : [data.error || ("HTTP " + (e && e.status))];
+        err.textContent = lines.join("\n");
+        showMsg(el("uploadmsg"), "Pack was not accepted. See the errors below.", false);
+      });
+    };
+    reader.readAsText(file);
+  }
+
+  document.addEventListener("click", function(ev){
+    var t = ev.target;
+    if (!t || !t.getAttribute) { return; }
+    var a = t.getAttribute("data-attach");
+    var d = t.getAttribute("data-detach");
+    if (a) { attach(a); }
+    if (d) { detach(d); }
+  });
+
+  el("refresh").addEventListener("click", loadPacks);
+  el("ws").addEventListener("change", loadPacks);
+  el("upload").addEventListener("click", upload);
+  el("example").textContent = JSON.stringify(EXAMPLE, null, 2);
+
+  loadWorkspaces();
+})();
+</script>
+</body>
+</html>

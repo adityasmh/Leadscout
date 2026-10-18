@@ -1,0 +1,71 @@
+{
+  "name": "service absent from price book fixture",
+  "expected": { "absentService": "seo", "offers": ["website", "automation"] },
+  "input": {
+    "lead": {
+      "id": "lead-absent-service",
+      "workspaceId": "ws-test",
+      "name": "Fixture Absent Service Gym",
+      "category": "gym",
+      "city": "Testpur",
+      "country": "India",
+      "source": "fixture",
+      "sourceUrl": "https://fixture-absent.example.com/",
+      "summary": "Fake gym where one fit service is not in the price book.",
+      "emails": ["info@fixture-absent.example.com"],
+      "phones": ["+91 98765 43217"],
+      "socials": {},
+      "signals": ["no-analytics", "has-phone", "has-email"],
+      "score": 66,
+      "fit": [
+        { "service": "seo", "score": 75, "reason": "no analytics" },
+        { "service": "website", "score": 60, "reason": "gym needs site" },
+        { "service": "automation", "score": 50, "reason": "membership enquiries" }
+      ],
+      "angle": "",
+      "status": "new",
+      "notes": "",
+      "createdAt": "2026-10-07T00:00:00.000Z"
+    },
+    "evidence": [
+      {
+        "id": "E1",
+        "kind": "absence",
+        "url": "https://fixture-absent.example.com/",
+        "quote": "Checked home page source; no analytics script found.",
+        "field": "signal:no-analytics",
+        "fetchedAt": "2026-10-07T00:00:00.000Z"
+      }
+    ],
+    "facts": {},
+    "score": { "total": 66, "fit": 75, "reach": 80, "timing": 50, "gate": "template", "reasons": [] },
+    "priceBook": {
+      "workspaceId": "ws-test",
+      "version": 8,
+      "updatedAt": "2026-10-07T00:00:00.000Z",
+      "items": [
+        { "service": "website", "label": "Website", "description": "A new website built for the business.", "buildDays": [5, 10], "price": { "currency": "INR", "min": 15000, "max": 25000 }, "assumption": "Final quote after a short call.", "doorOpener": false },
+        { "service": "automation", "label": "Automation", "description": "Connect tools and automate repetitive workflows.", "buildDays": [3, 6], "price": { "currency": "INR", "min": 20000, "max": 35000 }, "assumption": "Final quote after a short call.", "doorOpener": false }
+      ]
+    },
+    "explainer": {
+      "id": "explainer-gym-in-en",
+      "category": "gym",
+      "country": "India",
+      "language": "en",
+      "howItWorks": ["Members check class schedules and membership plans online."],
+      "whereAutomationHelps": [
+        { "service": "website", "point": "A website shows timetables and membership options." },
+        { "service": "automation", "point": "Automation handles membership reminders and renewals." }
+      ],
+      "promptVersion": "2026-10-07-1",
+      "tokensIn": 0,
+      "tokensOut": 0,
+      "createdAt": "2026-10-07T00:00:00.000Z",
+      "reviewed": true
+    },
+    "workspaceName": "Test Workspace",
+    "offer": { "services": ["seo", "website", "automation"], "description": "Test offer" },
+    "senderName": "Test Sender"
+  }
+}

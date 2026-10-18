@@ -1,0 +1,15 @@
+{
+  "id": "_template",
+  "name": "Template plugin",
+  "description": "Copy this folder to plugins/<your-id>/ and edit. Folders starting with _ are never loaded.",
+  "region": "any",
+  "enable": "LEADSCOUT_PLUGINS=<your-id>",
+  "channelFlags": [
+    "CHANNEL_EXAMPLE_DIRECTORY"
+  ],
+  "channels": [
+    "example-directory"
+  ],
+  "defaultOn": false,
+  "warning": "Say here what the target site's terms allow."
+}

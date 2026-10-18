@@ -1,0 +1,14 @@
+# Leadscout
+
+> Local-business lead finder: discovers businesses, reads their websites, scores them against your offer, writes cited dossiers and a daily call sheet. Node 24 + SQLite, no runtime dependencies, runs offline by default.
+
+Start here:
+- [AGENTS.md](AGENTS.md): rules, commands, code map, conventions
+- [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md): pipeline stages, data model, channel/plugin system
+- [docs/API.md](docs/API.md): HTTP routes
+- [plugins/README.md](plugins/README.md): how to write a channel plugin
+- [.env.example](.env.example): every environment variable
+- [docs/LEGAL.md](docs/LEGAL.md): scraping terms, calling rules, data protection
+
+Run: `npm install && npm run demo` (offline) or `npm start` (server on :8790).
+Verify: `npm run typecheck && npm run check:env && npm run check:all`.

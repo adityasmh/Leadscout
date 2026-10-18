@@ -1,0 +1,427 @@
+{
+  "id": "wedding-events",
+  "version": 1,
+  "owner": "shared",
+  "visibility": "shared",
+  "label": "Weddings and events",
+  "note": "Niche pack for src/niche-pack.ts. Data only: categories, queries, cities, seasonality and the signals that map to the seller's services. Search phrases are web-channel queries (English plus common Hindi and Marathi trade terms) and use {city} and {area} placeholders; the few phrases with no placeholder are deliberately city-free.",
+  "categories": [
+    {
+      "id": "wedding-planner",
+      "label": "Wedding planner",
+      "aliases": ["wedding planner", "wedding organiser", "wedding organizer", "shaadi planner", "lagna planner"],
+      "buyerReason": "Planners subcontract wedding films for their clients, so they buy video again and again.",
+      "videoNeed": "high",
+      "queries": [
+        "wedding planner in {area} {city}",
+        "best wedding planner {city}",
+        "shaadi planner {city}",
+        "wedding organiser {area} {city}",
+        "lagna planning service {city}",
+        "destination wedding planner {city}",
+        "wedding management company {city}",
+        "vivah aayojan {city}",
+        "top wedding planners near {area}",
+        "wedding coordinator {city}"
+      ]
+    },
+    {
+      "id": "event-company",
+      "label": "Event company",
+      "aliases": ["event company", "event management", "event planner", "event organiser", "event management company"],
+      "buyerReason": "Event companies stage corporate and social events that need a film or highlight reel every time.",
+      "videoNeed": "high",
+      "queries": [
+        "event management company {city}",
+        "event company in {area} {city}",
+        "event organiser {city}",
+        "corporate event planner {city}",
+        "event management {area} {city}",
+        "karya karyakram organiser {city}",
+        "event planning services {city}",
+        "best event company near {area}",
+        "exhibition organiser {city}",
+        "event production house {city}"
+      ]
+    },
+    {
+      "id": "banquet-hall",
+      "label": "Banquet hall",
+      "aliases": ["banquet hall", "banquet", "function hall", "marriage hall", "shaadi hall"],
+      "buyerReason": "Banquet halls buy event films and venue reels to fill dates and show couples the space.",
+      "videoNeed": "high",
+      "queries": [
+        "banquet hall in {area} {city}",
+        "marriage hall {city}",
+        "function hall near {area}",
+        "wedding venue {city}",
+        "shaadi hall {city}",
+        "banquet hall with rooms {city}",
+        "lagna mandap {city}",
+        "best banquet halls {area} {city}",
+        "convention centre {city}",
+        "wedding lawn {city}"
+      ]
+    },
+    {
+      "id": "wedding-decorator",
+      "label": "Wedding decorator",
+      "aliases": ["wedding decorator", "wedding decoration", "mandap decorator", "stage decoration"],
+      "buyerReason": "Decorators buy films of their setups to win the next client and reuse the footage in bids.",
+      "videoNeed": "high",
+      "queries": [
+        "wedding decorator in {city}",
+        "wedding decoration {area} {city}",
+        "mandap decoration {city}",
+        "stage decoration for wedding {city}",
+        "flower decoration wedding {city}",
+        "shaadi decoration {city}",
+        "lagna sajawat {city}",
+        "wedding theme decorator near {area}",
+        "event decorator {city}",
+        "tent house decorator {city}"
+      ]
+    },
+    {
+      "id": "caterer",
+      "label": "Caterer",
+      "aliases": ["caterer", "catering service", "catering company", "khaana caterer"],
+      "buyerReason": "Caterers buy short food films and event coverage to show menus at tastings and on social.",
+      "videoNeed": "medium",
+      "queries": [
+        "caterer in {area} {city}",
+        "catering service {city}",
+        "wedding caterer {city}",
+        "best caterers near {area}",
+        "shaadi catering {city}",
+        "lagna catering {city}",
+        "event catering company {city}",
+        "pure veg caterer {city}",
+        "catering contractor {city}",
+        "maharaj catering service {city}"
+      ]
+    },
+    {
+      "id": "bridal-wear",
+      "label": "Bridal wear",
+      "aliases": ["bridal wear", "bridal boutique", "wedding dress", "lehenga shop", "shaadi ka kapda"],
+      "buyerReason": "Bridal wear shops buy lookbook films and reels to sell lehengas and sherwanis online.",
+      "videoNeed": "medium",
+      "queries": [
+        "bridal wear shop {area} {city}",
+        "lehenga shop {city}",
+        "bridal boutique {city}",
+        "wedding dress store {city}",
+        "sherwani shop {city}",
+        "shaadi dress shop {city}",
+        "lagna sadi shop {city}",
+        "designer bridal wear near {area}",
+        "bridal collection {city}",
+        "wedding lehenga store {city}"
+      ]
+    },
+    {
+      "id": "makeup-artist",
+      "label": "Makeup artist",
+      "aliases": ["makeup artist", "makeup", "bridal makeup", "beauty artist", "parlour artist"],
+      "buyerReason": "Makeup artists buy bridal transformation reels to fill their dates from Instagram.",
+      "videoNeed": "high",
+      "queries": [
+        "bridal makeup artist {city}",
+        "makeup artist in {area} {city}",
+        "wedding makeup artist {city}",
+        "freelance makeup artist {city}",
+        "bride makeup {city}",
+        "shaadi makeup artist {city}",
+        "lagna makeup {city}",
+        "airbrush makeup artist near {area}",
+        "hd makeup artist {city}",
+        "bridal beauty artist {city}"
+      ]
+    },
+    {
+      "id": "photographer",
+      "label": "Photographer",
+      "aliases": ["photographer", "photography studio", "videographer", "candid photographer", "wedding photographer"],
+      "buyerReason": "Photographers buy video to add candid films and same-day edits to their wedding packages.",
+      "videoNeed": "high",
+      "queries": [
+        "wedding photographer {city}",
+        "candid photographer in {area} {city}",
+        "photography studio {city}",
+        "wedding videographer {city}",
+        "pre wedding shoot {city}",
+        "shaadi photographer {city}",
+        "lagna photography {city}",
+        "best wedding photographers near {area}",
+        "event photographer {city}",
+        "candid videography {city}"
+      ]
+    },
+    {
+      "id": "dj-entertainer",
+      "label": "DJ entertainer",
+      "aliases": ["dj", "dj entertainer", "dj service", "dhol player", "band"],
+      "buyerReason": "DJs and entertainers buy event films and reels to show a full dance floor to new clients.",
+      "videoNeed": "medium",
+      "queries": [
+        "dj service {city}",
+        "wedding dj in {area} {city}",
+        "dj sound system {city}",
+        "dhol player {city}",
+        "band bajaa {city}",
+        "shaadi dj {city}",
+        "lagna dj {city}",
+        "entertainment company {city}",
+        "anchor and dj {city}",
+        "dj on rent near {area}"
+      ]
+    },
+    {
+      "id": "florist",
+      "label": "Florist",
+      "aliases": ["florist", "flower shop", "flower boutique", "phool wala"],
+      "buyerReason": "Florists buy short films of their installations and bouquets to sell to couples and venues.",
+      "videoNeed": "medium",
+      "queries": [
+        "florist in {area} {city}",
+        "flower shop {city}",
+        "wedding flower decoration {city}",
+        "phool wala {city}",
+        "flower boutique near {area}",
+        "shaadi flowers {city}",
+        "lagna phool {city}",
+        "event florist {city}",
+        "fresh flower delivery {city}",
+        "garland shop {city}"
+      ]
+    },
+    {
+      "id": "invitation-designer",
+      "label": "Invitation designer",
+      "aliases": ["invitation designer", "wedding card designer", "invitation card", "shaadi card"],
+      "buyerReason": "Invitation designers buy product films to show card finishes, foil and packaging online.",
+      "videoNeed": "low",
+      "queries": [
+        "wedding card designer {city}",
+        "invitation card shop {area} {city}",
+        "shaadi card {city}",
+        "wedding invitation printing {city}",
+        "lagna patrika {city}",
+        "designer invitation cards {city}",
+        "wedding stationery near {area}",
+        "invitation card manufacturer {city}",
+        "ekda card {city}",
+        "scroll invitation {city}"
+      ]
+    },
+    {
+      "id": "destination-wedding-agent",
+      "label": "Destination wedding agent",
+      "aliases": ["destination wedding agent", "destination wedding planner", "destination wedding", "wedding travel agent"],
+      "buyerReason": "Destination wedding agents buy cinematic location films to sell venues far from home.",
+      "videoNeed": "high",
+      "queries": [
+        "destination wedding planner {city}",
+        "destination wedding agent {city}",
+        "destination wedding videographer india",
+        "beach wedding film india",
+        "destination wedding packages {city}",
+        "royal wedding venue {city}",
+        "wedding travel agent {city}",
+        "shaadi abroad {city}",
+        "resort wedding planner near {area}",
+        "palace wedding film india"
+      ]
+    },
+    {
+      "id": "jewellery-store",
+      "label": "Jewellery store",
+      "aliases": ["jewellery store", "jewelry store", "jeweller", "jewellery shop", "bridal jewellery"],
+      "buyerReason": "Jewellers buy product films and bridal reels to drive online enquiries for wedding sets.",
+      "videoNeed": "medium",
+      "queries": [
+        "jewellery store in {area} {city}",
+        "bridal jewellery {city}",
+        "jeweller near {area}",
+        "gold jewellery shop {city}",
+        "diamond jewellery store {city}",
+        "shaadi jewellery {city}",
+        "lagna jewellery {city}",
+        "wedding jewellery collection {city}",
+        "silver jewellery shop {city}",
+        "artificial jewellery store {city}"
+      ]
+    }
+  ],
+  "cities": [
+    { "name": "Mumbai", "tier": 1, "areas": ["Andheri", "Bandra", "Juhu", "Powai"] },
+    { "name": "Delhi", "tier": 1, "areas": ["Saket", "Dwarka", "Rohini", "Lajpat Nagar"] },
+    { "name": "Bengaluru", "tier": 1, "areas": ["Whitefield", "Indiranagar", "Jayanagar", "Rajajinagar"] },
+    { "name": "Hyderabad", "tier": 1, "areas": ["Banjara Hills", "Jubilee Hills", "Gachibowli", "Kukatpally"] },
+    { "name": "Chennai", "tier": 1, "areas": ["T. Nagar", "Velachery", "Adyar", "Anna Nagar"] },
+    { "name": "Kolkata", "tier": 1, "areas": ["Salt Lake", "Ballygunge", "Behala", "Howrah"] },
+    { "name": "Pune", "tier": 1, "areas": ["Kothrud", "Baner", "Viman Nagar", "Hinjewadi"] },
+    { "name": "Ahmedabad", "tier": 1, "areas": ["Navrangpura", "Satellite", "Bopal", "Maninagar"] },
+    { "name": "Jaipur", "tier": 2, "areas": ["Malviya Nagar", "Vaishali Nagar", "Mansarovar", "C-Scheme"] },
+    { "name": "Udaipur", "tier": 2, "areas": ["Hiran Magri", "Fateh Sagar", "Bhuwana", "Sukher"] },
+    { "name": "Chandigarh", "tier": 2, "areas": ["Sector 17", "Sector 22", "Sector 35", "Panchkula"] },
+    { "name": "Lucknow", "tier": 2, "areas": ["Gomti Nagar", "Hazratganj", "Aliganj", "Indira Nagar"] }
+  ],
+  "seasonality": {
+    "category": "wedding-events",
+    "country": "India",
+    "peakMonths": [11, 12, 1, 2, 4, 5],
+    "note": "The main Indian wedding season runs from November to February, with a second wave of bookings in April and May before the monsoon.",
+    "basis": "general knowledge, review"
+  },
+  "signals": [
+    {
+      "id": "portfolio-no-video",
+      "meaning": "the vendor's profile or site shows photos or text but no video, film, reel or youtube/vimeo link",
+      "kind": "gap",
+      "favours": ["wedding-event-film", "brand-film", "social-reels"]
+    },
+    {
+      "id": "has-video-portfolio",
+      "meaning": "a video, film, reel or youtube/vimeo link is present",
+      "kind": "positive",
+      "favours": []
+    },
+    {
+      "id": "social-video-active",
+      "meaning": "a video or reel posted in the last 30 days",
+      "kind": "positive",
+      "favours": ["social-reels"]
+    },
+    {
+      "id": "social-inactive",
+      "meaning": "no post in the last 90 days",
+      "kind": "gap",
+      "favours": ["social-reels"]
+    },
+    {
+      "id": "high-review-count",
+      "meaning": "50 or more reviews or ratings",
+      "kind": "positive",
+      "favours": ["wedding-event-film", "brand-film", "social-reels"]
+    },
+    {
+      "id": "premium-listing",
+      "meaning": "featured, verified-plus or paid-tier label on the directory",
+      "kind": "positive",
+      "favours": ["wedding-event-film", "brand-film", "social-reels"]
+    },
+    {
+      "id": "multi-city",
+      "meaning": "serves more than one city",
+      "kind": "positive",
+      "favours": ["wedding-event-film", "brand-film"]
+    },
+    {
+      "id": "price-band-known",
+      "meaning": "a price or starting price is published",
+      "kind": "positive",
+      "favours": ["wedding-event-film", "brand-film", "social-reels"]
+    }
+  ],
+  "serviceRules": {
+    "signals": {
+      "portfolio-no-video": { "kind": "gap", "phrase": "the profile shows photos or text but no video, film, reel or youtube or vimeo link" },
+      "has-video-portfolio": { "kind": "positive", "phrase": "a video, film, reel or youtube or vimeo link is present" },
+      "social-video-active": { "kind": "positive", "phrase": "a video or reel was posted in the last 30 days" },
+      "social-inactive": { "kind": "gap", "phrase": "no post in the last 90 days" },
+      "high-review-count": { "kind": "positive", "phrase": "the business has 50 or more reviews or ratings" },
+      "premium-listing": { "kind": "positive", "phrase": "the directory marks this listing as featured, verified-plus or paid-tier" },
+      "multi-city": { "kind": "positive", "phrase": "the business serves more than one city" },
+      "price-band-known": { "kind": "positive", "phrase": "a price or starting price is published" }
+    },
+    "services": [
+      {
+        "id": "wedding-event-film",
+        "signals": { "portfolio-no-video": 60, "has-video-portfolio": -25, "social-video-active": -10, "social-inactive": 20, "high-review-count": 10, "premium-listing": 15, "multi-city": 15, "price-band-known": 8 },
+        "reasons": {
+          "portfolio-no-video": "the profile shows photos or text but no video, so a wedding or event film would fill that gap",
+          "has-video-portfolio": "a video is already on the profile, so a new event film is a lower priority",
+          "social-video-active": "a reel was posted in the last 30 days, so event films are already part of the mix",
+          "social-inactive": "there has been no post in the last 90 days, so an event film would restart the feed",
+          "high-review-count": "the business has 50 or more reviews, so an event film would match its reputation",
+          "premium-listing": "the directory marks this listing as featured or paid-tier, so an event film fits its standing",
+          "multi-city": "the business serves more than one city, so an event film would work across its markets",
+          "price-band-known": "a starting price is published, so an event film with a clear quote is easier to sell"
+        }
+      },
+      {
+        "id": "brand-film",
+        "signals": { "portfolio-no-video": 40, "has-video-portfolio": -15, "social-video-active": -8, "social-inactive": 12, "high-review-count": 12, "premium-listing": 15, "multi-city": 12, "price-band-known": 8 },
+        "reasons": {
+          "portfolio-no-video": "the profile shows photos or text but no video, so a brand film would fill that gap",
+          "has-video-portfolio": "a video is already on the profile, so a new brand film is a lower priority",
+          "social-video-active": "a reel was posted in the last 30 days, so brand content is already part of the mix",
+          "social-inactive": "there has been no post in the last 90 days, so a brand film would restart the feed",
+          "high-review-count": "the business has 50 or more reviews, so a brand film would match its reputation",
+          "premium-listing": "the directory marks this listing as featured or paid-tier, so a brand film fits its standing",
+          "multi-city": "the business serves more than one city, so a brand film would work across its markets",
+          "price-band-known": "a starting price is published, so a brand film with a clear quote is easier to sell"
+        }
+      },
+      {
+        "id": "social-reels",
+        "signals": { "portfolio-no-video": 35, "has-video-portfolio": -10, "social-video-active": 10, "social-inactive": 40, "high-review-count": 10, "premium-listing": 12, "multi-city": 8, "price-band-known": 8 },
+        "reasons": {
+          "portfolio-no-video": "the profile shows photos or text but no video, so social reels would fill that gap",
+          "has-video-portfolio": "a video is already on the profile, so new reels are a lower priority",
+          "social-video-active": "a reel was posted in the last 30 days, so the channel is already moving",
+          "social-inactive": "there has been no post in the last 90 days, so reels would restart the feed",
+          "high-review-count": "the business has 50 or more reviews, so reels would match its reputation",
+          "premium-listing": "the directory marks this listing as featured or paid-tier, so reels fit its standing",
+          "multi-city": "the business serves more than one city, so reels would work across its markets",
+          "price-band-known": "a starting price is published, so reels with a clear offer are easier to sell"
+        }
+      },
+      {
+        "id": "property-walkthrough",
+        "signals": { "portfolio-no-video": 1, "has-video-portfolio": 1, "social-video-active": 1, "social-inactive": 1, "high-review-count": 1, "premium-listing": 1, "multi-city": 1, "price-band-known": 1 },
+        "reasons": {
+          "portfolio-no-video": "the profile shows photos or text but no video, so a walkthrough film would fill that gap",
+          "has-video-portfolio": "a video is already on the profile, so a new walkthrough film is a lower priority",
+          "social-video-active": "a reel was posted in the last 30 days, so walkthrough clips are already part of the mix",
+          "social-inactive": "there has been no post in the last 90 days, so a walkthrough film would restart the feed",
+          "high-review-count": "the business has 50 or more reviews, so a walkthrough film would match its reputation",
+          "premium-listing": "the directory marks this listing as featured or paid-tier, so a walkthrough film fits its standing",
+          "multi-city": "the business serves more than one city, so a walkthrough film would work across its markets",
+          "price-band-known": "a starting price is published, so a walkthrough film with a clear quote is easier to sell"
+        }
+      },
+      {
+        "id": "product-shoot",
+        "signals": { "portfolio-no-video": 1, "has-video-portfolio": 1, "social-video-active": 1, "social-inactive": 1, "high-review-count": 1, "premium-listing": 1, "multi-city": 1, "price-band-known": 1 },
+        "reasons": {
+          "portfolio-no-video": "the profile shows photos or text but no video, so a product shoot would fill that gap",
+          "has-video-portfolio": "a video is already on the profile, so a new product shoot is a lower priority",
+          "social-video-active": "a reel was posted in the last 30 days, so product content is already part of the mix",
+          "social-inactive": "there has been no post in the last 90 days, so a product shoot would restart the feed",
+          "high-review-count": "the business has 50 or more reviews, so a product shoot would match its reputation",
+          "premium-listing": "the directory marks this listing as featured or paid-tier, so a product shoot fits its standing",
+          "multi-city": "the business serves more than one city, so a product shoot would work across its markets",
+          "price-band-known": "a starting price is published, so a product shoot with a clear offer is easier to sell"
+        }
+      }
+    ]
+  },
+  "sources": {
+    "wedding-planner": ["websearch", "instagram", "weddingsutra", "wedmegood"],
+    "event-company": ["websearch", "justdial", "instagram"],
+    "banquet-hall": ["websearch", "google-places", "weddingwire"],
+    "wedding-decorator": ["websearch", "instagram", "youtube"],
+    "caterer": ["websearch", "google-places", "justdial"],
+    "bridal-wear": ["websearch", "instagram", "facebook"],
+    "makeup-artist": ["websearch", "instagram", "youtube"],
+    "photographer": ["websearch", "instagram", "weddingsutra", "weddingwire"],
+    "dj-entertainer": ["websearch", "instagram", "youtube"],
+    "florist": ["websearch", "google-places", "instagram"],
+    "invitation-designer": ["websearch", "instagram"],
+    "destination-wedding-agent": ["websearch", "wedmegood", "instagram"],
+    "jewellery-store": ["websearch", "google-places", "instagram"]
+  }
+}

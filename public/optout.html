@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Stop Leadscout from listing your business</title>
+  <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      max-width: 640px;
+      margin: 1rem auto;
+      padding: 0 1rem;
+      line-height: 1.5;
+      color: #222;
+      background: #fff;
+    }
+    h1 { font-size: 1.4rem; margin-bottom: 0.5rem; }
+    p { margin: 0.75rem 0; }
+    label { display: block; margin-top: 1rem; font-weight: bold; }
+    input[type="text"], textarea {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 0.5rem;
+      font-size: 1rem;
+      border: 1px solid #666;
+    }
+    textarea { min-height: 5rem; resize: vertical; }
+    button {
+      margin-top: 1rem;
+      padding: 0.6rem 1.2rem;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    #result {
+      margin-top: 1rem;
+      padding: 0.75rem;
+      border: 1px solid #999;
+      min-height: 1.5rem;
+      background: #f8f8f8;
+    }
+    #result.error {
+      background: #ffebee;
+      border-color: #c62828;
+    }
+    footer {
+      margin-top: 2rem;
+      padding-top: 1rem;
+      border-top: 1px solid #ccc;
+      font-size: 0.9rem;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <h1>Stop Leadscout from listing your business</h1>
+  <p>
+    Submit the website, email address or phone number of the business you want removed.
+    The business will be removed from every Leadscout workspace and Leadscout users will not contact it through the platform.
+  </p>
+
+  <form id="optout-form" novalidate>
+    <label for="value">Website, email or phone number of the business</label>
+    <input type="text" id="value" name="value" autocomplete="off" required>
+
+    <label for="note">Note (optional, max 300 characters)</label>
+    <textarea id="note" name="note" maxlength="300" aria-describedby="note-help"></textarea>
+    <p id="note-help">Max 300 characters.</p>
+
+    <button type="submit">Request removal</button>
+  </form>
+
+  <p id="result" aria-live="polite"></p>
+
+  <p>Questions: contact the Leadscout operator who gave you this link.</p>
+
+  <footer>(c) OpenStreetMap contributors</footer>
+
+  <script>
+    (function () {
+      const form = document.getElementById('optout-form');
+      const valueInput = document.getElementById('value');
+      const noteInput = document.getElementById('note');
+      const result = document.getElementById('result');
+
+      function setResult(message, isError) {
+        result.textContent = message;
+        result.classList.toggle('error', isError);
+      }
+
+      form.addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        const value = valueInput.value.trim();
+        const note = noteInput.value.trim();
+
+        if (value.length < 3 || value.length > 200) {
+          setResult('Please enter a value between 3 and 200 characters.', true);
+          return;
+        }
+
+        setResult('Sending request…', false);
+
+        const body = { value: value };
+        if (note.length > 0) {
+          body.note = note;
+        }
+
+        fetch('/api/optout', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body)
+        })
+          .then(function (response) {
+            return response.json().then(function (data) {
+              return { ok: response.ok, data: data };
+            }).catch(function () {
+              return { ok: false, parseError: true };
+            });
+          })
+          .then(function (outcome) {
+            if (outcome.parseError) {
+              setResult('We could not reach the server. Please try again later.', true);
+              return;
+            }
+            if (outcome.data && outcome.data.ok === true) {
+              setResult('Your request has been received. The business will be removed from all Leadscout workspaces and will not be contacted through Leadscout.', false);
+              form.reset();
+            } else {
+              var errorText = '';
+              if (outcome.data && typeof outcome.data.error === 'string') {
+                errorText = outcome.data.error;
+              } else if (outcome.data && Array.isArray(outcome.data.errors)) {
+                errorText = outcome.data.errors.join(' ');
+              }
+              setResult(errorText || 'We could not reach the server. Please try again later.', true);
+            }
+          })
+          .catch(function () {
+            setResult('We could not reach the server. Please try again later.', true);
+          });
+      });
+    })();
+  </script>
+</body>
+</html>

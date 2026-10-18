@@ -1,0 +1,850 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Client overview - Leadscout</title>
+<style>
+  :root{
+    --bg:#f6f3ee;
+    --panel:#ffffff;
+    --fg:#1b1d22;
+    --muted:#6c6a66;
+    --border:#e6e0d7;
+    --ink:#12161f;
+    --ink-2:#1e2734;
+    --accent:#c2410c;
+    --accent-ink:#7c2d12;
+    --accent-soft:#fbe8d8;
+    --ring-track:#ece5db;
+    --shadow:0 1px 2px rgba(24,20,14,.04), 0 8px 24px rgba(24,20,14,.06);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#0f1217;
+      --panel:#171c24;
+      --fg:#e9e6e1;
+      --muted:#9aa0aa;
+      --border:#272e39;
+      --ink:#0b0e13;
+      --ink-2:#161d28;
+      --accent:#fb923c;
+      --accent-ink:#fcd0a5;
+      --accent-soft:#38240f;
+      --ring-track:#2b323d;
+      --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 30px rgba(0,0,0,.35);
+    }
+  }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
+  body{
+    background:var(--bg);
+    color:var(--fg);
+    font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{ color:inherit; }
+
+  .hero{
+    background:linear-gradient(135deg,var(--ink) 0%,var(--ink-2) 100%);
+    color:#f4f1ec;
+  }
+  .hero-inner{ max-width:1160px; margin:0 auto; padding:38px 22px 42px; }
+  .hero .brand{
+    font-size:13px; letter-spacing:.18em; text-transform:uppercase;
+    color:#d6a679; font-weight:700; margin:0;
+  }
+  .hero h1.pname{ margin:10px 0 0; font-size:32px; line-height:1.1; font-weight:800; letter-spacing:-.02em; color:#ffffff; }
+  .hero .wsname{ margin:6px 0 0; font-size:16px; color:#cfc9c0; font-weight:500; }
+  .hero .tagline{ margin:18px 0 0; font-size:18px; line-height:1.5; color:#ece6dc; max-width:640px; }
+  .hero-nav{ margin-top:20px; display:flex; flex-wrap:wrap; gap:10px; }
+  .hero-nav a{
+    font-size:13px; font-weight:600; text-decoration:none; color:#f0ebe3;
+    border:1px solid rgba(255,255,255,.24); border-radius:999px; padding:7px 14px;
+  }
+  .hero-nav a:hover{ border-color:rgba(255,255,255,.5); }
+
+  .wrap{ max-width:1160px; margin:0 auto; padding:26px 22px 56px; }
+
+  section.panel{
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:24px;
+    box-shadow:var(--shadow);
+    margin-top:22px;
+  }
+  section.panel:first-child{ margin-top:0; }
+  h2.sec{ margin:0; font-size:19px; letter-spacing:-.01em; }
+  p.secsub{ margin:6px 0 18px; color:var(--muted); font-size:14px; }
+
+  .stats{ display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+  .stat{
+    background:var(--bg); border:1px solid var(--border); border-radius:12px;
+    padding:20px; display:flex; flex-direction:column; gap:6px;
+  }
+  .stat .big{ font-size:42px; line-height:1; font-weight:800; letter-spacing:-.03em; font-variant-numeric:tabular-nums; }
+  .stat .cap{ color:var(--muted); font-size:13px; }
+
+  .flow{ display:grid; grid-template-columns:repeat(6,1fr); gap:10px; position:relative; }
+  .flow::before{
+    content:""; position:absolute; top:22px; left:8%; right:8%; height:2px;
+    background:var(--border); z-index:0;
+  }
+  .fstep{ position:relative; z-index:1; text-align:center; padding:0 4px; }
+  .fdot{
+    width:44px; height:44px; border-radius:50%; margin:0 auto 12px;
+    display:grid; place-items:center; font-weight:800; font-size:18px;
+    background:var(--panel); border:2px solid var(--accent); color:var(--accent-ink);
+    font-variant-numeric:tabular-nums;
+  }
+  .fk{ font-weight:700; font-size:15px; }
+  .fd{ color:var(--muted); font-size:12.5px; line-height:1.45; margin-top:4px; }
+
+  .cat{
+    display:grid; grid-template-columns:200px 1fr auto; gap:16px; align-items:center;
+    padding:13px 0; border-bottom:1px solid var(--border);
+  }
+  .cat:last-child{ border-bottom:none; }
+  .cname{ font-weight:600; }
+  .csub{ color:var(--muted); font-size:12.5px; margin-top:2px; }
+  .catmid{ display:flex; align-items:center; gap:10px; min-width:0; }
+  .catrack{ flex:1 1 auto; height:12px; border-radius:6px; background:var(--ring-track); overflow:hidden; }
+  .catrack > span{ display:block; height:100%; background:var(--accent); border-radius:6px; }
+  .catscore{ flex:0 0 auto; min-width:2.4em; text-align:right; font-weight:700; font-size:13px; font-variant-numeric:tabular-nums; color:var(--accent-ink); }
+  .catright{ text-align:right; }
+
+  .chip{
+    display:inline-flex; align-items:center; background:var(--accent-soft); color:var(--accent-ink);
+    border-radius:999px; padding:4px 12px; font-size:12px; font-weight:600; white-space:nowrap;
+  }
+
+  .echips{ display:flex; flex-wrap:wrap; gap:6px; margin-top:8px; }
+  .echip{
+    display:inline-flex; align-items:center; gap:5px;
+    font-size:11.5px; font-weight:600; text-decoration:none; line-height:1.2;
+    color:var(--accent-ink); background:var(--accent-soft);
+    border:1px solid var(--border); border-radius:999px; padding:3px 9px; white-space:nowrap;
+  }
+  a.echip:hover{ border-color:var(--accent); }
+
+  .prospects{ display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+  .pcard{
+    background:var(--bg); border:1px solid var(--border); border-radius:12px;
+    padding:18px; display:flex; flex-direction:column; gap:12px;
+  }
+  .phead{ display:flex; gap:12px; align-items:flex-start; }
+  .avatar{
+    flex:0 0 auto; width:44px; height:44px; border-radius:11px;
+    display:grid; place-items:center; font-weight:800; font-size:15px;
+    background:var(--accent-soft); color:var(--accent-ink); letter-spacing:.02em;
+  }
+  .ptitle{ flex:1 1 auto; min-width:0; }
+  .pname{ margin:2px 0 0; font-size:16px; font-weight:700; line-height:1.25; }
+  .pmeta{ margin:3px 0 0; color:var(--muted); font-size:12.5px; }
+  .ring{
+    flex:0 0 auto; width:56px; height:56px; border-radius:50%;
+    display:grid; place-items:center;
+    background:conic-gradient(var(--accent) calc(var(--v,0) * 1%), var(--ring-track) 0);
+  }
+  .ring > span{
+    width:44px; height:44px; border-radius:50%; background:var(--bg);
+    display:grid; place-items:center; font-weight:800; font-size:15px;
+    font-variant-numeric:tabular-nums;
+  }
+  .gap{ margin:0; font-size:14px; line-height:1.5; min-height:3em; }
+  .gap.muted{ color:var(--muted); font-style:italic; }
+  .pactions{ display:flex; gap:8px; margin-top:auto; }
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:6px;
+    border:1px solid var(--border); border-radius:9px; padding:10px 14px;
+    font-size:13px; font-weight:600; text-decoration:none; cursor:pointer;
+    background:var(--panel); color:var(--fg); font-family:inherit;
+  }
+  .btn.primary{ background:var(--accent); border-color:var(--accent); color:#fff; }
+  .btn.ghost{ background:transparent; }
+  .showall-wrap{ margin-top:20px; text-align:center; }
+
+  .why{ display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+  .witem{ display:flex; flex-direction:column; gap:6px; }
+  .wname{ font-weight:700; font-size:15px; display:flex; align-items:center; gap:8px; }
+  .wmark{
+    width:22px; height:22px; border-radius:6px; flex:0 0 auto;
+    display:grid; place-items:center; background:var(--accent-soft); color:var(--accent-ink);
+    font-size:13px; font-weight:800;
+  }
+  .wtext{ color:var(--muted); font-size:13px; line-height:1.5; }
+
+  .footer{ max-width:1160px; margin:0 auto; padding:0 22px 48px; color:var(--muted); font-size:13px; }
+
+  .message-card{ text-align:center; color:var(--muted); font-size:15px; padding:44px 24px; }
+
+  .sk{
+    background:linear-gradient(90deg,var(--border) 25%,var(--ring-track) 37%,var(--border) 63%);
+    background-size:400% 100%; animation:sk 1.4s ease infinite; border-radius:8px;
+  }
+  @keyframes sk{ 0%{ background-position:100% 0; } 100%{ background-position:0 0; } }
+  .sk-num{ height:42px; width:70%; margin-bottom:12px; }
+  .sk-cap{ height:14px; width:90%; }
+  .sk-row{ height:16px; width:100%; }
+  .sk-card{ height:210px; width:100%; }
+
+  @media (max-width:980px){
+    .prospects{ grid-template-columns:repeat(2,1fr); }
+    .why{ grid-template-columns:repeat(2,1fr); }
+  }
+  @media (max-width:760px){
+    .stats{ grid-template-columns:repeat(2,1fr); }
+    .flow{ grid-template-columns:repeat(3,1fr); row-gap:22px; }
+    .flow::before{ display:none; }
+    .hero h1.pname{ font-size:26px; }
+    .hero .tagline{ font-size:16px; }
+    section.panel{ padding:18px; }
+  }
+  @media (max-width:640px){
+    .prospects{ grid-template-columns:1fr; }
+    .why{ grid-template-columns:1fr; }
+    .flow{ grid-template-columns:repeat(2,1fr); }
+    .cat{ grid-template-columns:1fr; gap:8px; }
+    .catright{ text-align:left; }
+    .stat .big{ font-size:34px; }
+  }
+
+  @media print{
+    :root{ --bg:#fff; --panel:#fff; --border:#bbb; --fg:#000; --muted:#333; --ring-track:#ddd; }
+    body{ background:#fff; }
+    .hero{ background:#fff; color:#000; border-bottom:2px solid #000; }
+    .hero .brand{ color:#000; }
+    .hero h1.pname, .hero .wsname, .hero .tagline{ color:#000; }
+    .no-print, .hero-nav, .btn, .pactions, .showall-wrap{ display:none !important; }
+    section.panel{ border:1px solid #bbb; box-shadow:none; break-inside:avoid; page-break-inside:avoid; }
+    .pcard{ break-inside:avoid; page-break-inside:avoid; }
+    .gap{ min-height:0; }
+    a{ color:#000; text-decoration:none; }
+  }
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="hero-inner">
+    <p class="brand">Leadscout</p>
+    <h1 class="pname" id="hero-name">Client overview</h1>
+    <p class="wsname" id="hero-ws">Loading workspace...</p>
+    <p class="tagline">Find the businesses that need video, know exactly what to pitch, and call them</p>
+    <nav class="hero-nav no-print" id="hero-nav" aria-label="Sections"></nav>
+  </div>
+</header>
+
+<div class="wrap" id="app">
+  <section class="panel" aria-label="Key numbers">
+    <div class="stats" id="stats">
+      <div class="stat"><div class="sk sk-num"></div><div class="sk sk-cap"></div></div>
+      <div class="stat"><div class="sk sk-num"></div><div class="sk sk-cap"></div></div>
+      <div class="stat"><div class="sk sk-num"></div><div class="sk sk-cap"></div></div>
+      <div class="stat"><div class="sk sk-num"></div><div class="sk sk-cap"></div></div>
+    </div>
+  </section>
+
+  <section class="panel" aria-label="How it works">
+    <h2 class="sec">How it works</h2>
+    <p class="secsub">From a city and a category to a call you can make today.</p>
+    <div class="flow" id="steps">
+      <div class="fstep"><div class="sk" style="width:44px;height:44px;border-radius:50%;margin:0 auto 12px"></div><div class="sk sk-row" style="width:60%;margin:0 auto"></div></div>
+      <div class="fstep"><div class="sk" style="width:44px;height:44px;border-radius:50%;margin:0 auto 12px"></div><div class="sk sk-row" style="width:60%;margin:0 auto"></div></div>
+      <div class="fstep"><div class="sk" style="width:44px;height:44px;border-radius:50%;margin:0 auto 12px"></div><div class="sk sk-row" style="width:60%;margin:0 auto"></div></div>
+      <div class="fstep"><div class="sk" style="width:44px;height:44px;border-radius:50%;margin:0 auto 12px"></div><div class="sk sk-row" style="width:60%;margin:0 auto"></div></div>
+      <div class="fstep"><div class="sk" style="width:44px;height:44px;border-radius:50%;margin:0 auto 12px"></div><div class="sk sk-row" style="width:60%;margin:0 auto"></div></div>
+      <div class="fstep"><div class="sk" style="width:44px;height:44px;border-radius:50%;margin:0 auto 12px"></div><div class="sk sk-row" style="width:60%;margin:0 auto"></div></div>
+    </div>
+  </section>
+
+  <section class="panel" aria-label="Where to aim">
+    <h2 class="sec">Where to aim</h2>
+    <p class="secsub">The categories most worth your time, ranked by average fit.</p>
+    <div id="categories">
+      <div class="cat"><div><div class="sk sk-row" style="width:60%"></div></div><div class="sk sk-row"></div><div class="sk sk-row" style="width:80px"></div></div>
+      <div class="cat"><div><div class="sk sk-row" style="width:60%"></div></div><div class="sk sk-row"></div><div class="sk sk-row" style="width:80px"></div></div>
+      <div class="cat"><div><div class="sk sk-row" style="width:60%"></div></div><div class="sk sk-row"></div><div class="sk sk-row" style="width:80px"></div></div>
+    </div>
+  </section>
+
+  <section class="panel" aria-label="Best prospects">
+    <h2 class="sec">Best prospects</h2>
+    <p class="secsub">Your strongest prospects first, with the exact thing to pitch.</p>
+    <div class="prospects" id="prospects">
+      <div class="sk sk-card"></div>
+      <div class="sk sk-card"></div>
+      <div class="sk sk-card"></div>
+    </div>
+    <div class="showall-wrap no-print" id="showall-wrap" hidden>
+      <button class="btn ghost" id="showall" type="button">Show all prospects</button>
+    </div>
+  </section>
+
+  <section class="panel" aria-label="What you get">
+    <h2 class="sec">What you get</h2>
+    <div class="why" id="why">
+      <div class="witem"><div class="wname"><span class="wmark">1</span>Contact details checked</div><div class="wtext">Phone and email are checked before a business reaches your list.</div></div>
+      <div class="witem"><div class="wname"><span class="wmark">2</span>Evidence behind every claim</div><div class="wtext">Every line in a brief points back to a real source, never a guess.</div></div>
+      <div class="witem"><div class="wname"><span class="wmark">3</span>Call log with notes</div><div class="wtext">Record what was said, set the next step, keep the whole history.</div></div>
+      <div class="witem"><div class="wname"><span class="wmark">4</span>Any industry, any city</div><div class="wtext">Point it at a category and a place; the platform adapts, no rebuild.</div></div>
+    </div>
+  </section>
+</div>
+
+<footer class="footer">
+  <span id="footer-date">Generated just now</span>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+
+  var params = new URLSearchParams(window.location.search);
+  var WS = params.get("ws") || "";
+
+  var dossierCache = {};
+  var state = { leads: [] };
+  var evidence = {};
+
+  var SOCIALS = [
+    { key: "instagram", label: "Instagram" },
+    { key: "youtube", label: "YouTube" },
+    { key: "facebook", label: "Facebook" },
+    { key: "linkedin", label: "LinkedIn" },
+    { key: "whatsapp", label: "WhatsApp" }
+  ];
+
+  function esc(v){
+    return String(v === null || v === undefined ? "" : v).replace(/[&<>"']/g, function(c){
+      return { "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[c];
+    });
+  }
+  function num(v){ var n = Number(v); return isFinite(n) ? n : 0; }
+  function el(tag, cls, text){
+    var n = document.createElement(tag);
+    if (cls) n.className = cls;
+    if (text !== undefined && text !== null) n.textContent = String(text);
+    return n;
+  }
+  function clear(node){ while (node && node.firstChild) node.removeChild(node.firstChild); }
+  function setText(id, value){ var n = document.getElementById(id); if (n) n.textContent = String(value === null || value === undefined ? "" : value); }
+
+  function firstSentence(input){
+    var t = String(input === null || input === undefined ? "" : input).trim();
+    if (!t) return "";
+    var m = t.match(/^[^.!?]*[.!?]/);
+    return m ? m[0].trim() : t;
+  }
+  function isNoGap(headline){
+    var t = String(headline === null || headline === undefined ? "" : headline).trim();
+    return t === "" || /no evidenced gap/i.test(t);
+  }
+  function pluralise(word){
+    var w = String(word || "");
+    if (!w) return w;
+    if (/[^aeiou]y$/i.test(w)) return w.slice(0, -1) + "ies";
+    if (/(s|x|z|ch|sh)$/i.test(w)) return w + "es";
+    return w + "s";
+  }
+  function friendlyCategory(id){
+    var t = String(id === null || id === undefined ? "" : id).trim();
+    if (!t) return "Uncategorised";
+    t = t.replace(/[-_]+/g, " ").replace(/\s+/g, " ").trim();
+    var words = t.split(" ");
+    var last = words[words.length - 1];
+    var already = /s$/i.test(last) && !/(ss)$/i.test(last);
+    words[words.length - 1] = already ? last : pluralise(last.toLowerCase());
+    words[0] = words[0].charAt(0).toUpperCase() + words[0].slice(1);
+    return words.join(" ");
+  }
+  var SERVICE_LABELS = {
+    "property-walkthrough": "Property walkthrough film",
+    "social-reels": "Social reels",
+    "brand-film": "Brand film",
+    "wedding-event-film": "Wedding and event film",
+    "product-shoot": "Product shoot"
+  };
+  function serviceLabel(id){
+    var t = String(id === null || id === undefined ? "" : id).trim();
+    if (!t) return "";
+    if (SERVICE_LABELS[t]) return SERVICE_LABELS[t];
+    return t.replace(/[-_]+/g, " ").replace(/\s+/g, " ").trim().split(" ").map(function(w){
+      return w ? w.charAt(0).toUpperCase() + w.slice(1) : w;
+    }).join(" ");
+  }
+  function initials(name){
+    var parts = String(name || "").trim().split(/\s+/).filter(Boolean);
+    if (!parts.length) return "?";
+    var a = parts[0].charAt(0);
+    var b = parts.length > 1 ? parts[parts.length - 1].charAt(0) : "";
+    return (a + b).toUpperCase();
+  }
+  function telHref(phone){ return "tel:" + String(phone || "").replace(/[^0-9+]/g, ""); }
+
+  function cleanPlace(value){
+    var t = String(value === null || value === undefined ? "" : value).trim();
+    if (!t) return "";
+    t = t.replace(/,\s*India\s*$/i, "");
+    var parts = t.split(",").map(function(s){ return s.trim(); }).filter(Boolean);
+    var out = [];
+    for (var i = 0; i < parts.length; i++) {
+      if (i > 0 && parts[i].toLowerCase() === parts[i - 1].toLowerCase()) continue;
+      out.push(parts[i]);
+    }
+    return out.join(", ");
+  }
+  function linkValue(v){
+    if (v === null || v === undefined) return "";
+    if (typeof v === "string") return v.trim();
+    if (typeof v === "object") return String(v.url || v.link || v.href || "").trim();
+    return "";
+  }
+  function socialUrl(socials, key){
+    if (!socials) return "";
+    if (Array.isArray(socials)) {
+      for (var i = 0; i < socials.length; i++) {
+        var entry = socials[i];
+        if (!entry) continue;
+        var k = String(entry.network || entry.type || entry.platform || "").trim().toLowerCase();
+        if (k === key) return linkValue(entry);
+      }
+      return "";
+    }
+    if (typeof socials === "object") return linkValue(socials[key]);
+    return "";
+  }
+  function websiteUrl(ev){
+    if (!ev) return "";
+    return linkValue(ev.website) || linkValue(ev.site);
+  }
+  function toList(v){
+    if (Array.isArray(v)) {
+      return v.filter(function(x){ return x !== null && x !== undefined && String(x).trim() !== ""; });
+    }
+    if (v === null || v === undefined || String(v).trim() === "") return [];
+    return [v];
+  }
+  function presentNetworks(ev){
+    var names = [];
+    if (!ev) return names;
+    for (var i = 0; i < SOCIALS.length; i++) {
+      if (socialUrl(ev.socials, SOCIALS[i].key)) names.push(SOCIALS[i].label);
+    }
+    return names;
+  }
+  function listPhrase(items){
+    if (!items.length) return "";
+    if (items.length === 1) return items[0];
+    if (items.length === 2) return items[0] + " and " + items[1];
+    return items.slice(0, -1).join(", ") + " and " + items[items.length - 1];
+  }
+  function evidenceSentence(lead, ev){
+    var name = (lead && lead.name) ? String(lead.name) : "This business";
+    var label = serviceLabel(lead && lead.topService).toLowerCase() || "short video";
+    var nets = presentNetworks(ev);
+    if (nets.length) {
+      return name + " is on " + listPhrase(nets) + ". A " + label + " would give them fresh video to post there.";
+    }
+    return name + " has a website but no social channel linked. A " + label + " would give them a first piece of video to lead with.";
+  }
+  function evidenceChipsHtml(ev){
+    if (!ev) return "";
+    var parts = [];
+    for (var i = 0; i < SOCIALS.length; i++) {
+      var url = socialUrl(ev.socials, SOCIALS[i].key);
+      if (url) parts.push('<a class="echip" href="' + esc(url) + '" target="_blank" rel="noopener noreferrer">' + esc(SOCIALS[i].label) + "</a>");
+    }
+    var phones = toList(ev.phones);
+    if (!phones.length) phones = toList(ev.phone);
+    if (phones.length) parts.push('<span class="echip">' + esc(phones.length + (phones.length === 1 ? " phone number" : " phone numbers")) + "</span>");
+    var emails = toList(ev.emails);
+    if (!emails.length) emails = toList(ev.email);
+    if (emails.length) parts.push('<span class="echip">' + esc(emails.length + (emails.length === 1 ? " email" : " emails")) + "</span>");
+    var site = websiteUrl(ev);
+    if (site) parts.push('<a class="echip" href="' + esc(site) + '" target="_blank" rel="noopener noreferrer">Website</a>');
+    if (!parts.length) return "";
+    return '<div class="echips">' + parts.join("") + "</div>";
+  }
+
+  function getJson(path){
+    return fetch(path, { headers: { "accept": "application/json" } }).then(function(res){
+      return res.text().then(function(t){
+        var body = null;
+        try { body = t ? JSON.parse(t) : null; } catch (e) { body = null; }
+        return { status: res.status, body: body };
+      });
+    });
+  }
+
+  function loadDossier(leadId){
+    if (Object.prototype.hasOwnProperty.call(dossierCache, leadId)) {
+      return Promise.resolve(dossierCache[leadId]);
+    }
+    var path = "/api/workspaces/" + encodeURIComponent(WS) + "/leads/" + encodeURIComponent(leadId) + "/dossier";
+    return getJson(path).then(function(res){
+      var body = (res.status === 200 && res.body) ? res.body : null;
+      dossierCache[leadId] = body;
+      return body;
+    }).catch(function(){ dossierCache[leadId] = null; return null; });
+  }
+
+  function loadEvidence(){
+    var path = "/api/workspaces/" + encodeURIComponent(WS) + "/leads?limit=100";
+    return getJson(path).then(function(res){
+      var body = res && res.body;
+      var list = Array.isArray(body) ? body : (body && Array.isArray(body.leads) ? body.leads : []);
+      var map = {};
+      for (var i = 0; i < list.length; i++) {
+        var l = list[i];
+        if (l && l.id !== null && l.id !== undefined) map[String(l.id)] = l;
+      }
+      return map;
+    }).catch(function(){ return {}; });
+  }
+
+  function gapFromDossier(lead, dossier, ev){
+    var gapText = dossier && dossier.gap && dossier.gap.headline ? dossier.gap.headline.value : "";
+    var s1 = firstSentence(gapText);
+    if (s1) return { text: s1, muted: false };
+    var offer = dossier && Array.isArray(dossier.offers) && dossier.offers.length ? dossier.offers[0] : null;
+    var reason = offer && offer.whyItMatters ? offer.whyItMatters.value : "";
+    var s2 = firstSentence(reason);
+    if (s2) return { text: s2, muted: false };
+    var pitch = dossier && dossier.sayThis ? dossier.sayThis.value : "";
+    var s3 = firstSentence(pitch);
+    if (s3) return { text: s3, muted: true };
+    return { text: evidenceSentence(lead, ev), muted: true };
+  }
+
+  function fillGap(node, lead, ev){
+    var headline = String(lead.gapHeadline === null || lead.gapHeadline === undefined ? "" : lead.gapHeadline).trim();
+    if (headline && !isNoGap(headline)) {
+      node.className = "gap";
+      node.textContent = firstSentence(headline) || headline;
+      return;
+    }
+    node.className = "gap muted";
+    node.textContent = evidenceSentence(lead, ev);
+    loadDossier(lead.id).then(function(dossier){
+      var g = gapFromDossier(lead, dossier, ev);
+      node.className = g.muted ? "gap muted" : "gap";
+      node.textContent = g.text;
+    });
+  }
+
+  function buildCard(lead, ev){
+    var card = el("article", "pcard");
+
+    var head = el("div", "phead");
+    head.appendChild(el("div", "avatar", initials(lead.name)));
+    var title = el("div", "ptitle");
+    title.appendChild(el("h3", "pname", lead.name || "Unnamed business"));
+    var metaBits = [];
+    if (lead.category) metaBits.push(friendlyCategory(lead.category));
+    if (lead.area) metaBits.push(cleanPlace(lead.area));
+    title.appendChild(el("p", "pmeta", metaBits.join("  \u00b7  ")));
+    if (ev) {
+      var chipsHtml = evidenceChipsHtml(ev);
+      if (chipsHtml) {
+        var chipsBox = el("div", "pevidence");
+        chipsBox.innerHTML = chipsHtml;
+        if (chipsBox.firstChild) title.appendChild(chipsBox.firstChild);
+      }
+    }
+    head.appendChild(title);
+
+    var pct = Math.max(0, Math.min(100, num(lead.score)));
+    var ring = el("div", "ring");
+    ring.setAttribute("style", "--v:" + pct);
+    ring.setAttribute("aria-label", "Best-fit score " + num(lead.score));
+    ring.setAttribute("title", "Best-fit score " + num(lead.score));
+    ring.appendChild(el("span", null, String(num(lead.score))));
+    head.appendChild(ring);
+    card.appendChild(head);
+
+    var label = serviceLabel(lead.topService);
+    if (label) card.appendChild(el("span", "chip", label));
+
+    var gap = el("p", "gap");
+    card.appendChild(gap);
+    fillGap(gap, lead, ev);
+
+    var actions = el("div", "pactions no-print");
+    var brief = el("a", "btn primary", "Open pitch brief");
+    brief.setAttribute("href", "brief.html?ws=" + encodeURIComponent(WS) + "&lead=" + encodeURIComponent(lead.id));
+    actions.appendChild(brief);
+    if (lead.phone) {
+      var call = el("a", "btn ghost", "Call");
+      call.setAttribute("href", telHref(lead.phone));
+      actions.appendChild(call);
+    }
+    card.appendChild(actions);
+    return card;
+  }
+
+  function renderProspects(list){
+    var grid = document.getElementById("prospects");
+    if (!grid) return;
+    clear(grid);
+    if (!list.length) {
+      grid.appendChild(el("p", "message-card", "No prospects to show yet."));
+      return;
+    }
+    for (var i = 0; i < list.length; i++) grid.appendChild(buildCard(list[i], evidence[String(list[i].id)] || null));
+  }
+
+  function sortLeads(list){
+    return list.slice().sort(function(a, b){
+      return num(b.score) - num(a.score) || String(a.name).localeCompare(String(b.name));
+    });
+  }
+
+  function renderStats(data){
+    var f = data.funnel || {};
+    var top = Array.isArray(data.topLeads) ? data.topLeads : [];
+    var best = 0;
+    for (var i = 0; i < top.length; i++) best = Math.max(best, num(top[i].score));
+    var items = [
+      { v: num(f.discovered), c: "Businesses found" },
+      { v: num(f.dossierReady), c: "Pitch briefs ready" },
+      { v: num(f.contactable), c: "Reachable by phone or email" },
+      { v: best, c: "Best-fit score" }
+    ];
+    var stats = document.getElementById("stats");
+    if (!stats) return;
+    clear(stats);
+    for (var j = 0; j < items.length; j++) {
+      var card = el("div", "stat");
+      card.appendChild(el("div", "big", String(items[j].v)));
+      card.appendChild(el("div", "cap", items[j].c));
+      stats.appendChild(card);
+    }
+  }
+
+  function renderFlow(data){
+    var f = data.funnel || {};
+    var calls = Array.isArray(data.recentCalls) ? data.recentCalls.length : 0;
+    var steps = [
+      { k: "Find", n: num(f.discovered), d: "Finds real local businesses in any city and category from public sources." },
+      { k: "Understand", n: num(f.understood), d: "Reads each business's pages and builds a plain-English profile." },
+      { k: "Score", n: num(f.scored), d: "Ranks every business on how well it fits your offer." },
+      { k: "Brief", n: num(f.dossierReady), d: "Writes a short brief with the gap, the offer and the price." },
+      { k: "Call", n: num(f.contactable), d: "Gives you the number and the opener so you can call right away." },
+      { k: "Learn", n: calls, d: "Logs each call and its outcome so the next pitch gets sharper." }
+    ];
+    var flow = document.getElementById("steps");
+    if (!flow) return;
+    clear(flow);
+    for (var i = 0; i < steps.length; i++) {
+      var step = el("div", "fstep");
+      step.appendChild(el("div", "fdot", String(steps[i].n)));
+      step.appendChild(el("div", "fk", steps[i].k));
+      step.appendChild(el("div", "fd", steps[i].d));
+      flow.appendChild(step);
+    }
+  }
+
+  function renderCategories(data){
+    var rows = Array.isArray(data.categories) ? data.categories.slice() : [];
+    var host = document.getElementById("categories");
+    if (!host) return;
+    clear(host);
+    rows.sort(function(a, b){
+      return num(b.avgScore) - num(a.avgScore) || String(a.category).localeCompare(String(b.category));
+    });
+    if (!rows.length) {
+      host.appendChild(el("p", "message-card", "No categories to show yet."));
+      return;
+    }
+    for (var i = 0; i < rows.length; i++) {
+      var c = rows[i];
+      var row = el("div", "cat");
+
+      var left = el("div");
+      left.appendChild(el("div", "cname", friendlyCategory(c.category)));
+      left.appendChild(el("div", "csub", num(c.leads) + (num(c.leads) === 1 ? " business" : " businesses")));
+      row.appendChild(left);
+
+      var pct = Math.max(0, Math.min(100, num(c.avgScore)));
+      var mid = el("div", "catmid");
+      var track = el("div", "catrack");
+      var bar = el("span");
+      bar.setAttribute("style", "width:" + pct + "%");
+      track.appendChild(bar);
+      mid.appendChild(track);
+      mid.appendChild(el("span", "catscore", String(num(c.avgScore))));
+      row.appendChild(mid);
+
+      var right = el("div", "catright");
+      var label = serviceLabel(c.topService);
+      if (label) right.appendChild(el("span", "chip", label));
+      else right.appendChild(el("span", "csub", "No service set"));
+      row.appendChild(right);
+
+      host.appendChild(row);
+    }
+  }
+
+  function normalizeLead(l){
+    var fit = Array.isArray(l.fit) && l.fit.length ? l.fit[0] : null;
+    var phone = l.phone || (Array.isArray(l.phones) && l.phones.length ? l.phones[0] : "");
+    return {
+      id: l.id,
+      name: l.name,
+      category: l.category,
+      area: cleanPlace(l.area || l.city || ""),
+      score: num(l.score),
+      topService: l.topService || (fit ? fit.service : ""),
+      gapHeadline: l.gapHeadline || "",
+      phone: phone || ""
+    };
+  }
+
+  function showAllControl(total){
+    var wrap = document.getElementById("showall-wrap");
+    if (!wrap) return;
+    if (total > state.leads.length) wrap.hidden = false;
+    else wrap.hidden = true;
+  }
+
+  function loadAll(){
+    var btn = document.getElementById("showall");
+    if (!btn) return;
+    btn.disabled = true;
+    btn.textContent = "Loading all prospects...";
+    var path = "/api/workspaces/" + encodeURIComponent(WS) + "/leads?sort=score&limit=500&offset=0";
+    getJson(path).then(function(res){
+      if (res.status !== 200 || !res.body || !Array.isArray(res.body.leads)) {
+        btn.disabled = false;
+        btn.textContent = "Show all prospects";
+        return;
+      }
+      var map = {};
+      state.leads.forEach(function(l){ map[l.id] = l; });
+      res.body.leads.forEach(function(l){
+        var n = normalizeLead(l);
+        if (n.id && !map[n.id]) map[n.id] = n;
+      });
+      state.leads = sortLeads(Object.keys(map).map(function(k){ return map[k]; }));
+      renderProspects(state.leads);
+      document.getElementById("showall-wrap").hidden = true;
+    }).catch(function(){
+      btn.disabled = false;
+      btn.textContent = "Show all prospects";
+    });
+  }
+
+  function errorCard(message){
+    var app = document.getElementById("app");
+    clear(app);
+    var section = el("section", "panel");
+    var card = el("div", "message-card", message);
+    section.appendChild(card);
+    app.appendChild(section);
+    setText("hero-ws", message);
+  }
+
+  function renderHero(data){
+    var ws = data.workspace || {};
+    setText("hero-ws", ws.name || "Workspace");
+    document.title = (ws.name ? ws.name + " - " : "") + "Client overview - Leadscout";
+    var nav = document.getElementById("hero-nav");
+    if (!nav) return;
+    clear(nav);
+    var id = ws.id || WS;
+    var leads = el("a", null, "Leads");
+    leads.setAttribute("href", "index.html");
+    nav.appendChild(leads);
+    var brief = el("a", null, "Pitch brief");
+    brief.setAttribute("href", "dossier.html?ws=" + encodeURIComponent(id));
+    nav.appendChild(brief);
+    var calls = el("a", null, "Call desk");
+    calls.setAttribute("href", "calls.html?ws=" + encodeURIComponent(id));
+    nav.appendChild(calls);
+  }
+
+  function renderData(data){
+    state.leads = sortLeads(Array.isArray(data.topLeads) ? data.topLeads : []).slice(0, 12);
+    renderHero(data);
+    renderStats(data);
+    renderFlow(data);
+    renderCategories(data);
+    renderProspects(state.leads);
+    var total = num((data.counts || {}).leads);
+    showAllControl(total);
+  }
+
+  function showShowcase(){
+    var evidencePromise = loadEvidence();
+    getJson("/api/workspaces/" + encodeURIComponent(WS) + "/showcase").then(function(res){
+      if (res.status === 404) {
+        errorCard("This workspace was not found. Check the link and try again.");
+        return;
+      }
+      if (res.status !== 200 || !res.body) {
+        errorCard("We could not load this overview right now. Check the connection and reload.");
+        return;
+      }
+      if (num((res.body.counts || {}).leads) === 0) {
+        errorCard("No businesses have been found for this workspace yet. Run a search, then open this page again.");
+        return;
+      }
+      evidencePromise.then(function(map){
+        evidence = map;
+        renderData(res.body);
+      });
+    }).catch(function(){
+      errorCard("We could not load this overview right now. Check the connection and reload.");
+    });
+  }
+
+  function showPicker(){
+    var app = document.getElementById("app");
+    clear(app);
+    setText("hero-ws", "Choose a workspace");
+    var panel = el("section", "panel");
+    var loading = el("p", "message-card", "Loading workspaces...");
+    panel.appendChild(loading);
+    app.appendChild(panel);
+    getJson("/api/workspaces").then(function(res){
+      clear(panel);
+      if (res.status !== 200 || !Array.isArray(res.body)) {
+        panel.appendChild(el("p", "message-card", "Could not load the workspace list. Open this page from the Leadscout server."));
+        return;
+      }
+      if (!res.body.length) {
+        panel.appendChild(el("p", "message-card", "No workspaces yet. Create one on the Leads page, then come back."));
+        return;
+      }
+      panel.appendChild(el("h2", "sec", "Workspaces"));
+      var list = el("div");
+      list.setAttribute("style", "margin-top:14px;display:flex;flex-direction:column;gap:10px;");
+      res.body.forEach(function(w){
+        var link = el("a", "btn ghost", w.name || w.id);
+        link.setAttribute("href", "showcase2.html?ws=" + encodeURIComponent(w.id));
+        link.setAttribute("style", "align-self:flex-start;font-size:15px;");
+        list.appendChild(link);
+      });
+      panel.appendChild(list);
+    }).catch(function(){
+      clear(panel);
+      panel.appendChild(el("p", "message-card", "Could not load the workspace list. Check the connection and reload."));
+    });
+  }
+
+  var showAllBtn = document.getElementById("showall");
+  if (showAllBtn) showAllBtn.addEventListener("click", loadAll);
+
+  try {
+    setText("footer-date", "Generated " + new Date().toLocaleString());
+  } catch (e) {
+    setText("footer-date", "Generated today");
+  }
+
+  if (WS) showShowcase();
+  else showPicker();
+})();
+</script>
+</body>
+</html>

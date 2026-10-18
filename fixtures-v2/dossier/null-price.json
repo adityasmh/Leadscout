@@ -1,0 +1,67 @@
+{
+  "name": "null price fixture",
+  "expected": { "nullPriceService": "website-redesign" },
+  "input": {
+    "lead": {
+      "id": "lead-null-price",
+      "workspaceId": "ws-test",
+      "name": "Fixture Null Price School",
+      "category": "school",
+      "city": "Testpur",
+      "country": "India",
+      "source": "fixture",
+      "sourceUrl": "https://fixture-nullprice.example.com/",
+      "summary": "Fake school where the selected service has a null price.",
+      "emails": ["info@fixture-nullprice.example.com"],
+      "phones": ["+91 98765 43218"],
+      "socials": {},
+      "signals": ["outdated-copyright", "has-phone", "has-email"],
+      "score": 64,
+      "fit": [
+        { "service": "website-redesign", "score": 80, "reason": "outdated copyright" }
+      ],
+      "angle": "",
+      "status": "new",
+      "notes": "",
+      "createdAt": "2026-10-07T00:00:00.000Z"
+    },
+    "evidence": [
+      {
+        "id": "E1",
+        "kind": "page-text",
+        "url": "https://fixture-nullprice.example.com/",
+        "quote": "Copyright 2016 Fixture Null Price School. All rights reserved.",
+        "field": "signal:outdated-copyright",
+        "fetchedAt": "2026-10-07T00:00:00.000Z"
+      }
+    ],
+    "facts": {},
+    "score": { "total": 64, "fit": 80, "reach": 80, "timing": 50, "gate": "template", "reasons": [] },
+    "priceBook": {
+      "workspaceId": "ws-test",
+      "version": 9,
+      "updatedAt": "2026-10-07T00:00:00.000Z",
+      "items": [
+        { "service": "website-redesign", "label": "Website redesign", "description": "Refresh and modernise an existing website.", "buildDays": [4, 8], "price": null, "assumption": "Price not set yet; final quote after a short call.", "doorOpener": false }
+      ]
+    },
+    "explainer": {
+      "id": "explainer-school-in-en",
+      "category": "school",
+      "country": "India",
+      "language": "en",
+      "howItWorks": ["Parents visit the site for admission forms and contact details."],
+      "whereAutomationHelps": [
+        { "service": "website-redesign", "point": "A fresh design signals the school is active and approachable." }
+      ],
+      "promptVersion": "2026-10-07-1",
+      "tokensIn": 0,
+      "tokensOut": 0,
+      "createdAt": "2026-10-07T00:00:00.000Z",
+      "reviewed": true
+    },
+    "workspaceName": "Test Workspace",
+    "offer": { "services": ["website-redesign"], "description": "Test offer" },
+    "senderName": "Test Sender"
+  }
+}

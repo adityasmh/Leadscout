@@ -1,0 +1,23 @@
+{
+  "name": "osm-bizkey",
+  "raw": {
+    "name": "Fixture School 02",
+    "category": "school",
+    "city": "Navi Mumbai",
+    "country": "IN",
+    "phone": "+91 98765 43211",
+    "source": "osm",
+    "sourceUrl": "https://www.openstreetmap.org/way/222222222"
+  },
+  "enrichment": {
+    "summary": "Fixture school for testing.",
+    "emails": [],
+    "phones": ["+919876543211"],
+    "socials": {},
+    "signals": []
+  },
+  "pages": [],
+  "expected": {
+    "bizKey": "osm:way/222222222"
+  }
+}

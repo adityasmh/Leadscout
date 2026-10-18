@@ -1,0 +1,86 @@
+{
+  "name": "tie fixture (first-match-wins)",
+  "expected": { "tag": "LEAKING", "evidence": ["E2"] },
+  "input": {
+    "lead": {
+      "id": "lead-tie",
+      "workspaceId": "ws-test",
+      "name": "Fixture Tie Salon",
+      "category": "salon",
+      "city": "Testpur",
+      "country": "India",
+      "source": "fixture",
+      "sourceUrl": "https://fixture-tie.example.com/",
+      "summary": "Fake salon with both leaking and outdated signals.",
+      "emails": ["book@fixture-tie.example.com"],
+      "phones": ["+91 98765 43215"],
+      "socials": {},
+      "signals": ["appointment-based", "no-online-booking", "outdated-copyright", "has-phone", "has-email"],
+      "score": 72,
+      "fit": [
+        { "service": "booking-system", "score": 80, "reason": "no booking" },
+        { "service": "website-redesign", "score": 70, "reason": "outdated" }
+      ],
+      "angle": "",
+      "status": "new",
+      "notes": "",
+      "createdAt": "2026-10-07T00:00:00.000Z"
+    },
+    "evidence": [
+      {
+        "id": "E1",
+        "kind": "page-text",
+        "url": "https://fixture-tie.example.com/",
+        "quote": "Call us to book your salon appointment.",
+        "field": "signal:appointment-based",
+        "fetchedAt": "2026-10-07T00:00:00.000Z"
+      },
+      {
+        "id": "E2",
+        "kind": "absence",
+        "url": "https://fixture-tie.example.com/",
+        "quote": "Checked home, services and contact pages; no online booking widget found.",
+        "field": "signal:no-online-booking",
+        "fetchedAt": "2026-10-07T00:00:00.000Z"
+      },
+      {
+        "id": "E3",
+        "kind": "page-text",
+        "url": "https://fixture-tie.example.com/",
+        "quote": "Copyright 2018 Fixture Tie Salon. All rights reserved.",
+        "field": "signal:outdated-copyright",
+        "fetchedAt": "2026-10-07T00:00:00.000Z"
+      }
+    ],
+    "facts": {},
+    "score": { "total": 72, "fit": 80, "reach": 80, "timing": 50, "gate": "template", "reasons": [] },
+    "priceBook": {
+      "workspaceId": "ws-test",
+      "version": 6,
+      "updatedAt": "2026-10-07T00:00:00.000Z",
+      "items": [
+        { "service": "booking-system", "label": "Booking system", "description": "Add online booking and appointment scheduling.", "buildDays": [4, 7], "price": { "currency": "INR", "min": 15000, "max": 25000 }, "assumption": "Final quote after a short call.", "doorOpener": false },
+        { "service": "website-redesign", "label": "Website redesign", "description": "Refresh and modernise an existing website.", "buildDays": [4, 8], "price": { "currency": "INR", "min": 12000, "max": 22000 }, "assumption": "Final quote after a short call.", "doorOpener": false }
+      ]
+    },
+    "explainer": {
+      "id": "explainer-salon-in-en",
+      "category": "salon",
+      "country": "India",
+      "language": "en",
+      "howItWorks": ["Clients call or message to book a slot."],
+      "whereAutomationHelps": [
+        { "service": "booking-system", "point": "Self-booking removes phone tag and no-shows." },
+        { "service": "website-redesign", "point": "A fresh look brings new clients through the door." }
+      ],
+      "promptVersion": "2026-10-07-1",
+      "tokensIn": 0,
+      "tokensOut": 0,
+      "createdAt": "2026-10-07T00:00:00.000Z",
+      "reviewed": true
+    },
+    "workspaceName": "Test Workspace",
+    "offer": { "services": ["booking-system", "website-redesign"], "description": "Test offer" },
+    "senderName": "Test Sender"
+  }
+}

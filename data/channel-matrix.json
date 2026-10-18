@@ -1,0 +1,107 @@
+{
+  "probedAt": "2026-10-12T14:11:06.763Z",
+  "category": "event-company",
+  "city": "Mumbai",
+  "rows": [
+    {
+      "adapter": "ch-wedmegood",
+      "verdict": "SEARCH-LIMITED",
+      "route": "retry-later",
+      "leads": 3,
+      "validLeads": 3,
+      "fields": 7,
+      "searchBackend": "exa_search",
+      "reason": "search backend exa_search hit its limit (429); not a site block",
+      "probeTime": "2026-10-12T14:10:26.982Z"
+    },
+    {
+      "adapter": "ch-weddingwire-in",
+      "verdict": "SEARCH-LIMITED",
+      "route": "retry-later",
+      "leads": 3,
+      "validLeads": 3,
+      "fields": 9,
+      "searchBackend": "exa_search",
+      "reason": "search backend exa_search hit its limit (429); not a site block",
+      "probeTime": "2026-10-12T14:10:32.855Z"
+    },
+    {
+      "adapter": "ch-weddingsutra",
+      "verdict": "NOT-APPLICABLE",
+      "route": "skip",
+      "leads": 0,
+      "validLeads": 0,
+      "fields": 0,
+      "reason": "adapter does not list this category",
+      "probeTime": "2026-10-12T14:06:36.337Z"
+    },
+    {
+      "adapter": "ch-venues",
+      "verdict": "BLOCKED",
+      "route": "vps-browser",
+      "leads": 3,
+      "validLeads": 3,
+      "fields": 10,
+      "searchBackend": "exa_search",
+      "reason": "blocked on page (empty)",
+      "blocked": {
+        "kind": "empty",
+        "on": "page"
+      },
+      "probeTime": "2026-10-12T14:06:36.337Z"
+    },
+    {
+      "adapter": "ch-expos-awards",
+      "verdict": "SEARCH-LIMITED",
+      "route": "retry-later",
+      "leads": 0,
+      "validLeads": 0,
+      "fields": 0,
+      "searchBackend": "exa_search",
+      "reason": "search backend exa_search hit its limit (429); not a site block",
+      "probeTime": "2026-10-12T14:10:40.773Z"
+    },
+    {
+      "adapter": "ch-event-organisers",
+      "verdict": "SEARCH-LIMITED",
+      "route": "retry-later",
+      "leads": 0,
+      "validLeads": 0,
+      "fields": 0,
+      "searchBackend": "exa_search",
+      "reason": "search backend exa_search hit its limit (429); not a site block",
+      "probeTime": "2026-10-12T14:10:52.149Z"
+    },
+    {
+      "adapter": "ch-instagram-vendors",
+      "verdict": "BLOCKED",
+      "route": "vps-browser",
+      "leads": 0,
+      "validLeads": 0,
+      "fields": 0,
+      "reason": "blocked on page (403)",
+      "blocked": {
+        "kind": "403",
+        "on": "page"
+      },
+      "probeTime": "2026-10-12T14:07:24.484Z"
+    },
+    {
+      "adapter": "ch-websearch-discovery",
+      "verdict": "SEARCH-LIMITED",
+      "route": "retry-later",
+      "leads": 0,
+      "validLeads": 0,
+      "fields": 0,
+      "searchBackend": "exa_search",
+      "reason": "search backend exa_search hit its limit (429); not a site block",
+      "probeTime": "2026-10-12T14:11:06.763Z"
+    }
+  ],
+  "searchQuota": [
+    {
+      "backend": "exa_search",
+      "limitedCalls": 22
+    }
+  ]
+}

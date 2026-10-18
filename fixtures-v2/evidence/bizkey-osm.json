@@ -1,0 +1,14 @@
+{
+  "name": "bizKey OSM id priority",
+  "raw": {
+    "name": "Fixture OSM Bakery",
+    "category": "bakery",
+    "city": "Testville",
+    "country": "IN",
+    "phone": "+91 98765 43210",
+    "source": "osm",
+    "sourceUrl": "https://www.openstreetmap.org/node/1234567890"
+  },
+  "phonesE164": ["+919876543210"],
+  "expected": { "bizKey": "osm:node/1234567890" }
+}

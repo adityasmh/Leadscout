@@ -1,0 +1,82 @@
+{
+  "name": "offers bounds fixture",
+  "expected": { "maxOffers": 5, "maxDoorOpeners": 1, "doorOpenerService": "free-audit" },
+  "input": {
+    "lead": {
+      "id": "lead-offers-bounds",
+      "workspaceId": "ws-test",
+      "name": "Fixture Bounds Restaurant",
+      "category": "restaurant",
+      "city": "Testpur",
+      "country": "India",
+      "source": "fixture",
+      "sourceUrl": "https://fixture-bounds.example.com/",
+      "summary": "Fake restaurant with more fit services than the offer limit.",
+      "emails": ["eat@fixture-bounds.example.com"],
+      "phones": ["+91 98765 43219"],
+      "socials": {},
+      "signals": ["no-online-booking", "appointment-based", "has-phone", "has-email", "no-chat-widget"],
+      "score": 78,
+      "fit": [
+        { "service": "booking-system", "score": 85, "reason": "no booking" },
+        { "service": "automation", "score": 70, "reason": "appointment-based" },
+        { "service": "ai-chatbot", "score": 65, "reason": "no chat widget" },
+        { "service": "crm-setup", "score": 55, "reason": "high enquiries" },
+        { "service": "website", "score": 50, "reason": "site exists" },
+        { "service": "free-audit", "score": 40, "reason": "general gap" }
+      ],
+      "angle": "",
+      "status": "new",
+      "notes": "",
+      "createdAt": "2026-10-07T00:00:00.000Z"
+    },
+    "evidence": [
+      {
+        "id": "E1",
+        "kind": "absence",
+        "url": "https://fixture-bounds.example.com/",
+        "quote": "Checked menu and reservation pages; no online booking widget found.",
+        "field": "signal:no-online-booking",
+        "fetchedAt": "2026-10-07T00:00:00.000Z"
+      }
+    ],
+    "facts": {},
+    "score": { "total": 78, "fit": 85, "reach": 80, "timing": 50, "gate": "template", "reasons": [] },
+    "priceBook": {
+      "workspaceId": "ws-test",
+      "version": 10,
+      "updatedAt": "2026-10-07T00:00:00.000Z",
+      "items": [
+        { "service": "booking-system", "label": "Booking system", "description": "Add online booking and appointment scheduling.", "buildDays": [4, 7], "price": { "currency": "INR", "min": 15000, "max": 25000 }, "assumption": "Final quote after a short call.", "doorOpener": false },
+        { "service": "automation", "label": "Automation", "description": "Connect tools and automate repetitive workflows.", "buildDays": [3, 6], "price": { "currency": "INR", "min": 20000, "max": 35000 }, "assumption": "Final quote after a short call.", "doorOpener": false },
+        { "service": "ai-chatbot", "label": "AI chatbot", "description": "Add an AI chatbot to answer enquiries 24/7.", "buildDays": [2, 4], "price": { "currency": "INR", "min": 18000, "max": 30000 }, "assumption": "Final quote after a short call.", "doorOpener": false },
+        { "service": "crm-setup", "label": "CRM setup", "description": "Set up a CRM to track leads and customers.", "buildDays": [3, 5], "price": { "currency": "INR", "min": 10000, "max": 18000 }, "assumption": "Final quote after a short call.", "doorOpener": false },
+        { "service": "website", "label": "Website", "description": "A new website built for the business.", "buildDays": [5, 10], "price": { "currency": "INR", "min": 15000, "max": 25000 }, "assumption": "Final quote after a short call.", "doorOpener": false },
+        { "service": "free-audit", "label": "Free website and enquiry check", "description": "A free review of the website and enquiry flow.", "buildDays": null, "price": { "currency": "INR", "min": 0, "max": 0 }, "assumption": "Free of charge.", "doorOpener": true }
+      ]
+    },
+    "explainer": {
+      "id": "explainer-restaurant-in-en",
+      "category": "restaurant",
+      "country": "India",
+      "language": "en",
+      "howItWorks": ["Guests browse the menu and call to reserve a table."],
+      "whereAutomationHelps": [
+        { "service": "booking-system", "point": "Online reservations reduce phone calls and empty tables." },
+        { "service": "automation", "description": "Automation sends confirmations and reminders." },
+        { "service": "ai-chatbot", "point": "A chatbot answers menu and timing questions instantly." },
+        { "service": "crm-setup", "point": "A CRM remembers guest preferences and special occasions." },
+        { "service": "website", "point": "A website shows the menu and opening hours." },
+        { "service": "free-audit", "point": "A free audit surfaces quick wins for the enquiry flow." }
+      ],
+      "promptVersion": "2026-10-07-1",
+      "tokensIn": 0,
+      "tokensOut": 0,
+      "createdAt": "2026-10-07T00:00:00.000Z",
+      "reviewed": true
+    },
+    "workspaceName": "Test Workspace",
+    "offer": { "services": ["booking-system", "automation", "ai-chatbot", "crm-setup", "website", "free-audit"], "description": "Test offer" },
+    "senderName": "Test Sender"
+  }
+}

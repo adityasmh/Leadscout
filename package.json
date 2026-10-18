@@ -1,0 +1,29 @@
+{
+  "name": "leadscout",
+  "version": "0.1.0",
+  "description": "Finds local businesses, scores them, researches them and hands you a call sheet. Runs on plain Node.",
+  "license": "MIT",
+  "repository": { "type": "git", "url": "git+https://github.com/adityasmh/Leadscout.git" },
+  "homepage": "https://github.com/adityasmh/Leadscout#readme",
+  "keywords": ["leads", "lead-generation", "local-business", "sqlite", "nodejs", "typescript", "cold-calling", "scraping"],
+  "type": "module",
+  "engines": { "node": ">=24" },
+  "scripts": {
+    "start": "tsx --env-file-if-exists=.env src/server.ts",
+    "typecheck": "tsc --noEmit",
+    "typecheck:checks": "tsc --noEmit -p tsconfig.checks.json",
+    "llm-adapter": "tsx adapters/llm-adapter.ts",
+    "check": "tsx src/store-check.ts",
+    "check:v2": "tsx src/server-v2-check.ts",
+    "check:all": "tsx scripts/run-checks.ts",
+    "eval": "tsx src/eval-check.ts",
+    "demo": "tsx scripts/demo.ts",
+    "check:env": "tsx scripts/env-check.ts",
+    "seed:dry": "tsx src/seed-plan.ts --dry-run --phase pilot"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "tsx": "^4.20.0",
+    "typescript": "^5.6.0"
+  }
+}

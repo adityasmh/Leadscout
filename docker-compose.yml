@@ -1,0 +1,36 @@
+services:
+  leadscout:
+    build:
+      context: .
+    env_file: .env
+    volumes:
+      - leadscout-data:/data
+    ports:
+      - "127.0.0.1:${LEADSCOUT_PORT:-8790}:${LEADSCOUT_PORT:-8790}"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:'+(process.env.LEADSCOUT_PORT||8790)+'/api/health').then(r=>r.ok?process.exit(0):process.exit(1)).catch(()=>process.exit(1))"]
+      interval: 30s
+      timeout: 5s
+      start_period: 5s
+      retries: 3
+
+  # Optional HTTPS reverse proxy. Start with: docker compose --profile tls up -d
+  caddy:
+    image: caddy:2-alpine
+    profiles: [tls]
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+    restart: unless-stopped
+    depends_on:
+      - leadscout
+
+volumes:
+  leadscout-data:
+  caddy-data:
+  caddy-config:

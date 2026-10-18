@@ -1,0 +1,19 @@
+// Plugin entry: importing this file registers the plugin's channel adapters.
+import "./justdial.js";
+import "./zomato.js";
+import "./swiggy.js";
+import "./sulekha.js";
+import "./urbancompany.js";
+import "./magicbricks.js";
+import "./nobroker.js";
+import "./naukri.js";
+import "./acres99.js";
+import "./jobs-india.js";
+import "./travel.js";
+import "./bookmyshow.js";
+import "./mappls.js";
+import "./indiamart.js";
+import "./udaan.js";
+import "./practo.js";
+import "./lybrate.js";
+import "./sharechat.js";

@@ -1,0 +1,29 @@
+{
+  "name": "plaintext-rating",
+  "raw": {
+    "name": "Fixture Plain Rating",
+    "category": "restaurant",
+    "city": "Navi Mumbai",
+    "website": "https://fixture-plain.example",
+    "source": "osm",
+    "sourceUrl": "https://www.openstreetmap.org/node/5555555555"
+  },
+  "enrichment": {
+    "summary": "Fixture restaurant with prose rating only.",
+    "emails": [],
+    "phones": ["+919876555555"],
+    "socials": {},
+    "signals": []
+  },
+  "pages": [
+    {
+      "url": "https://fixture-plain.example/",
+      "body": "<!DOCTYPE html><html><head><title>Fixture Plain Rating</title></head><body><h1>Home</h1><p>Rated 4.8 from 120 reviews. We serve great food.</p></body></html>",
+      "fetchedAt": "2026-10-07T00:00:00.000Z"
+    }
+  ],
+  "expected": {
+    "bizKey": "fixture-plain.example",
+    "hasRatingFact": false
+  }
+}

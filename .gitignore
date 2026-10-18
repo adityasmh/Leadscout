@@ -1,0 +1,28 @@
+# secrets and local config
+.env
+.env.*
+!.env.example
+
+# dependencies
+node_modules/
+
+# data: databases, exports, recordings, caches are NEVER committed
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+*.sqlite
+data/*.db
+data/lists/
+data/first-run/
+data/fc-cache/
+data/call-recordings/
+data/dnd/*.csv
+public/lists/
+public/drafts/
+
+# logs and scratch
+*.log
+tmp-*
+.DS_Store
+Thumbs.db

@@ -1,0 +1,14 @@
+{
+  "name": "bizKey phone priority",
+  "raw": {
+    "name": "Fixture Phone Salon",
+    "category": "salon",
+    "city": "Testville",
+    "country": "IN",
+    "phone": "+91 98765 43210",
+    "source": "osm",
+    "sourceUrl": "https://example.test/bizkey-phone"
+  },
+  "phonesE164": ["+919876543210"],
+  "expected": { "bizKey": "+919876543210" }
+}

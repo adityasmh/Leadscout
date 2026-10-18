@@ -1,0 +1,62 @@
+{
+  "version": 1,
+  "note": "Peak enquiry windows for common business categories by country. Empty entries are valid; scoring falls back to default timing when no entry matches.",
+  "entries": [
+    {
+      "category": "dental-clinic",
+      "country": "India",
+      "peakMonths": [11, 12, 1],
+      "note": "Higher elective dental bookings around the post-Diwali/wedding season and year-end holidays.",
+      "basis": "general knowledge, review"
+    },
+    {
+      "category": "school",
+      "country": "India",
+      "peakMonths": [3, 4],
+      "note": "New academic-year admissions and parent enquiries peak before the school year starts.",
+      "basis": "general knowledge, review"
+    },
+    {
+      "category": "coaching-centre",
+      "country": "India",
+      "peakMonths": [4, 5],
+      "note": "New batches and exam-result season drive admission enquiries in spring.",
+      "basis": "general knowledge, review"
+    },
+    {
+      "category": "travel-agency",
+      "country": "India",
+      "peakMonths": [12, 1, 5, 6],
+      "note": "Holiday travel enquiries peak around year-end and summer vacations.",
+      "basis": "general knowledge, review"
+    },
+    {
+      "category": "restaurant",
+      "country": "India",
+      "peakMonths": [10, 11, 12],
+      "note": "Festive and wedding-season dining enquiries rise in the last quarter.",
+      "basis": "general knowledge, review"
+    },
+    {
+      "category": "salon",
+      "country": "India",
+      "peakMonths": [10, 11, 12],
+      "note": "Wedding and festive-season grooming bookings peak in the last quarter.",
+      "basis": "general knowledge, review"
+    },
+    {
+      "category": "gym",
+      "country": "India",
+      "peakMonths": [1, 8, 9],
+      "note": "New-year sign-ups and post-monsoon fitness drives raise enquiries.",
+      "basis": "general knowledge, review"
+    },
+    {
+      "category": "real-estate-agent",
+      "country": "India",
+      "peakMonths": [1, 2, 3, 10, 11, 12],
+      "note": "Property searches rise after the monsoon and around the festive/wedding season.",
+      "basis": "general knowledge, review"
+    }
+  ]
+}

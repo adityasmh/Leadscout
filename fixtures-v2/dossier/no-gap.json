@@ -1,0 +1,70 @@
+{
+  "name": "no-gap fixture",
+  "expected": { "tag": null },
+  "input": {
+    "lead": {
+      "id": "lead-no-gap",
+      "workspaceId": "ws-test",
+      "name": "Fixture Complete Shop",
+      "category": "retail-shop",
+      "city": "Testpur",
+      "country": "India",
+      "source": "fixture",
+      "sourceUrl": "https://fixture-complete.example.com/",
+      "summary": "Fake shop fixture with no gap signals.",
+      "emails": ["shop@fixture-complete.example.com"],
+      "phones": ["+91 98765 43214"],
+      "socials": {},
+      "signals": ["has-email", "has-phone", "ecommerce"],
+      "score": 60,
+      "fit": [
+        { "service": "ecommerce", "score": 70, "reason": "already sells online" },
+        { "service": "seo", "score": 40, "reason": "online store" }
+      ],
+      "angle": "",
+      "status": "new",
+      "notes": "",
+      "createdAt": "2026-10-07T00:00:00.000Z"
+    },
+    "evidence": [
+      {
+        "id": "E1",
+        "kind": "page-text",
+        "url": "https://fixture-complete.example.com/",
+        "quote": "Fixture Complete Shop sells products online with secure checkout.",
+        "field": "signal:ecommerce",
+        "fetchedAt": "2026-10-07T00:00:00.000Z"
+      }
+    ],
+    "facts": {},
+    "score": { "total": 60, "fit": 70, "reach": 80, "timing": 50, "gate": "template", "reasons": [] },
+    "priceBook": {
+      "workspaceId": "ws-test",
+      "version": 5,
+      "updatedAt": "2026-10-07T00:00:00.000Z",
+      "items": [
+        { "service": "ecommerce", "label": "E-commerce", "description": "Add products, cart and payments to sell online.", "buildDays": [7, 14], "price": { "currency": "INR", "min": 25000, "max": 45000 }, "assumption": "Final quote after a short call.", "doorOpener": false },
+        { "service": "seo", "label": "SEO", "description": "Improve search rankings and organic visibility.", "buildDays": [10, 20], "price": { "currency": "INR", "min": 12000, "max": 20000 }, "assumption": "Final quote after a short call.", "doorOpener": false }
+      ]
+    },
+    "explainer": {
+      "id": "explainer-retail-in-en",
+      "category": "retail-shop",
+      "country": "India",
+      "language": "en",
+      "howItWorks": ["Shoppers browse products and buy online or visit the store."],
+      "whereAutomationHelps": [
+        { "service": "ecommerce", "point": "An online store lets customers buy any time." },
+        { "service": "seo", "point": "Search visibility brings more shoppers to the store." }
+      ],
+      "promptVersion": "2026-10-07-1",
+      "tokensIn": 0,
+      "tokensOut": 0,
+      "createdAt": "2026-10-07T00:00:00.000Z",
+      "reviewed": true
+    },
+    "workspaceName": "Test Workspace",
+    "offer": { "services": ["ecommerce", "seo"], "description": "Test offer" },
+    "senderName": "Test Sender"
+  }
+}

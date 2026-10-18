@@ -1,0 +1,29 @@
+{
+  "name": "no-owner",
+  "raw": {
+    "name": "Fixture No Owner",
+    "category": "logistics",
+    "city": "Navi Mumbai",
+    "website": "https://fixture-noowner.example",
+    "source": "osm",
+    "sourceUrl": "https://www.openstreetmap.org/node/9999999999"
+  },
+  "enrichment": {
+    "summary": "Fixture logistics firm with no owner text.",
+    "emails": [],
+    "phones": ["+919876599999"],
+    "socials": {},
+    "signals": []
+  },
+  "pages": [
+    {
+      "url": "https://fixture-noowner.example/",
+      "body": "<!DOCTYPE html><html><head><title>Fixture No Owner</title></head><body><h1>Home</h1><p>We are a logistics firm serving Navi Mumbai.</p></body></html>",
+      "fetchedAt": "2026-10-07T00:00:00.000Z"
+    }
+  ],
+  "expected": {
+    "bizKey": "fixture-noowner.example",
+    "hasOwnerFact": false
+  }
+}

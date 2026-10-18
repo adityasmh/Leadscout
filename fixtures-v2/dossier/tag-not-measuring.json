@@ -1,0 +1,79 @@
+{
+  "name": "NOT MEASURING fixture",
+  "expected": { "tag": "NOT MEASURING", "evidence": ["E1"] },
+  "input": {
+    "lead": {
+      "id": "lead-not-measuring",
+      "workspaceId": "ws-test",
+      "name": "Fixture Blind Agency",
+      "category": "travel-agency",
+      "city": "Testpur",
+      "country": "India",
+      "source": "fixture",
+      "sourceUrl": "https://fixture-blind.example.com/",
+      "summary": "Fake travel agency with no analytics.",
+      "emails": ["hello@fixture-blind.example.com"],
+      "phones": ["+91 98765 43213"],
+      "socials": {},
+      "signals": ["no-analytics", "has-email", "has-phone"],
+      "score": 65,
+      "fit": [
+        { "service": "seo", "score": 70, "reason": "no analytics" },
+        { "service": "automation", "score": 40, "reason": "travel enquiries" }
+      ],
+      "angle": "",
+      "status": "new",
+      "notes": "",
+      "createdAt": "2026-10-07T00:00:00.000Z"
+    },
+    "evidence": [
+      {
+        "id": "E1",
+        "kind": "absence",
+        "url": "https://fixture-blind.example.com/",
+        "quote": "Checked home page source; no Google Analytics, Plausible or Matomo script found.",
+        "field": "signal:no-analytics",
+        "fetchedAt": "2026-10-07T00:00:00.000Z"
+      },
+      {
+        "id": "E2",
+        "kind": "page-text",
+        "url": "https://fixture-blind.example.com/",
+        "quote": "Fixture Blind Agency offers holiday packages.",
+        "field": "title",
+        "fetchedAt": "2026-10-07T00:00:00.000Z"
+      }
+    ],
+    "facts": {},
+    "score": { "total": 65, "fit": 70, "reach": 80, "timing": 50, "gate": "template", "reasons": [] },
+    "priceBook": {
+      "workspaceId": "ws-test",
+      "version": 4,
+      "updatedAt": "2026-10-07T00:00:00.000Z",
+      "items": [
+        { "service": "seo", "label": "SEO", "description": "Improve search rankings and organic visibility.", "buildDays": [10, 20], "price": { "currency": "INR", "min": 12000, "max": 20000 }, "assumption": "Final quote after a short call.", "doorOpener": false },
+        { "service": "automation", "label": "Automation", "description": "Connect tools and automate repetitive workflows.", "buildDays": [3, 6], "price": { "currency": "INR", "min": 20000, "max": 35000 }, "assumption": "Final quote after a short call.", "doorOpener": false },
+        { "service": "free-audit", "label": "Free website and enquiry check", "description": "A free review of the website and enquiry flow.", "buildDays": null, "price": { "currency": "INR", "min": 0, "max": 0 }, "assumption": "Free of charge.", "doorOpener": true }
+      ]
+    },
+    "explainer": {
+      "id": "explainer-travel-in-en",
+      "category": "travel-agency",
+      "country": "India",
+      "language": "en",
+      "howItWorks": ["Travellers browse packages and enquire by phone or email."],
+      "whereAutomationHelps": [
+        { "service": "seo", "point": "Analytics show which packages travellers actually look at." },
+        { "service": "automation", "point": "Automation follows up on itinerary enquiries quickly." }
+      ],
+      "promptVersion": "2026-10-07-1",
+      "tokensIn": 0,
+      "tokensOut": 0,
+      "createdAt": "2026-10-07T00:00:00.000Z",
+      "reviewed": true
+    },
+    "workspaceName": "Test Workspace",
+    "offer": { "services": ["seo", "automation", "free-audit"], "description": "Test offer" },
+    "senderName": "Test Sender"
+  }
+}

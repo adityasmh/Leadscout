@@ -1,0 +1,13 @@
+{
+  "email": {
+    "subject": "Quick thought on {business}",
+    "body": "Hi there,\n\n{sayThis}\n\n{pushback}\n\nTop suggestion for {business}: {topOfferTitle}.\n{topOfferDescription}\n\nWhy it matters: {topOfferWhy}\n\nBest,\n{sender}\n{workspace}\n\n{optOutLine}"
+  },
+  "whatsapp": {
+    "message": "{sayThis} {pushback}"
+  },
+  "call": {
+    "script": "SAY THIS:\n{sayThis}\n\nFALLBACK LINE:\n{pushback}"
+  },
+  "optOutLine": "To stop receiving these emails, reply with \"unsubscribe\"."
+}

@@ -1,0 +1,734 @@
+[
+  {
+    "id": "fixture-01",
+    "case": "dental clinic, no website, valid mobile and ok email; website seller -> high, GOING UNSEEN, top website",
+    "rawLead": {
+      "name": "Fixture Dental Care 01",
+      "category": "Dental Clinic",
+      "city": "Mumbai",
+      "country": "India",
+      "phone": "+91 98765 43210",
+      "email": "contact@fixture01.example",
+      "source": "eval",
+      "sourceUrl": "https://example.com/1"
+    },
+    "enrichment": {
+      "summary": "Fixture dental clinic with no website.",
+      "emails": [],
+      "phones": [],
+      "socials": {},
+      "signals": ["no-website"]
+    },
+    "mx": {
+      "fixture01.example": ["mx.fixture01.example"]
+    },
+    "fetch": {},
+    "offer": {
+      "services": ["website"],
+      "description": "Website seller"
+    },
+    "runMonth": 10,
+    "expected": {
+      "minScore": 60,
+      "maxScore": 100,
+      "gate": "template",
+      "tag": "GOING UNSEEN",
+      "topService": "website"
+    }
+  },
+  {
+    "id": "fixture-02",
+    "case": "dental clinic, site with form, no chat, no booking; chatbot+booking seller -> high, LEAKING",
+    "rawLead": {
+      "name": "Fixture Dental Care 02",
+      "category": "Dental Clinic",
+      "city": "Mumbai",
+      "country": "India",
+      "phone": "+91 98765 43211",
+      "source": "eval",
+      "sourceUrl": "https://example.com/2"
+    },
+    "enrichment": {
+      "fetchedUrl": "https://fixture-dental-02.example",
+      "summary": "Dental clinic with contact form, no chat widget and no online booking.",
+      "emails": [],
+      "phones": [],
+      "socials": {},
+      "signals": ["no-chat-widget", "no-online-booking", "appointment-based", "high-volume-enquiry-type"]
+    },
+    "mx": {},
+    "fetch": {
+      "https://fixture-dental-02.example": 200
+    },
+    "offer": {
+      "services": ["ai-chatbot", "booking-system"],
+      "description": "Chatbot and booking seller"
+    },
+    "runMonth": 10,
+    "expected": {
+      "minScore": 70,
+      "maxScore": 100,
+      "gate": "template",
+      "tag": "LEAKING",
+      "topService": "booking-system"
+    }
+  },
+  {
+    "id": "fixture-03",
+    "case": "same as fixture-02, SEO-only seller -> middle band",
+    "rawLead": {
+      "name": "Fixture Dental Care 03",
+      "category": "Dental Clinic",
+      "city": "Mumbai",
+      "country": "India",
+      "phone": "+91 98765 43211",
+      "source": "eval",
+      "sourceUrl": "https://example.com/3"
+    },
+    "enrichment": {
+      "fetchedUrl": "https://fixture-dental-03.example",
+      "summary": "Dental clinic with contact form, no chat widget and no online booking.",
+      "emails": [],
+      "phones": [],
+      "socials": {},
+      "signals": ["no-chat-widget", "no-online-booking", "appointment-based", "high-volume-enquiry-type"]
+    },
+    "mx": {},
+    "fetch": {
+      "https://fixture-dental-03.example": 200
+    },
+    "offer": {
+      "services": ["seo"],
+      "description": "SEO seller"
+    },
+    "runMonth": 10,
+    "expected": {
+      "minScore": 35,
+      "maxScore": 65,
+      "gate": "template",
+      "topService": "seo"
+    }
+  },
+  {
+    "id": "fixture-04",
+    "case": "restaurant on Wix, WhatsApp link, no ordering; WhatsApp automation seller -> high",
+    "rawLead": {
+      "name": "Fixture Restaurant 04",
+      "category": "Restaurant",
+      "city": "Mumbai",
+      "country": "India",
+      "phone": "+91 98765 43212",
+      "source": "eval",
+      "sourceUrl": "https://example.com/4"
+    },
+    "enrichment": {
+      "fetchedUrl": "https://fixture-restaurant-04.example",
+      "summary": "Restaurant on Wix with no online ordering.",
+      "emails": [],
+      "phones": [],
+      "socials": { "whatsapp": "https://wa.me/919876543212" },
+      "signals": ["wix", "no-online-booking", "high-volume-enquiry-type"]
+    },
+    "mx": {},
+    "fetch": {
+      "https://fixture-restaurant-04.example": 200
+    },
+    "offer": {
+      "services": ["whatsapp-automation"],
+      "description": "WhatsApp automation seller"
+    },
+    "runMonth": 10,
+    "expected": {
+      "minScore": 80,
+      "maxScore": 100,
+      "gate": "template",
+      "topService": "whatsapp-automation"
+    }
+  },
+  {
+    "id": "fixture-05",
+    "case": "school, copyright 2017, no https; redesign seller -> high, OUTDATED; timing raised in peak window",
+    "rawLead": {
+      "name": "Fixture School 05",
+      "category": "School",
+      "city": "Mumbai",
+      "country": "India",
+      "phone": "+91 98765 43213",
+      "source": "eval",
+      "sourceUrl": "https://example.com/5"
+    },
+    "enrichment": {
+      "fetchedUrl": "https://fixture-school-05.example",
+      "summary": "School website with outdated copyright line 2017 and no HTTPS.",
+      "emails": [],
+      "phones": [],
+      "socials": {},
+      "signals": ["outdated-copyright", "no-https"]
+    },
+    "mx": {},
+    "fetch": {
+      "https://fixture-school-05.example": 200
+    },
+    "offer": {
+      "services": ["website-redesign"],
+      "description": "Redesign seller"
+    },
+    "runMonth": 3,
+    "expected": {
+      "minScore": 65,
+      "maxScore": 100,
+      "gate": "template",
+      "tag": "OUTDATED",
+      "topService": "website-redesign"
+    }
+  },
+  {
+    "id": "fixture-06",
+    "case": "coaching centre with chat, booking, analytics, https -> low band",
+    "rawLead": {
+      "name": "Fixture Coaching 06",
+      "category": "Coaching Centre",
+      "city": "Mumbai",
+      "country": "India",
+      "phone": "+91 98765 43214",
+      "source": "eval",
+      "sourceUrl": "https://example.com/6"
+    },
+    "enrichment": {
+      "fetchedUrl": "https://fixture-coaching-06.example",
+      "summary": "Coaching centre with chat widget, online booking, analytics and HTTPS.",
+      "emails": [],
+      "phones": [],
+      "socials": {},
+      "signals": ["appointment-based", "high-volume-enquiry-type"]
+    },
+    "mx": {},
+    "fetch": {
+      "https://fixture-coaching-06.example": 200
+    },
+    "offer": {
+      "services": ["website"],
+      "description": "Website seller"
+    },
+    "runMonth": 10,
+    "expected": {
+      "minScore": 30,
+      "maxScore": 55,
+      "gate": "template",
+      "topService": "website"
+    }
+  },
+  {
+    "id": "fixture-07",
+    "case": "no phone, no email, dead site -> hidden",
+    "rawLead": {
+      "name": "Fixture Dead Site 07",
+      "category": "Clinic",
+      "city": "Mumbai",
+      "country": "India",
+      "website": "https://fixture-dead-07.example",
+      "source": "eval",
+      "sourceUrl": "https://example.com/7"
+    },
+    "enrichment": {
+      "fetchedUrl": "https://fixture-dead-07.example",
+      "summary": "Business with a dead website and no contact details.",
+      "emails": [],
+      "phones": [],
+      "socials": {},
+      "signals": ["site-unreachable"]
+    },
+    "mx": {},
+    "fetch": {},
+    "offer": {
+      "services": ["website"],
+      "description": "Website seller"
+    },
+    "runMonth": 10,
+    "expected": {
+      "minScore": 0,
+      "maxScore": 100,
+      "gate": "hidden"
+    }
+  },
+  {
+    "id": "fixture-08",
+    "case": "only email info@example.com -> hidden (dummy)",
+    "rawLead": {
+      "name": "Fixture Dummy Email 08",
+      "category": "Clinic",
+      "city": "Mumbai",
+      "country": "India",
+      "email": "info@example.com",
+      "source": "eval",
+      "sourceUrl": "https://example.com/8"
+    },
+    "enrichment": {
+      "summary": "Business with only a dummy example email.",
+      "emails": [],
+      "phones": [],
+      "socials": {},
+      "signals": ["no-website"]
+    },
+    "mx": {},
+    "fetch": {},
+    "offer": {
+      "services": ["website"],
+      "description": "Website seller"
+    },
+    "runMonth": 10,
+    "expected": {
+      "minScore": 0,
+      "maxScore": 100,
+      "gate": "hidden"
+    }
+  },
+  {
+    "id": "fixture-09",
+    "case": "only an invalid phone -> hidden",
+    "rawLead": {
+      "name": "Fixture Invalid Phone 09",
+      "category": "Clinic",
+      "city": "Mumbai",
+      "country": "India",
+      "phone": "12345",
+      "source": "eval",
+      "sourceUrl": "https://example.com/9"
+    },
+    "enrichment": {
+      "summary": "Business with only an invalid phone number.",
+      "emails": [],
+      "phones": [],
+      "socials": {},
+      "signals": ["no-website"]
+    },
+    "mx": {},
+    "fetch": {},
+    "offer": {
+      "services": ["website"],
+      "description": "Website seller"
+    },
+    "runMonth": 10,
+    "expected": {
+      "minScore": 0,
+      "maxScore": 100,
+      "gate": "hidden"
+    }
+  },
+  {
+    "id": "fixture-10",
+    "case": "email domain with no MX plus valid landline -> shown, lower reach",
+    "rawLead": {
+      "name": "Fixture Logistics 10",
+      "category": "Logistics",
+      "city": "Mumbai",
+      "country": "India",
+      "website": "https://fixture-logistics-10.example",
+      "email": "hello@fixture10.example",
+      "phone": "+91 22 1234 5678",
+      "source": "eval",
+      "sourceUrl": "https://example.com/10"
+    },
+    "enrichment": {
+      "fetchedUrl": "https://fixture-logistics-10.example",
+      "summary": "Logistics firm with a landline and no MX email domain.",
+      "emails": [],
+      "phones": [],
+      "socials": {},
+      "signals": ["no-contact-form", "high-volume-enquiry-type"]
+    },
+    "mx": {},
+    "fetch": {
+      "https://fixture-logistics-10.example": 200
+    },
+    "offer": {
+      "services": ["automation", "crm-setup"],
+      "description": "Automation and CRM seller"
+    },
+    "runMonth": 10,
+    "expected": {
+      "minScore": 40,
+      "maxScore": 75,
+      "gate": "template",
+      "topService": "crm-setup"
+    }
+  },
+  {
+    "id": "fixture-11",
+    "case": "salon with Instagram only, no website -> GOING UNSEEN",
+    "rawLead": {
+      "name": "Fixture Salon 11",
+      "category": "Salon",
+      "city": "Mumbai",
+      "country": "India",
+      "phone": "+91 98765 43215",
+      "source": "eval",
+      "sourceUrl": "https://example.com/11"
+    },
+    "enrichment": {
+      "summary": "Salon with Instagram profile and no website.",
+      "emails": [],
+      "phones": [],
+      "socials": { "instagram": "https://instagram.com/fixturesalon11" },
+      "signals": ["no-website", "social-active-links"]
+    },
+    "mx": {},
+    "fetch": {},
+    "offer": {
+      "services": ["website"],
+      "description": "Website seller"
+    },
+    "runMonth": 10,
+    "expected": {
+      "minScore": 55,
+      "maxScore": 100,
+      "gate": "template",
+      "tag": "GOING UNSEEN",
+      "topService": "website"
+    }
+  },
+  {
+    "id": "fixture-12",
+    "case": "real estate agent, site alive, no analytics, otherwise modern -> NOT MEASURING",
+    "rawLead": {
+      "name": "Fixture Real Estate 12",
+      "category": "Real Estate Agent",
+      "city": "Mumbai",
+      "country": "India",
+      "website": "https://fixture-realestate-12.example",
+      "phone": "+91 98765 43216",
+      "source": "eval",
+      "sourceUrl": "https://example.com/12"
+    },
+    "enrichment": {
+      "fetchedUrl": "https://fixture-realestate-12.example",
+      "summary": "Real estate agent website with no analytics installed.",
+      "emails": [],
+      "phones": [],
+      "socials": {},
+      "signals": ["no-analytics"]
+    },
+    "mx": {},
+    "fetch": {
+      "https://fixture-realestate-12.example": 200
+    },
+    "offer": {
+      "services": ["seo"],
+      "description": "SEO seller"
+    },
+    "runMonth": 10,
+    "expected": {
+      "minScore": 45,
+      "maxScore": 80,
+      "gate": "template",
+      "tag": "NOT MEASURING",
+      "topService": "seo"
+    }
+  },
+  {
+    "id": "fixture-13",
+    "case": "logistics firm, email only, no form -> middle band, automation or CRM top",
+    "rawLead": {
+      "name": "Fixture Logistics 13",
+      "category": "Logistics",
+      "city": "Mumbai",
+      "country": "India",
+      "website": "https://fixture-logistics-13.example",
+      "email": "sales@fixture13.example",
+      "source": "eval",
+      "sourceUrl": "https://example.com/13"
+    },
+    "enrichment": {
+      "fetchedUrl": "https://fixture-logistics-13.example",
+      "summary": "Logistics firm with email contact and no contact form.",
+      "emails": [],
+      "phones": [],
+      "socials": {},
+      "signals": ["no-contact-form", "high-volume-enquiry-type"]
+    },
+    "mx": {
+      "fixture13.example": ["mx.fixture13.example"]
+    },
+    "fetch": {
+      "https://fixture-logistics-13.example": 200
+    },
+    "offer": {
+      "services": ["automation", "crm-setup"],
+      "description": "Automation and CRM seller"
+    },
+    "runMonth": 10,
+    "expected": {
+      "minScore": 50,
+      "maxScore": 85,
+      "gate": "template",
+      "topService": "crm-setup"
+    }
+  },
+  {
+    "id": "fixture-14",
+    "case": "same business as fixture-01 under a different spelling and the same phone -> same bizKey",
+    "rawLead": {
+      "name": "Fixture Dental Care One",
+      "category": "Dental Clinic",
+      "city": "Mumbai",
+      "country": "India",
+      "phone": "+91 98765 43210",
+      "email": "contact@fixture01.example",
+      "source": "eval",
+      "sourceUrl": "https://example.com/14"
+    },
+    "enrichment": {
+      "summary": "Same fixture dental clinic, different listing.",
+      "emails": [],
+      "phones": [],
+      "socials": {},
+      "signals": ["no-website"]
+    },
+    "mx": {
+      "fixture01.example": ["mx.fixture01.example"]
+    },
+    "fetch": {},
+    "offer": {
+      "services": ["website"],
+      "description": "Website seller"
+    },
+    "runMonth": 10,
+    "expected": {
+      "minScore": 60,
+      "maxScore": 100,
+      "gate": "template",
+      "topService": "website",
+      "sameBizKeyAs": "fixture-01"
+    }
+  },
+  {
+    "id": "fixture-15",
+    "case": "domain on the opt-out list -> hidden",
+    "rawLead": {
+      "name": "Fixture OptOut 15",
+      "category": "Clinic",
+      "city": "Mumbai",
+      "country": "India",
+      "website": "https://optout.example",
+      "email": "info@optout.example",
+      "phone": "+91 98765 43217",
+      "source": "eval",
+      "sourceUrl": "https://example.com/15"
+    },
+    "enrichment": {
+      "fetchedUrl": "https://optout.example",
+      "summary": "Business on the opt-out list.",
+      "emails": [],
+      "phones": [],
+      "socials": {},
+      "signals": []
+    },
+    "mx": {
+      "optout.example": ["mx.optout.example"]
+    },
+    "fetch": {
+      "https://optout.example": 200
+    },
+    "offer": {
+      "services": ["website"],
+      "description": "Website seller"
+    },
+    "runMonth": 10,
+    "optedOut": true,
+    "expected": {
+      "minScore": 0,
+      "maxScore": 100,
+      "gate": "hidden"
+    }
+  },
+  {
+    "id": "fixture-16",
+    "case": "robots.txt disallows the site -> listing evidence only, gate template, never llm",
+    "rawLead": {
+      "name": "Fixture Robots 16",
+      "category": "Clinic",
+      "city": "Mumbai",
+      "country": "India",
+      "website": "https://fixture-robots-16.example",
+      "email": "hello@fixture-robots-16.example",
+      "phone": "+91 98765 43218",
+      "source": "eval",
+      "sourceUrl": "https://example.com/16"
+    },
+    "enrichment": {
+      "fetchedUrl": "https://fixture-robots-16.example",
+      "summary": "Clinic site disallowed by robots.txt.",
+      "emails": [],
+      "phones": [],
+      "socials": {},
+      "signals": ["no-contact-form", "no-analytics"]
+    },
+    "mx": {
+      "fixture-robots-16.example": ["mx.fixture-robots-16.example"]
+    },
+    "fetch": {
+      "https://fixture-robots-16.example": 200
+    },
+    "offer": {
+      "services": ["website", "seo"],
+      "description": "Website and SEO seller"
+    },
+    "runMonth": 10,
+    "expected": {
+      "minScore": 45,
+      "maxScore": 80,
+      "gate": "template",
+      "topService": "seo"
+    }
+  },
+  {
+    "id": "fixture-17",
+    "case": "large hospital with chat, booking, custom CMS -> low band",
+    "rawLead": {
+      "name": "Fixture Hospital 17",
+      "category": "Hospital",
+      "city": "Mumbai",
+      "country": "India",
+      "website": "https://fixture-hospital-17.example",
+      "phone": "+91 98765 43219",
+      "source": "eval",
+      "sourceUrl": "https://example.com/17"
+    },
+    "enrichment": {
+      "fetchedUrl": "https://fixture-hospital-17.example",
+      "summary": "Large hospital with chat widget, online booking and a custom CMS.",
+      "emails": [],
+      "phones": [],
+      "socials": {},
+      "signals": ["custom-cms"]
+    },
+    "mx": {},
+    "fetch": {
+      "https://fixture-hospital-17.example": 200
+    },
+    "offer": {
+      "services": ["website", "automation", "ai-chatbot"],
+      "description": "Mixed seller"
+    },
+    "runMonth": 10,
+    "expected": {
+      "minScore": 30,
+      "maxScore": 55,
+      "gate": "template",
+      "topService": "website"
+    }
+  },
+  {
+    "id": "fixture-18",
+    "case": "travel agency in GB with a +44 number -> valid E.164, shown",
+    "rawLead": {
+      "name": "Fixture Travel GB 18",
+      "category": "Travel Agency",
+      "city": "London",
+      "country": "GB",
+      "website": "https://fixture-travel-18.example",
+      "phone": "+44 20 7946 0958",
+      "source": "eval",
+      "sourceUrl": "https://example.com/18"
+    },
+    "enrichment": {
+      "fetchedUrl": "https://fixture-travel-18.example",
+      "summary": "UK travel agency website.",
+      "emails": [],
+      "phones": [],
+      "socials": {},
+      "signals": ["no-analytics"]
+    },
+    "mx": {},
+    "fetch": {
+      "https://fixture-travel-18.example": 200
+    },
+    "offer": {
+      "services": ["seo", "website"],
+      "description": "SEO and website seller"
+    },
+    "runMonth": 10,
+    "expected": {
+      "minScore": 35,
+      "maxScore": 70,
+      "gate": "template",
+      "topService": "seo"
+    }
+  },
+  {
+    "id": "fixture-19",
+    "case": "gym with a Shopify store; chatbot seller -> middle (website seller would be low)",
+    "rawLead": {
+      "name": "Fixture Gym 19",
+      "category": "Gym",
+      "city": "Mumbai",
+      "country": "India",
+      "website": "https://fixture-gym-19.example",
+      "email": "sales@fixture19.example",
+      "source": "eval",
+      "sourceUrl": "https://example.com/19"
+    },
+    "enrichment": {
+      "fetchedUrl": "https://fixture-gym-19.example",
+      "summary": "Gym running a Shopify store with no chat widget and no online booking.",
+      "emails": [],
+      "phones": [],
+      "socials": {},
+      "signals": ["shopify", "no-chat-widget", "no-online-booking"]
+    },
+    "mx": {
+      "fixture19.example": ["mx.fixture19.example"]
+    },
+    "fetch": {
+      "https://fixture-gym-19.example": 200
+    },
+    "offer": {
+      "services": ["ai-chatbot"],
+      "description": "Chatbot seller"
+    },
+    "runMonth": 10,
+    "expected": {
+      "minScore": 55,
+      "maxScore": 90,
+      "gate": "template",
+      "topService": "ai-chatbot"
+    }
+  },
+  {
+    "id": "fixture-20",
+    "case": "thin site (title only) with high fit -> gate template (would fail minEvidenceForLlm)",
+    "rawLead": {
+      "name": "Fixture Thin Dental 20",
+      "category": "Dental Clinic",
+      "city": "Mumbai",
+      "country": "India",
+      "website": "https://fixture-thin-20.example",
+      "phone": "+91 98765 43221",
+      "source": "eval",
+      "sourceUrl": "https://example.com/20"
+    },
+    "enrichment": {
+      "fetchedUrl": "https://fixture-thin-20.example",
+      "summary": "Thin dental site.",
+      "emails": [],
+      "phones": [],
+      "socials": {},
+      "signals": ["no-online-booking", "no-chat-widget", "no-contact-form", "appointment-based", "high-volume-enquiry-type"]
+    },
+    "mx": {},
+    "fetch": {
+      "https://fixture-thin-20.example": 200
+    },
+    "offer": {
+      "services": ["ai-chatbot", "booking-system"],
+      "description": "Chatbot and booking seller"
+    },
+    "runMonth": 10,
+    "expected": {
+      "minScore": 70,
+      "maxScore": 100,
+      "gate": "template",
+      "topService": "ai-chatbot"
+    }
+  }
+]

@@ -1,0 +1,957 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Call desk - Leadscout</title>
+<style>
+  :root{
+    --bg:#f5f6f8; --fg:#16181d; --muted:#6b7280; --panel:#ffffff; --border:#dfe3e8;
+    --accent:#1f6feb; --danger:#b42318;
+    --chip-new-bg:#e7f0ff; --chip-new-fg:#1f4ea8;
+    --chip-follow-bg:#fff2cc; --chip-follow-fg:#8a6100;
+    --active:#eaf1ff;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#0f1115; --fg:#e8eaed; --muted:#9aa0a6; --panel:#171a21; --border:#2a2f3a;
+      --accent:#5b9bff; --danger:#ff8a80;
+      --chip-new-bg:#1b2b4a; --chip-new-fg:#a9c7ff;
+      --chip-follow-bg:#3b2f0a; --chip-follow-fg:#ffd970;
+      --active:#1c2635;
+    }
+  }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; background:var(--bg); color:var(--fg); font:14px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif; }
+  a{ color:var(--accent); }
+  .topbar{ display:flex; flex-wrap:wrap; gap:8px; align-items:center; padding:8px 10px; background:var(--panel); border-bottom:1px solid var(--border); position:sticky; top:0; z-index:5; }
+  .topbar .title{ font-weight:700; margin-right:4px; }
+  .topbar .spacer{ flex:1 1 10px; }
+  .topbar select,.topbar input,.topbar button{ font:inherit; padding:6px 8px; border:1px solid var(--border); border-radius:6px; background:var(--bg); color:var(--fg); }
+  .topbar input#search{ flex:1 1 160px; min-width:120px; }
+  .stats{ font-variant-numeric:tabular-nums; color:var(--muted); white-space:nowrap; }
+  .layout{ display:grid; grid-template-columns:minmax(280px,1fr) minmax(320px,1.2fr); gap:10px; padding:10px; align-items:start; }
+  @media (max-width:720px){ .layout{ grid-template-columns:1fr; } }
+  .pane{ background:var(--panel); border:1px solid var(--border); border-radius:8px; padding:8px; }
+  .pane h2{ margin:0 0 8px; font-size:15px; }
+  ul#queue{ list-style:none; margin:0; padding:0; }
+  ul#queue li{ margin:0 0 6px; }
+  .rowbtn{ display:grid; grid-template-columns:1.4fr 1fr; gap:4px 8px; width:100%; text-align:left; padding:8px; background:transparent; color:inherit; border:1px solid var(--border); border-radius:6px; cursor:pointer; font:inherit; }
+  ul#queue li.selected .rowbtn{ background:var(--active); border-color:var(--accent); }
+  .rowbtn .name{ font-weight:600; }
+  .rowbtn .meta{ color:var(--muted); }
+  .rowbtn .links{ grid-column:1 / -1; display:flex; gap:10px; }
+  .rowbtn .outcome{ color:var(--muted); text-align:right; }
+  .chip{ display:inline-block; padding:1px 7px; border-radius:999px; font-size:12px; width:max-content; }
+  .chip-new{ background:var(--chip-new-bg); color:var(--chip-new-fg); }
+  .chip-follow{ background:var(--chip-follow-bg); color:var(--chip-follow-fg); }
+  .empty{ color:var(--muted); }
+  .muted{ color:var(--muted); }
+  .card-head .name{ font-size:17px; font-weight:700; }
+  .card-head .sub{ color:var(--muted); margin:2px 0 6px; }
+  .card-head .links{ display:flex; gap:12px; margin-bottom:6px; }
+  .block{ margin:10px 0; }
+  .block h3{ margin:0 0 4px; font-size:13px; text-transform:uppercase; letter-spacing:.03em; color:var(--muted); }
+  .dossier p{ margin:3px 0; }
+  .timeline{ list-style:none; margin:0; padding:0; }
+  .timeline li{ border-left:3px solid var(--border); padding:2px 0 6px 8px; margin:0 0 4px; }
+  .timeline .when{ color:var(--muted); font-size:12px; }
+  .outcomes{ display:flex; flex-wrap:wrap; gap:6px; }
+  .outcomes button{ font:inherit; padding:8px 10px; border:1px solid var(--border); border-radius:6px; background:var(--bg); color:var(--fg); cursor:pointer; }
+  .outcomes button.active{ background:var(--accent); border-color:var(--accent); color:#fff; }
+  .field{ display:block; margin:6px 0; }
+  .field span{ display:block; font-size:12px; color:var(--muted); margin-bottom:2px; }
+  .field textarea,.field input{ width:100%; font:inherit; padding:6px; border:1px solid var(--border); border-radius:6px; background:var(--bg); color:var(--fg); }
+  .field textarea{ min-height:52px; resize:vertical; }
+  .quick{ display:flex; gap:6px; flex-wrap:wrap; }
+  .quick button{ font:inherit; padding:6px 8px; border:1px solid var(--border); border-radius:6px; background:var(--bg); color:var(--fg); cursor:pointer; }
+  .actions{ display:flex; gap:8px; align-items:center; margin-top:6px; }
+  .actions #save{ font:inherit; padding:10px 18px; border:0; border-radius:6px; background:var(--accent); color:#fff; cursor:pointer; font-weight:600; }
+  .actions #save:disabled{ opacity:.6; cursor:default; }
+  .actions #retry{ font:inherit; padding:10px 14px; border:1px solid var(--danger); border-radius:6px; background:transparent; color:var(--danger); cursor:pointer; }
+  #error{ color:var(--danger); margin-top:6px; }
+  .hint{ color:var(--muted); font-size:12px; margin-top:6px; }
+  /* CALL3 voice note */
+  .recorder{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  #recordBtn{ font:inherit; padding:14px 22px; border:0; border-radius:999px; background:var(--danger); color:#fff; font-weight:700; cursor:pointer; min-width:140px; }
+  #recordBtn:disabled{ opacity:.6; cursor:default; }
+  #recordBtn.recording{ background:#111; }
+  .meter{ width:120px; height:10px; border-radius:5px; background:var(--border); overflow:hidden; display:inline-block; }
+  .meter-fill{ display:block; height:100%; width:0; background:var(--accent); }
+  .review-grid{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  @media (max-width:720px){ .review-grid{ grid-template-columns:1fr; } }
+  .transcript{ white-space:pre-wrap; border:1px solid var(--border); border-radius:6px; padding:8px; background:var(--bg); min-height:60px; }
+  .review-label{ display:block; font-size:12px; color:var(--muted); margin-bottom:2px; }
+  .ev{ display:none; font-size:12px; color:var(--muted); margin-top:2px; font-style:italic; }
+  .field.has-ev.show-ev .ev{ display:block; }
+  @media (hover:hover){ .field.has-ev:hover .ev{ display:block; } }
+  #rnConfirm{ font:inherit; padding:10px 18px; border:0; border-radius:6px; background:var(--accent); color:#fff; cursor:pointer; font-weight:600; }
+  #rnDiscard{ font:inherit; padding:10px 14px; border:1px solid var(--danger); border-radius:6px; background:transparent; color:var(--danger); cursor:pointer; }
+  #rnError{ color:var(--danger); margin-top:6px; }
+</style>
+</head>
+<body>
+<header class="topbar">
+  <span class="title">Call desk</span>
+  <select id="workspace" aria-label="Workspace"><option value="">Workspace...</option></select>
+  <span class="stats" id="stats">calls 0 / reached 0 / interested 0 / booked 0</span>
+  <span class="spacer"></span>
+  <input id="search" type="search" placeholder="Search name, phone, area" aria-label="Search queue">
+  <button id="export" type="button">Export CSV</button>
+</header>
+
+<main class="layout">
+  <section class="pane" aria-label="Today's queue">
+    <h2>Today</h2>
+    <ul id="queue"><li class="empty">Loading queue...</li></ul>
+  </section>
+
+  <section class="pane" aria-label="Lead card">
+    <div id="card" class="card-head"><p class="muted">Pick a lead on the left, or press Down and Enter.</p></div>
+
+    <div class="block">
+      <h3>Dossier</h3>
+      <div id="dossier" class="dossier"><p class="muted">No lead selected.</p></div>
+    </div>
+
+    <div class="block">
+      <h3>Call history</h3>
+      <ul id="timeline" class="timeline"><li class="muted">No calls yet.</li></ul>
+    </div>
+
+    <form id="logForm" class="block" autocomplete="off">
+      <h3>Log this call</h3>
+      <div id="outcomes" class="outcomes"></div>
+
+      <label class="field"><span>What I said</span><textarea id="iSaid" rows="2"></textarea></label>
+      <label class="field"><span>What they said</span><textarea id="theySaid" rows="2"></textarea></label>
+      <label class="field"><span>Next action</span><input id="nextAction" type="text"></label>
+      <label class="field"><span>Follow-up date</span><input id="followUpAt" type="date"></label>
+      <div class="quick">
+        <button type="button" data-days="1">Tomorrow</button>
+        <button type="button" data-days="3">In 3 days</button>
+        <button type="button" data-days="7">Next week</button>
+      </div>
+      <div class="actions">
+        <button id="save" type="submit">Save and next</button>
+        <button id="retry" type="button" hidden>Retry</button>
+      </div>
+      <div id="error" role="alert"></div>
+      <p class="hint">Keys: 1-9 pick an outcome, Ctrl+Enter saves, Up/Down move, Enter opens.</p>
+    </form>
+
+    <div class="block" id="voiceNote" hidden>
+      <h3>Voice note</h3>
+      <p class="hint">If you record a call, tell the person at the start.</p>
+      <div class="recorder">
+        <button id="recordBtn" type="button">Record</button>
+        <span id="recTimer" class="stats">0:00</span>
+        <span class="meter" aria-hidden="true"><span id="recLevel" class="meter-fill"></span></span>
+        <span id="recState" class="muted"></span>
+      </div>
+      <div id="review" hidden>
+        <h3>Review</h3>
+        <div class="review-grid">
+          <div class="review-col">
+            <span class="review-label">Transcript</span>
+            <div id="transcript" class="transcript"></div>
+          </div>
+          <div class="review-col">
+            <label class="field has-ev"><span>Outcome</span><select id="rnOutcome"></select><span class="ev" id="evOutcome"></span></label>
+            <label class="field has-ev"><span>What I said</span><textarea id="rnISaid" rows="2"></textarea><span class="ev" id="evISaid"></span></label>
+            <label class="field has-ev"><span>What they said</span><textarea id="rnTheySaid" rows="2"></textarea><span class="ev" id="evTheySaid"></span></label>
+            <label class="field has-ev"><span>Next action</span><input id="rnNextAction" type="text"><span class="ev" id="evNextAction"></span></label>
+            <label class="field has-ev"><span>Follow-up date</span><input id="rnFollowUp" type="date"><span class="ev" id="evFollowUp"></span></label>
+            <label class="field"><span>Objections (one per line)</span><textarea id="rnObjections" rows="2"></textarea></label>
+            <div id="rnNumbers" class="muted"></div>
+          </div>
+        </div>
+        <div class="actions">
+          <button id="rnConfirm" type="button">Confirm</button>
+          <button id="rnDiscard" type="button">Discard</button>
+        </div>
+        <div id="rnError" role="alert"></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+/* ==== CALL-DESK-CORE-START ==== */
+function escapeHtml(value){
+  return String(value == null ? "" : value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+var OUTCOMES = [
+  { key: "1", outcome: "no_answer", label: "No answer" },
+  { key: "2", outcome: "busy", label: "Busy" },
+  { key: "3", outcome: "call_back", label: "Call back" },
+  { key: "4", outcome: "interested", label: "Interested" },
+  { key: "5", outcome: "meeting_booked", label: "Meeting booked" },
+  { key: "6", outcome: "not_interested", label: "Not interested" },
+  { key: "7", outcome: "wrong_number", label: "Wrong number" },
+  { key: "8", outcome: "do_not_contact", label: "Do not contact" },
+  { key: "9", outcome: "won", label: "Won" }
+];
+
+function outcomeLabel(outcome){
+  for (var i = 0; i < OUTCOMES.length; i++) {
+    if (OUTCOMES[i].outcome === outcome) return OUTCOMES[i].label;
+  }
+  return outcome ? String(outcome).replace(/_/g, " ") : "";
+}
+
+function normalizeIndianPhone(raw){
+  var text = String(raw == null ? "" : raw).trim();
+  if (!text) return null;
+  var digits = text.replace(/[^0-9]/g, "");
+  if (!digits) return null;
+  var leadingPlus = text.charAt(0) === "+";
+  var indiaPlus = leadingPlus && text.slice(0, 3) === "+91";
+  var indianContext = indiaPlus || !leadingPlus;
+  var trunk = digits;
+  if (trunk.slice(0, 2) === "91" && trunk.length > 10) trunk = trunk.slice(2);
+  else if (trunk.charAt(0) === "0" && trunk.length > 10) trunk = trunk.slice(1);
+  if (indianContext && (trunk.slice(0, 4) === "1800" || trunk.slice(0, 4) === "1860" || trunk.slice(0, 4) === "1900")) return null;
+  var national = null;
+  var hasTrunk = false;
+  if (indiaPlus) { national = digits.slice(2); hasTrunk = true; }
+  else if (!leadingPlus && digits.slice(0, 2) === "91" && digits.length === 12) { national = digits.slice(2); hasTrunk = true; }
+  else if (!leadingPlus && digits.charAt(0) === "0" && digits.length === 11) { national = digits.slice(1); hasTrunk = true; }
+  else if (digits.length === 10 && !leadingPlus) { national = digits; hasTrunk = false; }
+  if (national !== null && national.length === 10 && /^[6-9][0-9]{9}$/.test(national)) {
+    return { e164: "+91" + national, kind: "mobile", display: "+91 " + national.slice(0, 5) + " " + national.slice(5) };
+  }
+  if (national !== null && hasTrunk && national.length >= 8 && national.length <= 11) {
+    var e164 = "+91" + national;
+    var display = e164;
+    if (national.length === 10 && national.slice(0, 2) === "22") {
+      display = "+91 22 " + national.slice(2, 6) + " " + national.slice(6);
+    }
+    return { e164: e164, kind: "landline", display: display };
+  }
+  return null;
+}
+
+function phoneDigits(phone){
+  var found = normalizeIndianPhone(phone);
+  if (found && found.e164) return found.e164.replace(/[^0-9]/g, "");
+  return String(phone == null ? "" : phone).replace(/[^0-9]/g, "");
+}
+function telHref(phone){
+  return "tel:+" + phoneDigits(phone);
+}
+function whatsappHref(phone){
+  return "https://wa.me/" + phoneDigits(phone);
+}
+function areaOf(lead){
+  lead = lead || {};
+  return lead.address || lead.city || lead.country || "";
+}
+function reasonLabel(entry){
+  entry = entry || {};
+  if (entry.kind === "follow_up") {
+    var when = entry.followUpAt ? String(entry.followUpAt).slice(0, 10) : "";
+    return when ? "follow-up due " + when : "follow-up due";
+  }
+  var score = entry.lead && typeof entry.lead.score === "number" ? entry.lead.score : 0;
+  return "new, score " + score;
+}
+function chipClass(entry){
+  return (entry && entry.kind === "follow_up") ? "chip chip-follow" : "chip chip-new";
+}
+
+function addDaysIso(days, nowIso){
+  var base = nowIso ? new Date(nowIso) : new Date();
+  base.setDate(base.getDate() + Number(days || 0));
+  return base.toISOString().slice(0, 10);
+}
+function quickFollowUp(choice, nowIso){
+  if (choice === "tomorrow") return addDaysIso(1, nowIso);
+  if (choice === "3days") return addDaysIso(3, nowIso);
+  if (choice === "week") return addDaysIso(7, nowIso);
+  return "";
+}
+
+function buildCallBody(input){
+  input = input || {};
+  return {
+    channel: input.channel || "call",
+    outcome: input.outcome || "",
+    iSaid: String(input.iSaid == null ? "" : input.iSaid),
+    theySaid: String(input.theySaid == null ? "" : input.theySaid),
+    nextAction: String(input.nextAction == null ? "" : input.nextAction),
+    followUpAt: input.followUpAt ? String(input.followUpAt) : null
+  };
+}
+
+function buildQueueRow(entry, state){
+  state = state || {};
+  var lead = (entry && entry.lead) || {};
+  var phone = lead.phone || (lead.phones && lead.phones[0]) || "";
+  var norm = normalizeIndianPhone(phone);
+  var index = typeof state.index === "number" ? state.index : 0;
+  var cls = state.selected ? "selected" : "";
+  var tel = norm
+    ? '<a class="tel" href="' + escapeHtml(telHref(phone)) + '">' + escapeHtml(norm.display) + "</a>"
+    : '<span class="muted">no phone</span>';
+  var wa = norm && norm.kind === "mobile"
+    ? '<a class="wa" href="' + escapeHtml(whatsappHref(phone)) + '" rel="noreferrer">WhatsApp</a>'
+    : "";
+  return (
+    '<li class="' + cls + '" data-index="' + index + '" data-lead-id="' + escapeHtml(lead.id || "") + '">' +
+      '<button type="button" class="rowbtn">' +
+        '<span class="name">' + escapeHtml(lead.name || "Unnamed") + "</span>" +
+        '<span class="outcome">' + escapeHtml(state.lastOutcome || "not called yet") + "</span>" +
+        '<span class="meta">' + escapeHtml(areaOf(lead)) + "</span>" +
+        '<span class="' + chipClass(entry) + '">' + escapeHtml(reasonLabel(entry)) + "</span>" +
+        '<span class="links">' + tel + wa + "</span>" +
+      "</button>" +
+    "</li>"
+  );
+}
+
+function DraftStore(){ this.map = {}; }
+DraftStore.prototype.get = function(leadId){
+  var found = this.map[leadId];
+  if (!found) return null;
+  return { iSaid: found.iSaid, theySaid: found.theySaid, nextAction: found.nextAction, followUpAt: found.followUpAt, outcome: found.outcome };
+};
+DraftStore.prototype.set = function(leadId, patch){
+  if (!leadId) return null;
+  var cur = this.map[leadId] || { iSaid: "", theySaid: "", nextAction: "", followUpAt: "", outcome: "" };
+  var next = { iSaid: cur.iSaid, theySaid: cur.theySaid, nextAction: cur.nextAction, followUpAt: cur.followUpAt, outcome: cur.outcome };
+  patch = patch || {};
+  if (patch.iSaid !== undefined) next.iSaid = String(patch.iSaid);
+  if (patch.theySaid !== undefined) next.theySaid = String(patch.theySaid);
+  if (patch.nextAction !== undefined) next.nextAction = String(patch.nextAction);
+  if (patch.followUpAt !== undefined) next.followUpAt = String(patch.followUpAt);
+  if (patch.outcome !== undefined) next.outcome = String(patch.outcome);
+  this.map[leadId] = next;
+  return next;
+};
+DraftStore.prototype.clear = function(leadId){
+  delete this.map[leadId];
+};
+DraftStore.prototype.has = function(leadId){
+  return Object.prototype.hasOwnProperty.call(this.map, leadId);
+};
+
+/* A failed save keeps the draft; a successful save clears it. */
+function applySaveResult(drafts, leadId, ok){
+  if (ok) { drafts.clear(leadId); return true; }
+  return false;
+}
+
+/* After the saved lead leaves the queue, the lead at the same index is next. */
+function nextIndex(total, current){
+  if (total <= 0) return -1;
+  if (current < 0) return 0;
+  if (current >= total - 1) return total - 1;
+  return current + 1;
+}
+/* ==== CALL-DESK-CORE-END ==== */
+
+(function(){
+  "use strict";
+  var state = {
+    workspaces: [], ws: "", queue: [], selected: -1,
+    drafts: new DraftStore(), lastOutcomes: {}, filter: "",
+    selectedOutcome: "", sending: false
+  };
+
+  function $(id){ return document.getElementById(id); }
+
+  function lsGet(key){ try { return window.localStorage.getItem(key); } catch (e) { return null; } }
+  function lsSet(key, value){ try { window.localStorage.setItem(key, value); } catch (e) { /* storage off */ } }
+
+  function api(path, options){
+    options = options || {};
+    return fetch(path, options).then(function(res){
+      return res.text().then(function(text){
+        var data = null;
+        try { data = text ? JSON.parse(text) : null; } catch (e) { data = null; }
+        if (!res.ok) {
+          var msg = data && data.error ? data.error : ("request failed (" + res.status + ")");
+          var err = new Error(msg);
+          err.status = res.status;
+          throw err;
+        }
+        return data;
+      });
+    });
+  }
+
+  function wsPath(suffix){
+    return "/api/workspaces/" + encodeURIComponent(state.ws) + suffix;
+  }
+
+  function showError(message){
+    $("error").textContent = message || "";
+  }
+
+  function outcomeText(leadId){
+    var o = state.lastOutcomes[leadId];
+    return o ? outcomeLabel(o) : "not called yet";
+  }
+
+  function renderOutcomes(){
+    var html = "";
+    for (var i = 0; i < OUTCOMES.length; i++) {
+      var o = OUTCOMES[i];
+      var active = state.selectedOutcome === o.outcome ? " active" : "";
+      html += '<button type="button" class="outcome-btn' + active + '" data-outcome="' + o.outcome + '">'
+        + o.key + ". " + escapeHtml(o.label) + "</button>";
+    }
+    $("outcomes").innerHTML = html;
+  }
+
+  function renderQueue(){
+    var needle = (state.filter || "").toLowerCase();
+    var html = "";
+    for (var i = 0; i < state.queue.length; i++) {
+      var entry = state.queue[i];
+      var lead = entry.lead || {};
+      var hay = (String(lead.name || "") + " " + String(lead.phone || "") + " " + areaOf(lead)).toLowerCase();
+      if (needle && hay.indexOf(needle) === -1) continue;
+      html += buildQueueRow(entry, {
+        index: i,
+        selected: i === state.selected,
+        lastOutcome: outcomeText(lead.id)
+      });
+    }
+    $("queue").innerHTML = html || '<li class="empty">No leads match.</li>';
+  }
+
+  function renderStats(res){
+    res = res || {};
+    $("stats").textContent =
+      "calls " + (res.calls || 0) +
+      " / reached " + (res.reached || 0) +
+      " / interested " + (res.interested || 0) +
+      " / booked " + (res.booked || 0);
+  }
+
+  function renderCard(entry){
+    if (!entry) { renderEmpty(); return; }
+    var lead = entry.lead || {};
+    var phone = lead.phone || (lead.phones && lead.phones[0]) || "";
+    var norm = normalizeIndianPhone(phone);
+    var links = norm
+      ? '<a href="' + escapeHtml(telHref(phone)) + '">' + escapeHtml(norm.display) + "</a>"
+        + (norm.kind === "mobile"
+          ? ' <a href="' + escapeHtml(whatsappHref(phone)) + '" rel="noreferrer">WhatsApp</a>'
+          : "")
+      : '<span class="muted">no phone</span>';
+    $("card").innerHTML =
+      '<div class="name">' + escapeHtml(lead.name || "Unnamed") + "</div>" +
+      '<div class="sub">' + escapeHtml(areaOf(lead)) + " &middot; " + escapeHtml(lead.category || "") + "</div>" +
+      '<div class="links">' + links + "</div>";
+  }
+
+  function renderEmpty(){
+    state.selected = -1;
+    $("card").innerHTML = '<p class="muted">Pick a lead on the left, or press Down and Enter.</p>';
+    $("dossier").innerHTML = '<p class="muted">No lead selected.</p>';
+    $("timeline").innerHTML = '<li class="muted">No calls yet.</li>';
+  }
+
+  function renderDossier(dossier, lead){
+    if (!dossier) {
+      $("dossier").innerHTML = '<p class="muted">not processed yet</p>';
+      return;
+    }
+    var summary = (lead && lead.summary) || "";
+    var gap = dossier.gap && dossier.gap.headline ? dossier.gap.headline.value : "";
+    var say = dossier.sayThis ? dossier.sayThis.value : "";
+    var fallback = dossier.pushback ? dossier.pushback.value : "";
+    var offer = dossier.offers && dossier.offers.length ? dossier.offers[0] : null;
+    var html = "";
+    html += "<p><strong>Summary:</strong> " + (summary ? escapeHtml(summary) : '<span class="muted">no summary</span>') + "</p>";
+    html += "<p><strong>Gap:</strong> " + (gap ? escapeHtml(gap) : '<span class="muted">no gap</span>') + "</p>";
+    html += "<p><strong>Say this:</strong> " + (say ? escapeHtml(say) : '<span class="muted">no opener</span>') + "</p>";
+    html += "<p><strong>Fallback:</strong> " + (fallback ? escapeHtml(fallback) : '<span class="muted">no fallback</span>') + "</p>";
+    if (offer) {
+      var why = offer.whyItMatters ? offer.whyItMatters.value : "";
+      html += "<p><strong>Offer:</strong> " + escapeHtml(offer.title || offer.service || "") +
+        (why ? " - " + escapeHtml(why) : "") + "</p>";
+    } else {
+      html += '<p class="muted">no offer</p>';
+    }
+    $("dossier").innerHTML = html;
+  }
+
+  function renderTimeline(calls){
+    if (!calls || calls.length === 0) {
+      $("timeline").innerHTML = '<li class="muted">No calls yet.</li>';
+      return;
+    }
+    var html = "";
+    for (var i = 0; i < calls.length; i++) {
+      var c = calls[i];
+      html += "<li>" +
+        '<div class="when">' + escapeHtml(String(c.at || "").slice(0, 16).replace("T", " ")) + " &middot; " + escapeHtml(outcomeLabel(c.outcome)) + "</div>" +
+        (c.iSaid ? "<div>I said: " + escapeHtml(c.iSaid) + "</div>" : "") +
+        (c.theySaid ? "<div>They said: " + escapeHtml(c.theySaid) + "</div>" : "") +
+        (c.nextAction ? "<div>Next: " + escapeHtml(c.nextAction) + "</div>" : "") +
+        "</li>";
+    }
+    $("timeline").innerHTML = html;
+  }
+
+  function saveDraftFromForm(){
+    var entry = state.queue[state.selected];
+    if (!entry) return;
+    state.drafts.set(entry.lead.id, {
+      iSaid: $("iSaid").value,
+      theySaid: $("theySaid").value,
+      nextAction: $("nextAction").value,
+      followUpAt: $("followUpAt").value,
+      outcome: state.selectedOutcome
+    });
+  }
+
+  function clearForm(){
+    $("iSaid").value = "";
+    $("theySaid").value = "";
+    $("nextAction").value = "";
+    $("followUpAt").value = "";
+    state.selectedOutcome = "";
+    renderOutcomes();
+  }
+
+  function loadStats(){
+    if (!state.ws) return;
+    api(wsPath("/call-stats")).then(renderStats).catch(function(err){
+      showError("Could not load today's numbers: " + err.message);
+    });
+  }
+
+  function loadQueue(after){
+    if (!state.ws) return Promise.resolve();
+    return api(wsPath("/call-queue")).then(function(res){
+      state.queue = (res && res.queue) || [];
+      if (state.selected >= state.queue.length) state.selected = state.queue.length - 1;
+      renderQueue();
+      if (typeof after === "function") after();
+    }).catch(function(err){
+      showError("Could not load the queue: " + err.message);
+    });
+  }
+
+  function loadCalls(leadId){
+    api(wsPath("/leads/" + encodeURIComponent(leadId) + "/calls")).then(function(res){
+      var calls = (res && res.calls) || [];
+      state.lastOutcomes[leadId] = calls.length ? calls[0].outcome : "";
+      var entry = state.queue[state.selected];
+      if (entry && entry.lead.id === leadId) renderTimeline(calls);
+      renderQueue();
+    }).catch(function(){ /* history is optional for the page to work */ });
+  }
+
+  function loadDossier(leadId){
+    api(wsPath("/leads/" + encodeURIComponent(leadId) + "/dossier")).then(function(res){
+      var entry = state.queue[state.selected];
+      if (!entry || entry.lead.id !== leadId) return;
+      renderDossier(res && res.dossier ? res.dossier : null, entry.lead);
+    }).catch(function(){
+      var entry = state.queue[state.selected];
+      if (entry && entry.lead.id === leadId) renderDossier(null, entry.lead);
+    });
+  }
+
+  function open(index){
+    if (index < 0 || index >= state.queue.length) return;
+    state.selected = index;
+    var entry = state.queue[index];
+    var lead = entry.lead || {};
+    var draft = state.drafts.get(lead.id) || { iSaid: "", theySaid: "", nextAction: "", followUpAt: "", outcome: "" };
+    $("iSaid").value = draft.iSaid || "";
+    $("theySaid").value = draft.theySaid || "";
+    $("nextAction").value = draft.nextAction || "";
+    $("followUpAt").value = draft.followUpAt || "";
+    state.selectedOutcome = draft.outcome || "";
+    showError("");
+    $("retry").hidden = true;
+    openVoiceNote();
+    renderOutcomes();
+    renderCard(entry);
+    renderQueue();
+    loadCalls(lead.id);
+    loadDossier(lead.id);
+    $("card").scrollIntoView && $("card").scrollIntoView({ block: "nearest" });
+  }
+
+  function pickOutcome(outcome){
+    state.selectedOutcome = outcome;
+    renderOutcomes();
+    saveDraftFromForm();
+  }
+
+  function pickOutcomeByKey(key){
+    for (var i = 0; i < OUTCOMES.length; i++) {
+      if (OUTCOMES[i].key === key) { pickOutcome(OUTCOMES[i].outcome); return; }
+    }
+  }
+
+  function save(){
+    if (state.sending) return;
+    var entry = state.queue[state.selected];
+    if (!entry) { showError("Pick a lead first."); return; }
+    if (!state.selectedOutcome) { showError("Pick an outcome (press 1-9) before saving."); return; }
+    var leadId = entry.lead.id;
+    var savedIndex = state.selected;
+    var body = buildCallBody({
+      channel: "call",
+      outcome: state.selectedOutcome,
+      iSaid: $("iSaid").value,
+      theySaid: $("theySaid").value,
+      nextAction: $("nextAction").value,
+      followUpAt: $("followUpAt").value
+    });
+    state.sending = true;
+    $("save").disabled = true;
+    api(wsPath("/leads/" + encodeURIComponent(leadId) + "/calls"), {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(body)
+    }).then(function(){
+      state.sending = false;
+      $("save").disabled = false;
+      applySaveResult(state.drafts, leadId, true);
+      clearForm();
+      showError("");
+      $("retry").hidden = true;
+      loadStats();
+      loadQueue(function(){
+        if (state.queue.length === 0) { renderEmpty(); renderQueue(); return; }
+        var next = nextIndex(state.queue.length, savedIndex);
+        open(next);
+      });
+    }).catch(function(err){
+      state.sending = false;
+      $("save").disabled = false;
+      applySaveResult(state.drafts, leadId, false);
+      showError("Could not save this call: " + err.message + ". Your text is kept - press Retry.");
+      $("retry").hidden = false;
+    });
+  }
+
+  /* ==== CALL3 voice note ==== */
+  var rec = { mr: null, chunks: [], stream: null, tick: null, raf: null, audioCtx: null, analyser: null, startedAt: 0, autoStop: null };
+  var voice = { noteId: null, sending: false };
+  var MAX_REC_MS = 180000;
+
+  function mmss(ms){
+    var total = Math.floor(ms / 1000);
+    var m = Math.floor(total / 60);
+    var s = total % 60;
+    return m + ":" + (s < 10 ? "0" : "") + s;
+  }
+
+  function voiceLeadId(){
+    var entry = state.queue[state.selected];
+    return entry && entry.lead ? entry.lead.id : "";
+  }
+
+  function stopMediaTracks(){
+    if (rec.stream) { try { rec.stream.getTracks().forEach(function(t){ t.stop(); }); } catch(e){ /* off */ } rec.stream = null; }
+    if (rec.audioCtx) { try { rec.audioCtx.close(); } catch(e){ /* off */ } rec.audioCtx = null; }
+    if (rec.raf) { cancelAnimationFrame(rec.raf); rec.raf = null; }
+    if (rec.tick) { clearInterval(rec.tick); rec.tick = null; }
+    if (rec.autoStop) { clearTimeout(rec.autoStop); rec.autoStop = null; }
+  }
+
+  function resetRecorderUI(){
+    var btn = $("recordBtn");
+    if (btn) { btn.classList.remove("recording"); btn.textContent = "Record"; btn.disabled = false; }
+    if ($("recTimer")) $("recTimer").textContent = "0:00";
+    if ($("recLevel")) $("recLevel").style.width = "0";
+    if ($("recState") && !$("recState").textContent.match(/transcribing/)) $("recState").textContent = "";
+  }
+
+  function stopRecorder(discard){
+    if (rec.mr && rec.mr.state !== "inactive") {
+      try { rec.mr.onstop = null; rec.mr.stop(); } catch(e){ /* off */ }
+    }
+    stopMediaTracks();
+    resetRecorderUI();
+    if (discard) rec.chunks = [];
+  }
+
+  function openVoiceNote(){
+    $("voiceNote").hidden = false;
+    if (!voiceLeadId()) return;
+    stopRecorder(true);
+    $("review").hidden = true;
+    voice.noteId = null;
+    $("rnError").textContent = "";
+    resetRecorderUI();
+  }
+
+  function showReviewError(message){
+    $("review").hidden = false;
+    $("rnError").textContent = message || "";
+  }
+
+  function levelLoop(){
+    if (!rec.analyser) return;
+    var data = new Uint8Array(rec.analyser.frequencyBinCount);
+    function frame(){
+      if (!rec.analyser) return;
+      rec.analyser.getByteFrequencyData(data);
+      var sum = 0;
+      for (var i = 0; i < data.length; i++) sum += data[i];
+      var avg = sum / data.length / 255;
+      $("recLevel").style.width = Math.min(100, Math.round(avg * 220)) + "%";
+      rec.raf = requestAnimationFrame(frame);
+    }
+    frame();
+  }
+
+  function startRecording(){
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia || typeof MediaRecorder === "undefined") {
+      showReviewError("Recording is not supported in this browser.");
+      return;
+    }
+    navigator.mediaDevices.getUserMedia({ audio: true }).then(function(stream){
+      rec.stream = stream;
+      rec.chunks = [];
+      var mime = "";
+      if (MediaRecorder.isTypeSupported && MediaRecorder.isTypeSupported("audio/webm")) mime = "audio/webm";
+      try { rec.mr = mime ? new MediaRecorder(stream, { mimeType: mime }) : new MediaRecorder(stream); }
+      catch(e){ showReviewError("Could not start the recorder: " + e.message); stopMediaTracks(); return; }
+      rec.mr.ondataavailable = function(e){ if (e.data && e.data.size) rec.chunks.push(e.data); };
+      rec.mr.onstop = function(){ stopMediaTracks(); uploadVoiceNote(); };
+      rec.mr.start();
+      rec.startedAt = Date.now();
+      $("recordBtn").classList.add("recording");
+      $("recordBtn").textContent = "Stop";
+      $("recState").textContent = "recording...";
+      rec.tick = setInterval(function(){ $("recTimer").textContent = mmss(Date.now() - rec.startedAt); }, 250);
+      rec.autoStop = setTimeout(stopRecording, MAX_REC_MS);
+      try {
+        var AC = window.AudioContext || window.webkitAudioContext;
+        if (AC) {
+          rec.audioCtx = new AC();
+          var src = rec.audioCtx.createMediaStreamSource(stream);
+          rec.analyser = rec.audioCtx.createAnalyser();
+          rec.analyser.fftSize = 256;
+          src.connect(rec.analyser);
+          levelLoop();
+        }
+      } catch(e){ /* the meter is optional */ }
+    }).catch(function(err){ showReviewError("Microphone blocked: " + err.message); });
+  }
+
+  function stopRecording(){
+    if (rec.mr && rec.mr.state !== "inactive") {
+      $("recState").textContent = "transcribing...";
+      $("recordBtn").disabled = true;
+      rec.mr.stop();
+    }
+  }
+
+  function uploadVoiceNote(){
+    var leadId = voiceLeadId();
+    if (!leadId || rec.chunks.length === 0) { resetRecorderUI(); return; }
+    var type = (rec.chunks[0] && rec.chunks[0].type) || "audio/webm";
+    var blob = new Blob(rec.chunks, { type: type });
+    rec.chunks = [];
+    api(wsPath("/leads/" + encodeURIComponent(leadId) + "/call-notes"), {
+      method: "POST",
+      headers: { "content-type": type },
+      body: blob
+    }).then(function(draft){ resetRecorderUI(); renderReview(draft); })
+      .catch(function(err){ resetRecorderUI(); showReviewError("Could not transcribe: " + err.message); });
+  }
+
+  function fillEvidence(id, snippets){
+    var el = $(id);
+    if (!el) return;
+    var list = snippets && snippets.length ? snippets : [];
+    el.textContent = list.length ? "from transcript: " + list[0] : "";
+  }
+
+  function renderReview(draft){
+    draft = draft || {};
+    var polished = draft.polished || {};
+    voice.noteId = draft.id || null;
+    $("review").hidden = false;
+    $("rnError").textContent = "";
+    $("transcript").textContent = draft.transcript || "";
+
+    var html = '<option value="unknown">unknown</option>';
+    for (var i = 0; i < OUTCOMES.length; i++) html += '<option value="' + OUTCOMES[i].outcome + '">' + escapeHtml(OUTCOMES[i].label) + "</option>";
+    $("rnOutcome").innerHTML = html;
+    $("rnOutcome").value = polished.outcome && polished.outcome !== "unknown" ? polished.outcome : "unknown";
+
+    $("rnISaid").value = String(polished.i_said || "");
+    $("rnTheySaid").value = String(polished.they_said || "");
+    $("rnNextAction").value = String(polished.next_action || "");
+    $("rnFollowUp").value = polished.follow_up_at ? String(polished.follow_up_at).slice(0, 10) : "";
+    $("rnObjections").value = (polished.objections || []).join("\n");
+
+    var ev = polished.evidence || {};
+    fillEvidence("evOutcome", ev.outcome);
+    fillEvidence("evISaid", ev.i_said);
+    fillEvidence("evTheySaid", ev.they_said);
+    fillEvidence("evNextAction", ev.next_action);
+    fillEvidence("evFollowUp", ev.follow_up_at);
+    var nums = polished.numbers_mentioned || [];
+    $("rnNumbers").textContent = nums.length ? "Numbers/names: " + nums.map(function(n){ return n.value; }).join(", ") : "";
+  }
+
+  function confirmVoiceNote(){
+    if (voice.sending || !voice.noteId) return;
+    var leadId = voiceLeadId();
+    if (!leadId) return;
+    voice.sending = true;
+    var body = {
+      outcome: $("rnOutcome").value,
+      i_said: $("rnISaid").value,
+      they_said: $("rnTheySaid").value,
+      next_action: $("rnNextAction").value,
+      follow_up_at: $("rnFollowUp").value ? $("rnFollowUp").value : null,
+      objections: $("rnObjections").value.split("\n").map(function(s){ return s.trim(); }).filter(Boolean)
+    };
+    api(wsPath("/leads/" + encodeURIComponent(leadId) + "/call-notes/" + encodeURIComponent(voice.noteId) + "/confirm"), {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(body)
+    }).then(function(){
+      voice.sending = false;
+      $("review").hidden = true;
+      loadCalls(leadId);
+      loadStats();
+    }).catch(function(err){ voice.sending = false; showReviewError("Could not confirm: " + err.message); });
+  }
+
+  function discardVoiceNote(){
+    if (voice.sending || !voice.noteId) return;
+    var leadId = voiceLeadId();
+    if (!leadId) return;
+    voice.sending = true;
+    api(wsPath("/leads/" + encodeURIComponent(leadId) + "/call-notes/" + encodeURIComponent(voice.noteId) + "/discard"), { method: "POST" })
+      .then(function(){ voice.sending = false; $("review").hidden = true; })
+      .catch(function(err){ voice.sending = false; showReviewError("Could not discard: " + err.message); });
+  }
+
+  function wireVoiceNote(){
+    $("recordBtn").addEventListener("click", function(){
+      if (rec.mr && rec.mr.state === "recording") { stopRecording(); return; }
+      startRecording();
+    });
+    $("rnConfirm").addEventListener("click", confirmVoiceNote);
+    $("rnDiscard").addEventListener("click", discardVoiceNote);
+    var fieldEls = document.querySelectorAll("#review .field.has-ev");
+    for (var i = 0; i < fieldEls.length; i++) {
+      fieldEls[i].addEventListener("click", function(e){
+        var tag = (e.target && e.target.tagName) || "";
+        if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT") return;
+        this.classList.toggle("show-ev");
+      });
+    }
+  }
+
+  function wire(){
+    $("outcomes").addEventListener("click", function(e){
+      var btn = e.target && e.target.closest ? e.target.closest("button[data-outcome]") : null;
+      if (btn) pickOutcome(btn.getAttribute("data-outcome"));
+    });
+
+    $("logForm").addEventListener("submit", function(e){ e.preventDefault(); save(); });
+    $("retry").addEventListener("click", function(){ save(); });
+
+    var quickButtons = document.querySelectorAll(".quick button");
+    for (var i = 0; i < quickButtons.length; i++) {
+      quickButtons[i].addEventListener("click", function(){
+        var days = Number(this.getAttribute("data-days"));
+        $("followUpAt").value = addDaysIso(days);
+        saveDraftFromForm();
+      });
+    }
+
+    ["iSaid", "theySaid", "nextAction", "followUpAt"].forEach(function(id){
+      $(id).addEventListener("input", saveDraftFromForm);
+    });
+
+    $("search").addEventListener("input", function(){ state.filter = $("search").value; renderQueue(); });
+
+    $("export").addEventListener("click", function(){
+      if (!state.ws) return;
+      var a = document.createElement("a");
+      a.href = wsPath("/calls.csv");
+      a.download = "leadscout-calls.csv";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    });
+
+    $("workspace").addEventListener("change", function(){
+      state.ws = $("workspace").value;
+      lsSet("leadscout.calls.workspace", state.ws);
+      state.selected = -1;
+      state.queue = [];
+      state.lastOutcomes = {};
+      renderEmpty();
+      loadStats();
+      loadQueue(function(){ if (state.queue.length) open(0); });
+    });
+
+    $("queue").addEventListener("click", function(e){
+      var li = e.target && e.target.closest ? e.target.closest("li[data-index]") : null;
+      if (li) open(Number(li.getAttribute("data-index")));
+    });
+
+    document.addEventListener("keydown", function(e){
+      var tag = (e.target && e.target.tagName) || "";
+      var typing = tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT";
+      if (e.ctrlKey && e.key === "Enter") { e.preventDefault(); save(); return; }
+      if (typing) return;
+      if (e.key === "ArrowDown") { e.preventDefault(); open(Math.min(state.selected + 1, state.queue.length - 1)); return; }
+      if (e.key === "ArrowUp") { e.preventDefault(); open(Math.max(state.selected - 1, 0)); return; }
+      if (e.key === "Enter") { e.preventDefault(); if (state.queue.length) open(state.selected < 0 ? 0 : state.selected); return; }
+      if (/^[1-9]$/.test(e.key)) { pickOutcomeByKey(e.key); }
+    });
+  }
+
+  function start(){
+    renderEmpty();
+    loadStats();
+    loadQueue(function(){ if (state.queue.length) open(0); });
+  }
+
+  function initWorkspaces(){
+    api("/api/workspaces").then(function(list){
+      state.workspaces = Array.isArray(list) ? list : [];
+      var sel = $("workspace");
+      sel.innerHTML = state.workspaces.map(function(w){
+        return '<option value="' + escapeHtml(w.id) + '">' + escapeHtml(w.name) + "</option>";
+      }).join("");
+      var saved = lsGet("leadscout.calls.workspace");
+      var chosen = "";
+      for (var i = 0; i < state.workspaces.length; i++) { if (state.workspaces[i].id === saved) chosen = saved; }
+      if (!chosen && state.workspaces.length) chosen = state.workspaces[0].id;
+      if (!chosen) { showError("No workspace yet. Create one first."); return; }
+      state.ws = chosen;
+      sel.value = chosen;
+      start();
+    }).catch(function(err){
+      showError("Could not load workspaces: " + err.message);
+    });
+  }
+
+  renderOutcomes();
+  wire();
+  wireVoiceNote();
+  initWorkspaces();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+{
+  "note": "Fake invalid fixture: names a specific business-like entity.",
+  "category": "demo-category",
+  "country": "FA",
+  "howItWorks": [
+    "The market leader is Acme Demo and it handles bookings by hand."
+  ],
+  "whereAutomationHelps": [
+    { "service": "automation", "point": "Acme Demo could reply faster with automation." }
+  ]
+}

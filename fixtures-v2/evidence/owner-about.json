@@ -1,0 +1,29 @@
+{
+  "name": "owner-about",
+  "raw": {
+    "name": "Fixture Owner About",
+    "category": "dental clinic",
+    "city": "Navi Mumbai",
+    "website": "https://fixture-owner.example",
+    "source": "osm",
+    "sourceUrl": "https://www.openstreetmap.org/node/8888888888"
+  },
+  "enrichment": {
+    "summary": "Fixture clinic with owner on about page.",
+    "emails": [],
+    "phones": ["+919876588888"],
+    "socials": {},
+    "signals": []
+  },
+  "pages": [
+    {
+      "url": "https://fixture-owner.example/about",
+      "body": "<!DOCTYPE html><html><head><title>About - Fixture Owner About</title><meta name=\"description\" content=\"Meet the team behind Fixture Owner About.\"></head><body><h1>About Us</h1><p>Founded by Dr. A. Sharma in 2005, Fixture Owner About has cared for smiles across Navi Mumbai.</p></body></html>",
+      "fetchedAt": "2026-10-07T00:00:00.000Z"
+    }
+  ],
+  "expected": {
+    "bizKey": "fixture-owner.example",
+    "owner": "Founded by Dr. A. Sharma"
+  }
+}

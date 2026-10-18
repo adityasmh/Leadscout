@@ -1,0 +1,18 @@
+{
+  "note": "Fake fixture for L9 explainer validation harness. Not a real business.",
+  "category": "demo-category",
+  "country": "FA",
+  "howItWorks": [
+    "Customers find the business through word of mouth and local listings.",
+    "Enquiries arrive by phone, email, and walk-in visits during open hours.",
+    "Staff answer questions and book appointments in a paper diary.",
+    "Reminders are sent manually the day before each booking.",
+    "Peak seasons create a backlog of missed calls and delayed replies.",
+    "Owners spend evenings catching up on admin and follow-ups."
+  ],
+  "whereAutomationHelps": [
+    { "service": "automation", "point": "Auto-reply to common questions by email or chat." },
+    { "service": "booking-system", "point": "Let customers pick their own slot online." },
+    { "service": "crm-setup", "point": "Keep every enquiry in one searchable place." }
+  ]
+}

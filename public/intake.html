@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Leadscout intake</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: #ffffff;
+      --fg: #111111;
+      --muted: #666666;
+      --border: #c9ced6;
+      --panel: #f4f5f7;
+      --accent: #2563eb;
+      --danger: #b91c1c;
+      --radius: 4px;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #111318;
+        --fg: #e8eaed;
+        --muted: #9aa0a8;
+        --border: #333842;
+        --panel: #1b1e24;
+        --accent: #6ea8fe;
+        --danger: #f87171;
+      }
+    }
+    * { box-sizing: border-box; }
+    body {
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--fg);
+      line-height: 1.45;
+      margin: 0;
+    }
+    header {
+      padding: 0.7rem 1rem;
+      border-bottom: 1px solid var(--border);
+      background: var(--panel);
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    header h1 { margin: 0; font-size: 1.15rem; }
+    #mock-banner {
+      display: inline-block;
+      padding: 0.15rem 0.5rem;
+      border: 1px solid var(--danger);
+      color: var(--danger);
+      font-size: 0.8rem;
+      font-weight: 700;
+      border-radius: var(--radius);
+    }
+    #mock-banner[hidden] { display: none; }
+    main { max-width: 820px; margin: 0 auto; padding: 1rem; }
+    .hint { font-size: 0.82rem; color: var(--muted); margin: 0.25rem 0; }
+    .bar {
+      height: 10px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    #bar-fill { height: 100%; width: 0%; background: var(--accent); transition: width 0.2s ease; }
+    h2 { font-size: 1.05rem; margin: 0.9rem 0 0.25rem; }
+    h3 { font-size: 0.95rem; margin: 1rem 0 0.35rem; }
+    .q { margin: 0.85rem 0; }
+    label { display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 0.25rem; }
+    input[type="text"], input[type="number"], textarea, select {
+      width: 100%;
+      font: inherit;
+      color: var(--fg);
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 0.45rem 0.55rem;
+    }
+    textarea { min-height: 4.5rem; resize: vertical; }
+    input:focus, textarea:focus, select:focus { outline: 2px solid var(--accent); outline-offset: 0; }
+    .multi-list { margin: 0.15rem 0 0; padding: 0; }
+    .multi-list label {
+      display: flex; align-items: center; gap: 0.45rem;
+      font-weight: 400; font-size: 0.88rem; margin: 0.2rem 0;
+    }
+    .multi-list input { width: auto; }
+    button {
+      font: inherit;
+      cursor: pointer;
+      border: 1px solid var(--accent);
+      background: var(--accent);
+      color: var(--bg);
+      border-radius: var(--radius);
+      padding: 0.45rem 0.9rem;
+      font-weight: 600;
+    }
+    button:disabled { opacity: 0.5; cursor: not-allowed; }
+    .btn-secondary { background: transparent; color: var(--accent); }
+    .btn-sm { padding: 0.2rem 0.55rem; font-size: 0.8rem; font-weight: 500; }
+    .nav { display: flex; justify-content: space-between; gap: 0.5rem; margin-top: 1.25rem; }
+    .nav-spacer { flex: 1; }
+    #form-msg {
+      margin-top: 0.75rem;
+      min-height: 1.2rem;
+      font-size: 0.85rem;
+      color: var(--danger);
+    }
+    .followup {
+      margin: 0.35rem 0 0;
+      padding: 0.45rem 0.6rem;
+      border-left: 3px solid var(--accent);
+      background: var(--panel);
+      font-size: 0.84rem;
+      border-radius: 0 var(--radius) var(--radius) 0;
+    }
+    .followup-title { font-weight: 600; display: block; margin-bottom: 0.15rem; }
+    .error-box {
+      border: 1px solid var(--danger);
+      color: var(--danger);
+      border-radius: var(--radius);
+      padding: 0.6rem 0.75rem;
+      margin-top: 1rem;
+      font-size: 0.86rem;
+    }
+    .error-box button { margin-top: 0.5rem; }
+    .review-section {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 0.6rem 0.75rem;
+      margin-bottom: 0.75rem;
+      background: var(--panel);
+    }
+    .review-head { display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; }
+    .review-head h3 { margin: 0; }
+    dl { margin: 0.4rem 0 0; }
+    dd { margin: 0.1rem 0 0; white-space: pre-wrap; word-break: break-word; font-size: 0.9rem; }
+    ul { margin: 0.3rem 0; padding-left: 1.2rem; }
+    table { border-collapse: collapse; width: 100%; font-size: 0.88rem; }
+    th, td { border: 1px solid var(--border); padding: 0.35rem 0.5rem; text-align: left; vertical-align: top; word-break: break-word; }
+    th { background: var(--panel); }
+    footer { margin-top: 1.5rem; font-size: 0.78rem; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Leadscout intake</h1>
+    <span class="hint" id="ws-hint"></span>
+    <span id="mock-banner" hidden>MOCK DATA - not saved</span>
+  </header>
+
+  <main>
+    <p class="hint" id="loading-line">Loading questions…</p>
+
+    <div class="error-box" id="error-box" hidden role="alert">
+      <p id="error-text" style="margin:0"></p>
+      <button type="button" class="btn-secondary" id="retry-btn">Retry</button>
+    </div>
+
+    <div id="wizard" hidden>
+      <div class="bar" aria-hidden="true"><div id="bar-fill"></div></div>
+      <p class="hint" id="step-text" aria-live="polite"></p>
+      <h2 id="section-title"></h2>
+      <p class="hint" id="section-meta"></p>
+      <form id="section-form" novalidate autocomplete="off"></form>
+      <p class="hint" id="form-msg" aria-live="polite"></p>
+      <div class="nav">
+        <button type="button" id="back-btn" class="btn-secondary">Back</button>
+        <span class="nav-spacer"></span>
+        <button type="button" id="next-btn">Next</button>
+      </div>
+    </div>
+
+    <div id="review" hidden>
+      <h2>Review</h2>
+      <p class="hint" id="review-note"></p>
+      <div id="brief-box"></div>
+      <h3>Discovery queries</h3>
+      <div id="queries-box"></div>
+      <h3>Matching settings</h3>
+      <div id="settings-box"></div>
+      <div class="nav">
+        <button type="button" id="review-back-btn" class="btn-secondary">Back to questions</button>
+        <span class="nav-spacer"></span>
+        <button type="button" id="recompile-btn">Compile again</button>
+      </div>
+    </div>
+
+    <footer>Answers stay in this page and are sent per section. Nothing is written elsewhere.</footer>
+  </main>
+
+  <script>
+    "use strict";
+
+    var params = new URLSearchParams(location.search);
+    var isMock = params.get("mock") === "1";
+    // Workspace: ?ws= wins, else the choice the main page stored (read inside try/catch).
+    function storedWorkspace() {
+      try { return localStorage.getItem("leadscout.workspace") || ""; } catch (e) { return ""; }
+    }
+    var WS = params.get("ws") || storedWorkspace() || (isMock ? "mock" : "");
+    var API_BASE = WS ? "/api/workspaces/" + encodeURIComponent(WS) + "/intake" : "";
+
+    // ------------------------------------------------------------------
+    // ?mock=1 embeds a SMALL fake question set (3 sections) and a fake
+    // brief and queries, and makes NO network calls at all.
+    // Normal flow:
+    //   GET  <API_BASE>             -> {questions:[sections], state, brief?, packs?}
+    //   PUT  <API_BASE>/answers     body {answers, industry}
+    //   POST <API_BASE>/compile     -> {brief, queries:{queries:[{category,city,country,limit}],
+    //                                   signalPriorities, scoringWeights, exclusions, dossierTone}}
+    // When the GET response includes "packs", the pack matching the
+    // niche.industry answer (longest keyword match wins) is appended right
+    // after the niche section until the answer changes.
+    // ------------------------------------------------------------------
+
+    var MOCK_SECTIONS = [
+      {
+        id: "seller", letter: "a", title: "Seller", order: 1,
+        questions: [
+          { id: "seller.sellToWhom", text: "What do you sell today, and to whom?", type: "text", required: true, minWords: 6, followUp: "Demo follow-up: name the service and the buyer." },
+          { id: "seller.calls", text: "Do you offer support calls?", type: "choice", options: ["yes", "no"], required: false },
+          { id: "seller.callsNote", text: "Sketch the support setup.", type: "text", required: false, showIf: { id: "seller.calls", equals: "yes" }, followUp: "Demo follow-up: describe the setup." }
+        ]
+      },
+      {
+        id: "niche", letter: "c", title: "Niche", order: 2,
+        questions: [
+          { id: "niche.industry", text: "Which target industry?", type: "text", required: true, minWords: 2, followUp: "Demo follow-up: name an industry, e.g. dental clinics." },
+          { id: "niche.subNiche", text: "Narrow it to a sub-niche.", type: "text", required: true, minWords: 3, followUp: "Demo follow-up: be specific, not just 'clinics'." }
+        ]
+      },
+      {
+        id: "volume", letter: "i", title: "Volume", order: 3,
+        questions: [
+          { id: "volume.leadsPerWeek", text: "How many new leads per week?", type: "number", required: true, expect: "number", followUp: "Demo follow-up: give a number." },
+          { id: "volume.callsPerWeek", text: "How many can you contact per week?", type: "number", required: true, expect: "number", followUp: "Demo follow-up: give a number." }
+        ]
+      }
+    ];
+
+    // Clearly fake, for UI testing only.
+    var MOCK_BRIEF = {
+      seller: { sellToWhom: "demo websites", calls: "yes" },
+      niche: { industry: "dental clinics", subNiche: "dental clinics doing implants" },
+      volume: { leadsPerWeek: 25, callsPerWeek: 10 }
+    };
+    var MOCK_QUERIES = {
+      queries: [
+        { category: "dental clinic", city: "Pune", country: "India", limit: 25 },
+        { category: "dental clinic", city: "Nagpur", country: "India", limit: 25 }
+      ],
+      signalPriorities: ["no-online-booking", "slow-response"],
+      scoringWeights: { "no-online-booking": 25, "slow-response": 15 },
+      exclusions: ["hospital chains"],
+      dossierTone: "demo: plain, one paragraph, no invented facts"
+    };
+
+    var state = {
+      sections: [],
+      packs: null,
+      answers: {},
+      followUps: {},    // question id -> server-written follow-up text
+      index: 0,
+      view: "wizard",
+      compiled: null,   // last compile response {brief, queries}
+      prevBrief: null   // brief served with GET, shown until a fresh compile
+    };
+
+    // ------------------------------ DOM helpers ------------------------------
+    function $(id) { return document.getElementById(id); }
+
+    // esc(): escape any string before it is concatenated into markup.
+    // DOM is otherwise built with createElement / textContent only.
+    function esc(value) {
+      var d = document.createElement("div");
+      d.appendChild(document.createTextNode(value == null ? "" : String(value)));
+      return d.innerHTML;
+    }
+
+    function el(tag, attrs, children) {
+      var node = document.createElement(tag);
+      attrs = attrs || {};
+      Object.keys(attrs).forEach(function (k) {
+        var v = attrs[k];
+        if (v == null) return;
+        if (k === "text") { node.textContent = String(v); return; }
+        node.setAttribute(k, String(v));
+      });
+      (children || []).forEach(function (c) {
+        if (c == null) return;
+        if (typeof c === "string") node.appendChild(document.createTextNode(c));
+        else node.appendChild(c);
+      });
+      return node;
+    }
+
+    function show(id, on) { $(id).hidden = !on; }
+
+    function setError(message) {
+      $("error-text").textContent = message || "";
+      show("error-box", !!message);
+      if (message) show("loading-line", false);
+    }
+
+    function setFormMsg(text) {
+      $("form-msg").textContent = text || "";
+    }
+
+    // ------------------------------ helpers ------------------------------
+    function industryText() { return String(state.answers["niche.industry"] || "").trim(); }
+
+    function subNicheText() { return String(state.answers["niche.subNiche"] || "").trim(); }
+
+    function hasValue(v) {
+      if (v == null) return false;
+      var s = Array.isArray(v) ? v.join(" ") : String(v);
+      return s.trim() !== "";
+    }
+
+    function evalShowIf(q) {
+      if (!q || !q.showIf) return true;
+      var v = state.answers[q.showIf.id];
+      if ("equals" in q.showIf) return String(v == null ? "" : v) === String(q.showIf.equals);
+      if ("includes" in q.showIf) {
+        var needle = String(q.showIf.includes);
+        if (Array.isArray(v)) return v.indexOf(needle) !== -1;
+        return String(v == null ? "" : v).indexOf(needle) !== -1;
+      }
+      return true;
+    }
+
+    // ------------------------------ section list ------------------------------
+    function computePackSection() {
+      if (!state.packs || typeof state.packs !== "object") return null;
+      if (!industryText()) return null;
+      var best = null;
+      function tryText(hay) {
+        if (!hay || !hay.trim() || !state.packs) return;
+        Object.keys(state.packs).forEach(function (key) {
+          var p = state.packs[key];
+          if (!p || !Array.isArray(p.questions)) return;
+          [String(key).toLowerCase(), String(p.label || "").toLowerCase()]
+            .concat((p.match || []).map(function (k) { return String(k).toLowerCase(); }))
+            .forEach(function (k) {
+              if (!k) return;
+              var at = hay.indexOf(k);
+              if (at === -1 || !best) { if (at !== -1) best = { key: key, pack: p, matchLen: k.length, at: at }; return; }
+              // longest keyword wins, so "dental clinic" picks dental over clinic
+              if (k.length > best.matchLen || (k.length === best.matchLen && at < best.at)) {
+                best = { key: key, pack: p, matchLen: k.length, at: at };
+              }
+            });
+        });
+      }
+      tryText((industryText() + " " + subNicheText()).toLowerCase());
+      if (!best) {
+        var all = Object.keys(state.answers).map(function (k) {
+          var v = state.answers[k];
+          return Array.isArray(v) ? v.join(" ") : String(v == null ? "" : v);
+        }).join(" ").toLowerCase();
+        tryText(all);
+      }
+      if (!best) return null;
+      return {
+        id: "pack",
+        letter: "+",
+        title: "Industry pack: " + best.pack.label,
+        order: 3.5,
+        questions: best.pack.questions.slice(),
+        packKey: best.key
+      };
+    }
+
+    function visibleSections() {
+      var list = state.sections.filter(function (s) { return s.id !== "pack"; });
+      var pack = computePackSection();
+      if (!pack) return list;
+      var idx = -1;
+      for (var i = 0; i < list.length; i++) { if (list[i].id === "niche") { idx = i; break; } }
+      if (idx === -1) list.push(pack);
+      else list.splice(idx + 1, 0, pack);
+      return list;
+    }
+
+    // ------------------------------ rendering ------------------------------
+    function updateProgress(current, total, label) {
+      var pct = total > 0 ? Math.round((current / total) * 100) : 0;
+      $("bar-fill").style.width = pct + "%";
+      $("step-text").textContent = label || ("Step " + current + " of " + total + " (" + pct + "%)");
+    }
+
+    function renderQuestion(q) {
+      var wrap = el("div", { class: "q", "data-qid": q.id });
+      var inputId = "q-" + esc(q.id);
+      wrap.appendChild(el("label", { for: inputId, text: q.text + (q.required ? " *" : "") }));
+
+      var hints = [];
+      if (q.expect === "number") hints.push("include a number");
+      if (q.minItems && (q.type === "list" || q.type === "url-list" || q.type === "multi")) hints.push("at least " + q.minItems);
+      if (hints.length) wrap.appendChild(el("p", { class: "hint", text: "Hint: " + hints.join(", ") }));
+
+      var val = state.answers[q.id];
+      var input;
+      if (q.type === "choice") {
+        var select = el("select", { id: inputId });
+        select.appendChild(el("option", { value: "", text: "Choose one…" }));
+        (q.options || []).forEach(function (opt) {
+          var o = el("option", { value: opt, text: opt });
+          var v = String(val == null ? "" : val);
+          if (v === String(opt) && v !== "") o.setAttribute("selected", "selected");
+          select.appendChild(o);
+        });
+        input = select;
+        input.addEventListener("change", function () {
+          state.answers[q.id] = input.value;
+          clearServerFollowUp(q.id);
+          onShowIfChange();
+        });
+      } else if (q.type === "multi") {
+        var group = el("div", { class: "multi-list", id: inputId });
+        var boxes = [];
+        (q.options || []).forEach(function (opt) {
+          var box = el("input", { type: "checkbox", value: opt });
+          box.checked = Array.isArray(val) && val.indexOf(opt) !== -1;
+          box.addEventListener("change", function () {
+            state.answers[q.id] = boxes.filter(function (b) { return b.checked; }).map(function (b) { return b.value; });
+            clearServerFollowUp(q.id);
+            onShowIfChange();
+          });
+          boxes.push(box);
+          group.appendChild(el("label", null, [box, opt]));
+        });
+        input = group;
+      } else if (q.type === "list" || q.type === "url-list") {
+        input = el("textarea", { id: inputId, rows: "3", placeholder: q.type === "url-list" ? "https:// (one per line)" : "one per line" });
+        input.value = Array.isArray(val) ? val.join("\n") : String(val == null ? "" : val);
+        input.addEventListener("input", function () {
+          state.answers[q.id] = input.value.split("\n").map(function (s) { return s.trim(); }).filter(function (s) { return s !== ""; });
+          clearServerFollowUp(q.id);
+        });
+      } else if (q.type === "number") {
+        input = el("input", { id: inputId, type: "number", step: "any" });
+        input.value = val == null ? "" : String(val);
+        input.addEventListener("input", function () {
+          state.answers[q.id] = input.value;
+          clearServerFollowUp(q.id);
+        });
+      } else {
+        input = el("input", { id: inputId, type: "text" });
+        input.value = val == null ? "" : String(val);
+        input.addEventListener("input", function () {
+          state.answers[q.id] = input.value;
+          clearServerFollowUp(q.id);
+        });
+      }
+
+      wrap.appendChild(input);
+
+      var fu = el("div", { class: "followup-slot" });
+      wrap.appendChild(fu);
+      wrap._fuSlot = fu;
+      wrap._localFU = "";
+
+      if (!evalShowIf(q)) wrap.hidden = true;
+      return wrap;
+    }
+
+    function clearServerFollowUp(id) {
+      if (state.followUps[id]) {
+        delete state.followUps[id];
+        renderFollowUps(state._sectionCache);
+      }
+    }
+
+    // Renders inline follow-up boxes for the current section:
+    //   - server-driven (state.followUps) or local-rule messages (wrap._localFU)
+    function renderFollowUps(section) {
+      if (!section) return;
+      var form = $("section-form");
+      Array.prototype.forEach.call(form.children, function (wrap) {
+        var slot = wrap._fuSlot;
+        if (!slot) return;
+        var qid = wrap.getAttribute("data-qid");
+        var message = state.followUps[qid] || wrap._localFU || "";
+        while (slot.firstChild) slot.removeChild(slot.firstChild);
+        if (message) {
+          slot.appendChild(el("p", { class: "followup" }, [
+            el("span", { class: "followup-title", text: "Follow-up needed" }),
+            message
+          ]));
+        }
+      });
+    }
+
+    // Re-evaluates showIf for the visible section after a choice/multi change.
+    function onShowIfChange() {
+      var section = state._sectionCache;
+      if (!section) return;
+      var form = $("section-form");
+      var wraps = {};
+      Array.prototype.forEach.call(form.children, function (wrap) {
+        wraps[wrap.getAttribute("data-qid")] = wrap;
+      });
+      section.questions.forEach(function (q) {
+        if (!q || !q.id || !q.showIf) return;
+        if (wraps[q.id]) {
+          wraps[q.id].hidden = !evalShowIf(q);
+          if (wraps[q.id].hidden) delete state.answers[q.id];
+        }
+      });
+    }
+
+    function render() {
+      setError("");
+      if (state.view === "review") { renderReview(); return; }
+      show("wizard", true);
+      show("review", false);
+
+      var sections = visibleSections();
+      if (state.index >= sections.length) state.index = Math.max(0, sections.length - 1);
+      var section = sections[state.index];
+      if (!section) { state.view = "review"; render(); return; }
+      state._sectionCache = section;
+
+      $("section-title").textContent = section.title || section.id;
+      $("section-meta").textContent = (section.letter ? "Section " + section.letter + (section.packKey ? " · " + section.packKey : "") + " · " : "") +
+        (section.id === "pack" ? "extra questions for this industry." : "answers are saved when you press Next.");
+
+      var form = $("section-form");
+      while (form.firstChild) form.removeChild(form.firstChild);
+      section.questions.forEach(function (q) {
+        if (!q || !q.id || !q.text) return;
+        form.appendChild(renderQuestion(q));
+      });
+
+      $("back-btn").disabled = state.index === 0;
+      $("next-btn").textContent = state.index === sections.length - 1 ? "Compile brief" : "Next";
+      updateProgress(state.index + 1, sections.length);
+      renderFollowUps(section);
+      setFormMsg("");
+    }
+
+    // ------------------------------ validation ------------------------------
+    // Local vague-answer rules: empty (required), no digit when expect=number,
+    // too few items, too few words. Each failure shows the question's own
+    // followUp sentence inline.
+    function localVagueChecks(section) {
+      var messages = {};
+      section.questions.forEach(function (q) {
+        if (!q || !q.id || !evalShowIf(q)) return;
+        var v = state.answers[q.id];
+        var text = hasValue(v) ? (Array.isArray(v) ? v.join(" ") : String(v)).trim() : "";
+        var reason = "";
+
+        if (!text) {
+          if (q.required) reason = q.followUp || "Please answer this — it is required to continue.";
+        } else {
+          if (q.expect === "number" && !/[0-9]/.test(text)) {
+            reason = q.followUp || "Include a number in this answer.";
+          } else if (q.minItems && Array.isArray(v) && v.length < q.minItems) {
+            reason = q.followUp || ("Add at least " + q.minItems + " items (one per line).");
+          } else if (q.minWords && !Array.isArray(v)) {
+            var words = text.split(/\s+/).filter(function (w) { return w !== ""; }).length;
+            if (words < q.minWords) reason = q.followUp || "Answer too short — add more detail.";
+          }
+        }
+        if (reason) messages[q.id] = reason;
+      });
+      return messages;
+    }
+
+    function applyServerFollowUps(list) {
+      var section = state._sectionCache;
+      var hitsCurrentSection = false;
+      (list || []).forEach(function (item) {
+        if (!item || !item.id) return;
+        state.followUps[String(item.id)] = String(item.text || "Could you be more specific?");
+        if (section && section.questions.some(function (q) { return String(q.id) === String(item.id); })) hitsCurrentSection = true;
+      });
+      if ((list || []).length) {
+        renderFollowUps(state._sectionCache);
+        setFormMsg(hitsCurrentSection
+          ? "Follow-ups were added for this section — answer them, then press Next again."
+          : "Follow-ups were added for other sections — use Back or Edit to reach them.");
+      }
+    }
+
+    // ------------------------------ review ------------------------------
+    function renderValueInto(node, value) {
+      if (value == null || value === "") {
+        node.appendChild(el("p", { class: "hint", text: "(not answered)" }));
+        return;
+      }
+      if (Array.isArray(value)) {
+        var ul = el("ul");
+        value.forEach(function (item) {
+          ul.appendChild(el("li", { text: item && typeof item === "object" ? JSON.stringify(item) : String(item) }));
+        });
+        node.appendChild(ul);
+        return;
+      }
+      if (typeof value === "object") {
+        var ul2 = el("ul");
+        Object.keys(value).forEach(function (k) {
+          var v = value[k];
+          var asText = (v == null || v === "") ? "(empty)" : (v && typeof v === "object" ? JSON.stringify(v) : String(v));
+          ul2.appendChild(el("li", { text: k + ": " + asText }));
+        });
+        node.appendChild(ul2);
+        return;
+      }
+      node.appendChild(el("p", { text: String(value) }));
+    }
+
+    function briefSections(brief) {
+      var out = [];
+      if (brief == null) return out;
+      if (Array.isArray(brief)) {
+        brief.forEach(function (item) {
+          if (item && typeof item === "object") {
+            out.push({
+              id: item.id != null ? String(item.id) : "",
+              title: String(item.title || item.id || "Section"),
+              value: "value" in item ? item.value : ("entries" in item ? item.entries : item)
+            });
+          } else {
+            out.push({ id: "", title: "Section", value: item });
+          }
+        });
+        return out;
+      }
+      if (typeof brief === "object") {
+        Object.keys(brief).forEach(function (k) {
+          out.push({ id: k, title: k, value: brief[k] });
+        });
+        return out;
+      }
+      out.push({ id: "", title: "Brief", value: brief });
+      return out;
+    }
+
+    function findSectionIndex(idOrTitle) {
+      if (!idOrTitle) return -1;
+      var needle = String(idOrTitle).toLowerCase();
+      var secs = visibleSections();
+      for (var i = 0; i < secs.length; i++) {
+        var sid = String(secs[i].id || "").toLowerCase();
+        var st = String(secs[i].title || "").toLowerCase();
+        if (needle === sid || needle === st) return i;
+      }
+      return -1;
+    }
+
+    function renderReview() {
+      updateProgress(visibleSections().length, visibleSections().length, "Review");
+
+      var compiled = state.compiled;
+      var brief, queries;
+      if (compiled) { brief = compiled.brief; queries = compiled.queries; }
+      else if (isMock) { brief = MOCK_BRIEF; queries = MOCK_QUERIES; }
+      else { brief = state.prevBrief; queries = null; }
+
+      $("review-note").textContent = compiled
+        ? "Compiled brief and discovery queries below."
+        : "Showing the brief stored on the server (not compiled yet). Press Compile again to refresh.";
+
+      var briefBox = $("brief-box");
+      while (briefBox.firstChild) briefBox.removeChild(briefBox.firstChild);
+      var pb = briefSections(brief);
+      if (!pb.length) {
+        briefBox.appendChild(el("p", { class: "hint", text: "No brief available." }));
+      }
+      pb.forEach(function (s) {
+        var box = el("div", { class: "review-section" });
+        var head = el("div", { class: "review-head" });
+        head.appendChild(el("h3", { text: s.title }));
+        var jump = findSectionIndex(s.id || s.title);
+        if (jump !== -1) {
+          var edit = el("button", { type: "button", class: "btn-secondary btn-sm", text: "Edit" });
+          edit.addEventListener("click", function () {
+            state.view = "wizard";
+            state.index = jump;
+            render();
+          });
+          head.appendChild(edit);
+        }
+        box.appendChild(head);
+        var dd = el("dd");
+        renderValueInto(dd, s.value);
+        var dl = el("dl");
+        dl.appendChild(dd);
+        box.appendChild(dl);
+        briefBox.appendChild(box);
+      });
+
+      var qb = $("queries-box");
+      while (qb.firstChild) qb.removeChild(qb.firstChild);
+      var qlist = queries && Array.isArray(queries.queries) ? queries.queries : [];
+      if (!qlist.length) {
+        qb.appendChild(el("p", { class: "hint", text: "No queries returned." }));
+      } else {
+        var cols = ["category", "city", "country", "limit"];
+        var table = el("table");
+        var trh = el("tr");
+        cols.forEach(function (h) { trh.appendChild(el("th", { text: h })); });
+        var thead = el("thead");
+        thead.appendChild(trh);
+        table.appendChild(thead);
+        var tbody = el("tbody");
+        qlist.forEach(function (row) {
+          var tr = el("tr");
+          cols.forEach(function (k) {
+            var v = row ? row[k] : "";
+            tr.appendChild(el("td", { text: v == null || v === "" ? "-" : String(v) }));
+          });
+          tbody.appendChild(tr);
+        });
+        table.appendChild(tbody);
+        qb.appendChild(table);
+      }
+
+      var sb = $("settings-box");
+      while (sb.firstChild) sb.removeChild(sb.firstChild);
+      if (!queries) {
+        sb.appendChild(el("p", { class: "hint", text: "No matching settings returned." }));
+      } else {
+        [["signalPriorities", "Signal priorities"], ["scoringWeights", "Scoring weights"], ["exclusions", "Exclusions"]].forEach(function (pair) {
+          var holder = el("div");
+          holder.appendChild(el("p", { class: "hint", text: pair[1] }));
+          renderValueInto(holder, queries[pair[0]] == null ? [] : queries[pair[0]]);
+          sb.appendChild(holder);
+        });
+        var tone = el("div");
+        tone.appendChild(el("p", { class: "hint", text: "Dossier tone" }));
+        renderValueInto(tone, queries.dossierTone == null ? "" : queries.dossierTone);
+        sb.appendChild(tone);
+      }
+    }
+
+    // ------------------------------ API ------------------------------
+    // On failure every call resolves with a plain error; answers are never
+    // cleared, so the wizard keeps working even when no server route exists.
+    function saveAnswers() {
+      if (isMock) return Promise.resolve({ followUps: [] });
+      return fetch(API_BASE + "/answers", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ answers: state.answers, industry: industryText() })
+      }).then(function (res) {
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        return res.json();
+      });
+    }
+
+    function compileBrief() {
+      if (isMock) return Promise.resolve({ brief: MOCK_BRIEF, queries: MOCK_QUERIES });
+      return fetch(API_BASE + "/compile", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ answers: state.answers, industry: industryText() })
+      }).then(function (res) {
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        return res.json();
+      });
+    }
+
+    function loadQuestions() {
+      if (isMock) return Promise.resolve({ questions: MOCK_SECTIONS, state: { answers: {} } });
+      return fetch(API_BASE, { headers: { Accept: "application/json" } }).then(function (res) {
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        return res.json();
+      });
+    }
+
+    function loadFromData(data) {
+      var raw = data && Array.isArray(data.questions) ? data.questions : null;
+      if (!raw || !raw.length) throw new Error("the intake endpoint returned no questions");
+      // The server returns questions as a FLAT list, each carrying sectionId /
+      // sectionTitle and no nested questions. The mock (and older payloads)
+      // return nested SECTIONS. Detect the flat shape and group by sectionId in
+      // order of first appearance; keep the nested path unchanged.
+      var isFlat = raw.every(function (q) {
+        return q && typeof q === "object" && q.sectionId != null && !Array.isArray(q.questions);
+      });
+      var sections;
+      if (isFlat) {
+        var bySection = {};
+        sections = [];
+        raw.forEach(function (q) {
+          var key = String(q.sectionId);
+          var section = bySection[key];
+          if (!section) {
+            section = {
+              id: key,
+              letter: "",
+              title: String(q.sectionTitle || key),
+              order: sections.length,
+              questions: []
+            };
+            bySection[key] = section;
+            sections.push(section);
+          }
+          section.questions.push(q);
+        });
+      } else {
+        sections = raw.map(function (s) {
+          return {
+            id: String((s && s.id) || ""),
+            letter: s && s.letter != null ? String(s.letter) : "",
+            title: String((s && s.title) || (s && s.id) || ""),
+            order: Number((s && s.order) || 0),
+            questions: s && Array.isArray(s.questions) ? s.questions : []
+          };
+        });
+      }
+      state.sections = sections.filter(function (s) { return s.id !== "" && s.questions.length; });
+      if (!state.sections.length) throw new Error("no usable sections in the intake response");
+      state.sections.sort(function (a, b) { return a.order - b.order; });
+      state.packs = data && data.packs && typeof data.packs === "object" ? data.packs : null;
+      if (data && data.state && typeof data.state === "object" && data.state.answers && typeof data.state.answers === "object") {
+        state.answers = data.state.answers;
+      } else if (data && data.answers && typeof data.answers === "object") {
+        state.answers = data.answers;
+      }
+      if (data && data.brief != null) state.prevBrief = data.brief;
+      if (data && Array.isArray(data.followUps)) applyServerFollowUps(data.followUps);
+      state.index = 0;
+      state.compiled = null;
+    }
+
+    // ------------------------------ flow ------------------------------
+    async function persistAnswers(nonFatalNote) {
+      try {
+        var data = await saveAnswers();
+        if (data && Array.isArray(data.followUps) && data.followUps.length) applyServerFollowUps(data.followUps);
+        return true;
+      } catch (err) {
+        setFormMsg(nonFatalNote + " (" + err.message + "). Your answers are kept.");
+        return false;
+      }
+    }
+
+    async function goNext() {
+      setError("");
+      var section = state._sectionCache;
+      var sections = visibleSections();
+      if (!section || state.index >= sections.length) { await compileAndShow(); return; }
+
+      // local vague checks: show the followUp inline and do not advance
+      var messages = localVagueChecks(section);
+      Array.prototype.forEach.call($("section-form").children, function (wrap) {
+        wrap._localFU = messages[wrap.getAttribute("data-qid")] || "";
+      });
+      renderFollowUps(section);
+      if (Object.keys(messages).length) {
+        setFormMsg("Some answers look vague or missing — see the notes under each question. Answers are still saved.");
+        persistAnswers("Could not save answers");
+        return;
+      }
+
+      var wasLast = state.index >= sections.length - 1;
+      await persistAnswers("Could not save answers");
+      if (wasLast) { await compileAndShow(); return; }
+      state.index++;
+      render();
+    }
+
+    function goBack() {
+      if (state.index > 0) {
+        state.index--;
+        state.view = "wizard";
+        render();
+      } else {
+        setFormMsg("This is the first section.");
+      }
+    }
+
+    async function compileAndShow() {
+      setFormMsg("Compiling brief…");
+      try {
+        var data = await compileBrief();
+        if (data && Array.isArray(data.followUps) && data.followUps.length) {
+          state.compiled = data;
+          state.view = "wizard";
+          render();
+          applyServerFollowUps(data.followUps); // jumps to wizard view with inline follow-ups
+          setFormMsg("Follow-ups were returned — answer them, then press Compile brief again.");
+          return;
+        }
+        state.compiled = data;
+        state.view = "review";
+        setFormMsg("");
+        render();
+      } catch (err) {
+        state.view = "wizard";
+        render();
+        setError("Could not compile the brief. Your answers are kept. Press Compile brief to try again.");
+      }
+    }
+
+    // ------------------------------ init ------------------------------
+    function bind() {
+      $("next-btn").addEventListener("click", function () { goNext(); });
+      $("back-btn").addEventListener("click", goBack);
+      $("review-back-btn").addEventListener("click", function () {
+        state.view = "wizard";
+        state.index = Math.max(0, visibleSections().length - 1);
+        render();
+      });
+      $("recompile-btn").addEventListener("click", function () {
+        if (isMock) { state.compiled = null; render(); return; }
+        state.view = "wizard";
+        state.index = Math.max(0, visibleSections().length - 1);
+        compileAndShow();
+      });
+      $("retry-btn").addEventListener("click", boot);
+    }
+
+    async function boot() {
+      setError("");
+      setFormMsg("");
+      if (!WS && !isMock) {
+        show("loading-line", false);
+        show("wizard", false);
+        show("review", false);
+        setError("No workspace is selected. Choose a workspace on the Leads page first, then open this page again.");
+        var none = $("retry-btn"); if (none) none.hidden = true;
+        return;
+      }
+      show("loading-line", true);
+      show("wizard", false);
+      show("review", false);
+      try {
+        loadFromData(await loadQuestions());
+        show("loading-line", false);
+        state.view = "wizard";
+        render();
+      } catch (err) {
+        show("loading-line", false);
+        var message = String((err && err.message) || err);
+        if (/\b404\b/.test(message)) {
+          // Plain sentence, no raw URL, and no retry cycle for a service that is not installed.
+          setError("The intake service is not installed yet. Ask an administrator to enable it.");
+          var retry = $("retry-btn"); if (retry) retry.hidden = true;
+          return;
+        }
+        setError("Could not load the intake questions. Press Retry to try again.");
+      }
+    }
+
+    $("ws-hint").textContent = "workspace: " + WS;
+    if (isMock) {
+      $("mock-banner").hidden = false;
+      $("ws-hint").textContent = "workspace: " + WS + " (mock)";
+    }
+    bind();
+    boot();
+  </script>
+</body>
+</html>

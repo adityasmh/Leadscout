@@ -1,0 +1,1266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Leadscout — Workspace settings</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: #ffffff;
+      --fg: #111111;
+      --muted: #666666;
+      --border: #d1d5db;
+      --panel: #f8f9fa;
+      --accent: #2563eb;
+      --accent-fg: #ffffff;
+      --danger: #dc2626;
+      --success: #16a34a;
+      --shadow: 0 4px 12px rgba(0,0,0,0.12);
+      --focus: 0 0 0 3px rgba(37, 99, 235, 0.3);
+      --radius: 6px;
+      --max-width: 760px;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0f172a;
+        --fg: #f8fafc;
+        --muted: #94a3b8;
+        --border: #334155;
+        --panel: #1e293b;
+        --accent: #60a5fa;
+        --accent-fg: #0f172a;
+        --danger: #f87171;
+        --success: #4ade80;
+        --shadow: 0 4px 12px rgba(0,0,0,0.4);
+      }
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--fg);
+      line-height: 1.45;
+      min-height: 100vh;
+    }
+    header {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid var(--border);
+      background: var(--panel);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+    header h1 { margin: 0; font-size: 1.15rem; }
+    main {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 1rem;
+    }
+    @media (max-width: 560px) {
+      main { padding: 0.75rem 0.5rem; }
+    }
+    section {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--bg);
+      padding: 0.85rem 1rem;
+      margin-bottom: 1.25rem;
+    }
+    h2 { font-size: 1rem; margin: 0 0 0.5rem; }
+    label { display: block; font-size: 0.85rem; color: var(--muted); margin: 0.6rem 0 0.25rem; }
+    input, select, textarea, button, output, fieldset, legend {
+      font: inherit;
+    }
+    input, select, textarea {
+      color: var(--fg);
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 0.45rem 0.6rem;
+      width: 100%;
+    }
+    output {
+      display: inline-block;
+      background: var(--panel);
+      border: 1px dashed var(--border);
+      border-radius: var(--radius);
+      padding: 0.45rem 0.6rem;
+      color: var(--muted);
+      min-width: 6rem;
+    }
+    fieldset {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin: 0.6rem 0 0;
+      padding: 0.4rem 0.75rem 0.75rem;
+    }
+    legend { color: var(--muted); font-size: 0.85rem; padding: 0 0.3rem; }
+    input:focus, select:focus, textarea:focus, button:focus, a:focus {
+      outline: none;
+      box-shadow: var(--focus);
+      border-color: var(--accent);
+    }
+    a:focus { color: var(--accent); border-radius: 2px; }
+    .checkboxes { display: flex; flex-wrap: wrap; gap: 0.5rem 1rem; margin: 0.35rem 0 0; }
+    .checkboxes label { display: flex; align-items: center; margin: 0; color: var(--fg); font-size: 0.9rem; cursor: pointer; }
+    .checkboxes input { width: auto; margin-right: 0.35rem; }
+    button {
+      background: var(--accent);
+      color: var(--accent-fg);
+      border: 1px solid var(--accent);
+      border-radius: var(--radius);
+      padding: 0.45rem 0.7rem;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    button:disabled { opacity: 0.55; cursor: not-allowed; }
+    .btn-secondary { background: var(--bg); color: var(--danger); border-color: var(--danger); }
+    .btn-sm { padding: 0.25rem 0.5rem; font-size: 0.8rem; font-weight: 500; }
+    .hint { font-size: 0.8rem; color: var(--muted); margin: 0.35rem 0; }
+    .draft-label {
+      display: inline-block;
+      background: var(--danger);
+      color: #fff;
+      border-radius: var(--radius);
+      padding: 0.15rem 0.5rem;
+      font-size: 0.8rem;
+      font-weight: 700;
+      margin: 0.25rem 0;
+    }
+    .dirty { color: var(--danger); font-size: 0.8rem; font-weight: 700; margin-left: 0.5rem; }
+    .error-line { color: var(--danger); font-size: 0.85rem; white-space: pre-wrap; }
+    .price-row {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 0.5rem 0.75rem 0.75rem;
+      margin-bottom: 0.6rem;
+      background: var(--panel);
+    }
+    .price-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 0.25rem 0.75rem;
+      align-items: end;
+    }
+    @media (max-width: 560px) {
+      .price-grid { grid-template-columns: 1fr 1fr; }
+    }
+    .badge {
+      display: inline-block;
+      padding: 0.1rem 0.4rem;
+      border-radius: 999px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      font-size: 0.75rem;
+      margin: 0.1rem;
+    }
+    .badge.warn {
+      border-color: var(--danger);
+      color: var(--danger);
+      background: var(--bg);
+      font-weight: 700;
+    }
+    .key-once {
+      border: 1px solid var(--success);
+      border-radius: var(--radius);
+      background: var(--panel);
+      padding: 0.5rem 0.75rem;
+      margin: 0.5rem 0;
+    }
+    .key-once input { font-family: ui-monospace, Consolas, monospace; font-size: 0.85rem; }
+    .key-row {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+      border-bottom: 1px solid var(--border);
+      padding: 0.35rem 0;
+      font-size: 0.85rem;
+    }
+    .key-row code { font-family: ui-monospace, Consolas, monospace; }
+    .toolbar { display: flex; gap: 0.6rem; align-items: center; flex-wrap: wrap; }
+    .status-area {
+      position: fixed;
+      bottom: 1rem;
+      right: 1rem;
+      left: 1rem;
+      max-width: 600px;
+      margin-left: auto;
+      padding: 0.75rem 1rem;
+      border-radius: var(--radius);
+      background: var(--danger);
+      color: #fff;
+      box-shadow: var(--shadow);
+      z-index: 60;
+    }
+    .status-area.success { background: var(--success); color: #000; }
+    .status-area:empty { display: none; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Leadscout · Workspace settings</h1>
+    <div class="toolbar">
+      <a id="back-link" href="index.html">← Leads</a>
+      <span id="active-ws" class="active-ws"></span>
+      <label for="ws-select" style="margin:0">Workspace</label>
+      <select id="ws-select" style="width:auto;min-width:12rem"></select>
+    </div>
+  </header>
+
+  <main>
+    <p class="hint" id="ws-hint">Loading workspaces…</p>
+
+    <section id="offer">
+      <h2>Offer &amp; target profile</h2>
+      <form id="offer-form" novalidate>
+        <label for="offer-name">Workspace name</label>
+        <input id="offer-name" name="name" type="text" maxlength="80" autocomplete="off">
+
+        <fieldset>
+          <legend>Services offered</legend>
+          <div class="checkboxes" id="offer-services">
+            <label><input type="checkbox" name="services" value="website"> website</label>
+            <label><input type="checkbox" name="services" value="automation"> automation</label>
+            <label><input type="checkbox" name="services" value="ai-chatbot"> ai-chatbot</label>
+            <label><input type="checkbox" name="services" value="seo"> seo</label>
+            <label><input type="checkbox" name="services" value="crm-setup"> crm-setup</label>
+          </div>
+          <label for="offer-other">Other service (added to the list)</label>
+          <input id="offer-other" name="services-other" type="text" maxlength="80" placeholder="e.g. branding" autocomplete="off">
+        </fieldset>
+
+        <label for="offer-description">Offer description</label>
+        <textarea id="offer-description" name="description" rows="3" maxlength="2000"></textarea>
+
+        <label for="offer-categories">Target categories (comma separated)</label>
+        <input id="offer-categories" name="categories" type="text" maxlength="500" placeholder="cafe, clinic, salon" autocomplete="off">
+
+        <label for="offer-cities">Target cities (comma separated)</label>
+        <input id="offer-cities" name="cities" type="text" maxlength="500" placeholder="Mumbai, Delhi" autocomplete="off">
+
+        <p class="error-line hint" id="offer-error" role="alert"></p>
+        <div class="toolbar">
+          <button type="submit" id="offer-save">Save offer</button>
+          <span class="dirty" id="offer-dirty" hidden>Unsaved changes</span>
+        </div>
+      </form>
+    </section>
+
+    <section id="pricebook">
+      <h2>Price book</h2>
+      <p><span class="draft-label" id="pricebook-draft">DRAFT, EDIT BEFORE USE — amounts in INR</span></p>
+      <p class="hint" id="pricebook-hint">Pre-filled from the server default book (data/default-pricebook.json). Leave min/max empty to keep "price not set".</p>
+      <p class="error-line hint" id="pricebook-error" role="alert"></p>
+      <div id="pricebook-rows"></div>
+      <template id="pricebook-row-template">
+        <div class="price-row">
+          <div>
+            <strong data-role="label"></strong>
+            <span class="badge" data-role="service"></span>
+            <span class="badge" data-role="door">FOC first step</span>
+            <p class="hint" data-role="desc"></p>
+          </div>
+          <div class="price-grid">
+            <label>Min (INR) <input type="number" name="min" min="0" step="1" placeholder="empty = not set"></label>
+            <label>Max (INR) <input type="number" name="max" min="0" step="1" placeholder="empty = not set"></label>
+            <label>Build time — min days <input type="number" name="build-days-min" min="0" step="1" placeholder="empty = not set"></label>
+            <label>Build time — max days <input type="number" name="build-days-max" min="0" step="1" placeholder="empty = not set"></label>
+            <label>Note <input type="text" name="note" maxlength="200"></label>
+          </div>
+        </div>
+      </template>
+      <div class="toolbar">
+        <button type="button" id="pricebook-save">Save price book</button>
+        <span class="dirty" id="pricebook-dirty" hidden>Unsaved changes</span>
+      </div>
+    </section>
+
+    <section id="branding">
+      <h2>Branding</h2>
+      <form id="branding-form" novalidate>
+        <label for="branding-name">Brand display name (1–80 chars)</label>
+        <input id="branding-name" name="display-name" type="text" maxlength="80" autocomplete="off">
+
+        <label for="branding-accent">Accent colour (hex, #rgb or #rrggbb; empty = default)</label>
+        <input id="branding-accent" name="accent" type="text" maxlength="7" placeholder="#2563eb" autocomplete="off">
+
+        <label for="branding-logo">Logo URL (https only; javascript: and data: are rejected)</label>
+        <input id="branding-logo" name="logo-url" type="text" maxlength="500" placeholder="https://example.invalid/logo.png" autocomplete="off">
+        <img id="branding-logo-preview" alt="Logo preview or placeholder" width="56" height="56" hidden>
+        <p class="hint" id="branding-logo-note"></p>
+
+        <label for="branding-sender">Sender name (used in outreach) (max 300 chars)</label>
+        <input id="branding-sender" name="sender-name" type="text" maxlength="300" autocomplete="off">
+
+        <p class="error-line hint" id="branding-error" role="alert"></p>
+        <div class="toolbar">
+          <button type="submit" id="branding-save">Save branding</button>
+          <span class="dirty" id="branding-dirty" hidden>Unsaved changes</span>
+        </div>
+      </form>
+    </section>
+
+    <section id="apikey">
+      <h2>API key</h2>
+      <p class="hint">Keys are stored hashed server-side. Only a fixed short prefix (first 8 chars) and suffix (last 4) are ever displayed after the fact. The full key is shown once, right after creation, and is never logged.</p>
+      <div id="apikey-list" aria-label="Existing API keys"></div>
+      <div class="toolbar">
+        <div>
+          <label for="apikey-scopes">Scope for a new key</label>
+          <select id="apikey-scopes" name="key-scopes" style="width:auto">
+            <option value="read">read</option>
+            <option value="write">write</option>
+          </select>
+        </div>
+        <div>
+          <label aria-hidden="true">&nbsp;</label>
+          <button type="button" id="apikey-create">Create key</button>
+          <span class="dirty" id="apikey-create-dirty" hidden>Creating…</span>
+        </div>
+      </div>
+      <div id="apikey-new" class="key-once" hidden>
+        <p><strong>Copy this key now — it will not be shown again.</strong></p>
+        <input id="apikey-new-key" type="text" readonly aria-label="New API key, shown once only">
+      </div>
+      <p class="error-line hint" id="apikey-error" role="alert"></p>
+    </section>
+
+    <section id="outreach">
+      <h2>Outreach</h2>
+      <form id="outreach-form" novalidate>
+        <label for="outreach-email">Sender email</label>
+        <input id="outreach-email" name="sender-email" type="email" maxlength="200" autocomplete="off" placeholder="you@example.invalid">
+
+        <label for="outreach-cap">Daily cap (messages per day, whole number ≥ 0)</label>
+        <input id="outreach-cap" name="daily-cap" type="number" min="0" step="1">
+
+        <label for="outreach-optout">Opt-out text (max 300 chars)</label>
+        <textarea id="outreach-optout" name="opt-out-text" rows="2" maxlength="300"></textarea>
+
+        <label for="outreach-enabled">Sending enabled — server status, read-only (not editable here)</label>
+        <output id="outreach-enabled" for="">unknown</output>
+
+        <p class="error-line hint" id="outreach-error" role="alert"></p>
+        <div class="toolbar">
+          <button type="submit" id="outreach-save">Save outreach</button>
+          <span class="dirty" id="outreach-dirty" hidden>Unsaved changes</span>
+        </div>
+      </form>
+    </section>
+
+    <section id="plan">
+      <h2>Plan &amp; usage</h2>
+      <p id="plan-summary">—</p>
+      <p class="error-line hint" id="plan-error" role="alert"></p>
+    </section>
+  </main>
+
+  <div id="live" class="status-area" role="status" aria-live="polite"></div>
+
+  <script type="module">
+    const TIMEOUT_MS = 10000;
+
+    const params = new URLSearchParams(location.search);
+    // Mock mode is toggled by adding ?mock=1 to the URL: zero network calls, obviously fake data.
+    const isMock = params.get("mock") === "1";
+
+    const state = {
+      workspaces: [],
+      wsId: null,
+      countries: [],
+      brandingExtras: {},
+      priceBookItems: [],
+      priceBookFailed: false,
+      createInFlight: false,
+      dirty: {}
+    };
+
+    function esc(value) {
+      if (value == null) return "";
+      let s = String(value);
+      s = s.replace(/&/g, "&amp;");
+      s = s.replace(/</g, "&lt;");
+      s = s.replace(/>/g, "&gt;");
+      s = s.replace(/"/g, "&quot;");
+      s = s.replace(/'/g, "&#39;");
+      return s;
+    }
+
+    function splitList(value) {
+      return String(value || "").split(",").map(s => s.trim()).filter(Boolean);
+    }
+
+    function announce(message, type = "error") {
+      const live = document.getElementById("live");
+      live.textContent = String(message);
+      live.classList.toggle("success", type === "success");
+      clearTimeout(announce._timer);
+      announce._timer = setTimeout(() => { live.textContent = ""; live.classList.remove("success"); }, 6000);
+    }
+
+    async function apiFetch(url, options = {}) {
+      if (isMock) return mockFetch(url, options);
+      let res;
+      try {
+        res = await fetch(url, { ...options, signal: AbortSignal.timeout(TIMEOUT_MS) });
+      } catch (err) {
+        const name = err && err.name;
+        if (name === "TimeoutError" || name === "AbortError") throw new Error("request timed out after " + TIMEOUT_MS + " ms");
+        throw new Error("network error: " + String((err && err.message) || err));
+      }
+      const raw = await res.text().catch(() => "");
+      if (!res.ok) {
+        let detail = "";
+        if (raw.trim() !== "") {
+          try {
+            const body = JSON.parse(raw);
+            detail = body && body.error ? String(body.error) : raw;
+          } catch { detail = raw; }
+          detail = detail.slice(0, 300);
+        }
+        throw new Error("HTTP " + res.status + (res.status === 401 || res.status === 403 ? " (auth required)" : "") + (detail ? ": " + detail : " (empty body)"));
+      }
+      if (raw.trim() === "") throw new Error("HTTP " + res.status + " returned an empty body");
+      try {
+        return JSON.parse(raw);
+      } catch {
+        throw new Error("HTTP " + res.status + " returned a non-JSON body: " + raw.slice(0, 200));
+      }
+    }
+
+    // ------------------------------------------------------------------ mock
+
+    const MOCK_WS = {
+      id: "ws-mock-1",
+      name: "MOCK Workspace",
+      offer: { services: ["website", "automation"], description: "FAKE offer text — exists only for mock mode testing." },
+      icp: { categories: ["mock-cafe"], cities: ["Mockville"], countries: ["Mockland"] }
+    };
+    const MOCK_ITEMS = [
+      { service: "website", label: "Website (MOCK)", description: "FAKE service for mock mode.", buildDays: [3, 7], price: { currency: "INR", min: 1234, max: 5678 }, assumption: "MOCK price — not real.", doorOpener: false },
+      { service: "automation", label: "Automation (MOCK)", description: "FAKE service for mock mode.", buildDays: null, price: null, assumption: "MOCK assumption — not real.", doorOpener: false },
+      { service: "free-audit", label: "Free audit (MOCK)", description: "FAKE service for mock mode.", buildDays: [1, 1], price: { currency: "INR", min: 0, max: 0 }, assumption: "MOCK assumption — free door-opener.", doorOpener: true }
+    ];
+    const MOCK_KEYS = [
+      { id: "key-mock-1", prefix: "ls_mock1", scopes: ["read"], createdAt: "2026-01-01T00:00:00Z", lastUsedAt: null, revokedAt: null }
+    ];
+    let mockKeyCount = 0;
+
+    async function mockFetch(url, options = {}) {
+      await new Promise(r => setTimeout(r, 15));
+      const u = new URL(url, location.origin);
+      const method = (options.method || "GET").toUpperCase();
+      const body = options.body ? JSON.parse(options.body) : {};
+      const m = u.pathname.match(/^\/api\/workspaces\/([^/]+)(?:\/([^/]+)(?:\/([^/]+))?)?$/) || [];
+      const ws = MOCK_WS.id;
+
+      if (u.pathname === "/api/workspaces" && method === "GET") return [MOCK_WS];
+      if (m[1] === ws && !m[2] && method === "GET") return MOCK_WS;
+      if (m[1] === ws && !m[2] && method === "PUT") {
+        if (body.name !== undefined) MOCK_WS.name = body.name;
+        if (body.offer !== undefined) MOCK_WS.offer = body.offer;
+        if (body.icp !== undefined) MOCK_WS.icp = body.icp;
+        return MOCK_WS;
+      }
+      if (m[1] === ws && m[2] === "pricebook" && method === "GET") {
+        return { workspaceId: ws, version: 7, items: MOCK_ITEMS, updatedAt: "2026-01-10T00:00:00Z" };
+      }
+      if (m[1] === ws && m[2] === "pricebook" && method === "PUT") {
+        return { workspaceId: ws, version: 8, items: body.items || [], updatedAt: new Date().toISOString() };
+      }
+      if (m[1] === ws && m[2] === "branding" && method === "GET") {
+        return { displayName: "MOCK Branding", logoUrl: "https://example.invalid/logo.png", accent: "#123abc", senderName: "Mock Sender", hidePoweredBy: false };
+      }
+      if (m[1] === ws && m[2] === "branding" && method === "PUT") return body;
+      if (m[1] === ws && m[2] === "keys" && !m[3] && method === "GET") return MOCK_KEYS.slice();
+      if (m[1] === ws && m[2] === "keys" && !m[3] && method === "POST") {
+        mockKeyCount++;
+        return { id: "key-mock-" + mockKeyCount, key: "ls_mockFAKE0123456789abcdef" };
+      }
+      if (m[1] === ws && m[2] === "keys" && m[3] && method === "DELETE") {
+        const item = MOCK_KEYS.find(k => k.id === m[3]);
+        if (item) item.revokedAt = new Date().toISOString();
+        return { ok: true };
+      }
+      if (m[1] === ws && m[2] === "outreach" && method === "GET") {
+        return { senderEmail: "mock@example.invalid", dailyCap: 7, optOutText: "FAKE opt-out text (mock) — reply STOP.", sendingEnabled: false };
+      }
+      if (m[1] === ws && m[2] === "outreach" && method === "PUT") return body;
+      if (m[1] === ws && m[2] === "usage" && method === "GET") {
+        return {
+          plan: "mock-plan-free",
+          usage: { leads: 11, dossiers: 3, tokensIn: 45678, tokensOut: 2345, apiCalls: 12 },
+          limits: { leadsPerMonth: 100, dossiersPerMonth: 20, tokensPerMonth: 100000, apiCallsPerMonth: 2000 },
+          invoiceUrl: null
+        };
+      }
+      throw new Error("MOCK: no fake endpoint for " + method + " " + u.pathname);
+    }
+
+    // ------------------------------------------------------------------ dirty
+
+    const DIRTY_IDS = ["offer", "pricebook", "branding", "outreach"];
+
+    function watchDirty() {
+      for (const id of DIRTY_IDS) state.dirty[id] = false;
+      for (const id of DIRTY_IDS) {
+        const section = document.getElementById(id);
+        const form = section.querySelector("form") || section;
+        form.addEventListener("input", () => setDirty(id, true));
+      }
+    }
+
+    function setDirty(id, on) {
+      state.dirty[id] = on;
+      const marker = document.getElementById(id + "-dirty");
+      if (marker) marker.hidden = !on;
+    }
+
+    function anyDirty() {
+      return DIRTY_IDS.some(id => state.dirty[id]);
+    }
+
+    window.addEventListener("beforeunload", (e) => {
+      if (anyDirty()) {
+        e.preventDefault();
+        e.returnValue = "";
+      }
+    });
+
+    // ------------------------------------------------------------- selection
+
+    // UI1-shared-start: one workspace-selection rule shared by index.html, settings.html and dossier.html.
+    function workspaceChoiceKey() { return "leadscout.workspace"; }
+    function wsStored(key) {
+      try { return localStorage.getItem(key || workspaceChoiceKey()) || ""; } catch (e) { return ""; }
+    }
+    function wsRemember(id, key) {
+      try { localStorage.setItem(key || workspaceChoiceKey(), String(id || "")); } catch (e) {}
+    }
+    function pickWorkspaceId(paramWs, stored, list) {
+      if (paramWs) return String(paramWs);
+      if (stored) return String(stored);
+      var arr = Array.isArray(list) ? list.slice() : [];
+      if (!arr.length) return "";
+      function countOf(w) {
+        var cand = [w && w.leadsCount, w && w.leadCount, w && w.total];
+        for (var i = 0; i < cand.length; i++) { if (typeof cand[i] === "number") return cand[i]; }
+        return null;
+      }
+      function newest(pool) {
+        var best = pool[pool.length - 1];
+        for (var i = 0; i < pool.length; i++) {
+          var t = pool[i] && pool[i].createdAt ? String(pool[i].createdAt) : "";
+          var bt = best && best.createdAt ? String(best.createdAt) : "";
+          if (t && (!bt || t > bt)) best = pool[i];
+        }
+        return best;
+      }
+      var countsKnown = arr.some(function (w) { return countOf(w) != null; });
+      if (countsKnown) {
+        var withLeads = arr.filter(function (w) { var c = countOf(w); return typeof c === "number" && c >= 1; });
+        if (withLeads.length) return String(newest(withLeads).id);
+      }
+      var nonDemo = arr.filter(function (w) { return String((w && w.name) || "").trim().toLowerCase() !== "demo"; });
+      var pool = nonDemo.length ? nonDemo : arr;
+      var picked = newest(pool);
+      return picked ? String(picked.id) : "";
+    }
+    // UI1-shared-end
+
+    function showActiveWorkspace() {
+      const node = document.getElementById("active-ws");
+      if (!node) return;
+      const ws = state.workspaces.find(w => w.id === state.wsId);
+      node.textContent = ws ? "Workspace: " + ws.name : (state.wsId ? "Workspace: " + state.wsId : "No workspace selected");
+    }
+
+    async function loadWorkspaces() {
+      const select = document.getElementById("ws-select");
+      const hint = document.getElementById("ws-hint");
+      try {
+        const data = await apiFetch("/api/workspaces");
+        state.workspaces = Array.isArray(data) ? data : (data && data.workspaces) || [];
+      } catch (err) {
+        hint.textContent = "Could not load workspaces. Create one on the Leads page (index.html), then come back.";
+        announce("Could not load workspaces. The rest of the page still works.");
+        return;
+      }
+      select.replaceChildren();
+      const emptyOption = document.createElement("option");
+      emptyOption.value = "";
+      emptyOption.textContent = state.workspaces.length === 0 ? "-- no workspaces --" : "-- choose workspace --";
+      select.appendChild(emptyOption);
+      for (const w of state.workspaces) {
+        const opt = document.createElement("option");
+        opt.value = w.id;
+        opt.textContent = w.name;
+        select.appendChild(opt);
+      }
+      const paramWs = params.get("ws");
+      let chosen = pickWorkspaceId(paramWs, wsStored(), state.workspaces);
+      if (chosen && !state.workspaces.some(w => w.id === chosen) && !paramWs) {
+        try { localStorage.removeItem(workspaceChoiceKey()); } catch (e) {}
+        chosen = pickWorkspaceId("", "", state.workspaces);
+      }
+      state.wsId = chosen || null;
+      if (state.wsId) { wsRemember(state.wsId); select.value = state.wsId; }
+      showActiveWorkspace();
+      if (!state.wsId) {
+        hint.textContent = "No workspaces yet — create one on the Leads page (index.html), then come back.";
+        return;
+      }
+      const activeName = (state.workspaces.find(w => w.id === state.wsId) || {}).name || state.wsId;
+      hint.textContent = isMock ? "Mock mode: all data below is obviously fake." : "Editing workspace " + activeName;
+      await loadAllSections();
+    }
+
+    document.getElementById("ws-select").addEventListener("change", async (e) => {
+      state.wsId = e.target.value || null;
+      if (!state.wsId) return;
+      wsRemember(state.wsId);
+      showActiveWorkspace();
+      await loadAllSections();
+    });
+
+    // ----------------------------------------------------------------- offer
+
+    async function loadOffer() {
+      const errEl = document.getElementById("offer-error");
+      errEl.textContent = "";
+      if (!state.wsId) { renderOffer(null); return; }
+      try {
+        const ws = await apiFetch("/api/workspaces/" + encodeURIComponent(state.wsId));
+        renderOffer(ws);
+      } catch (err) {
+        errEl.textContent = "Could not load this section right now. The rest of the page still works.";
+        announce("Could not load the offer section. The rest of the page still works.");
+      }
+    }
+
+    function renderOffer(ws) {
+      const form = document.getElementById("offer-form");
+      if (!ws) {
+        form.elements["name"].value = "";
+        form.elements["description"].value = "";
+        form.elements["categories"].value = "";
+        form.elements["cities"].value = "";
+        form.elements["services-other"].value = "";
+        form.querySelectorAll("input[name='services']").forEach(cb => { cb.checked = false; });
+        state.countries = [];
+        return;
+      }
+      form.elements["name"].value = ws.name || "";
+      form.elements["description"].value = (ws.offer && ws.offer.description) || "";
+      const services = (ws.offer && ws.offer.services) || [];
+      form.querySelectorAll("input[name='services']").forEach(cb => { cb.checked = services.includes(cb.value); });
+      const known = SERVICES_known();
+      const extras = services.filter(s => !known.includes(s));
+      form.elements["services-other"].value = extras.join(", ");
+      const icp = ws.icp || {};
+      form.elements["categories"].value = (icp.categories || []).join(", ");
+      form.elements["cities"].value = (icp.cities || []).join(", ");
+      state.countries = icp.countries || [];
+      setDirty("offer", false);
+    }
+
+    function SERVICES_known() {
+      return ["website", "automation", "ai-chatbot", "seo", "crm-setup"];
+    }
+
+    async function saveOffer(e) {
+      e.preventDefault();
+      const errEl = document.getElementById("offer-error");
+      errEl.textContent = "";
+      if (!state.wsId) { errEl.textContent = "Select a workspace first."; return; }
+      const form = e.target;
+      const name = form.elements["name"].value.trim();
+      if (name === "") {
+        errEl.textContent = "Workspace name is required.";
+        return;
+      }
+      const services = [];
+      form.querySelectorAll("input[name='services']:checked").forEach(cb => services.push(cb.value));
+      for (const extra of splitList(form.elements["services-other"].value)) services.push(extra);
+      const body = {
+        name,
+        offer: { services, description: form.elements["description"].value },
+        icp: {
+          categories: splitList(form.elements["categories"].value),
+          cities: splitList(form.elements["cities"].value),
+          countries: state.countries
+        }
+      };
+      const button = document.getElementById("offer-save");
+      button.disabled = true;
+      try {
+        await apiFetch("/api/workspaces/" + encodeURIComponent(state.wsId), {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body)
+        });
+        announce("Offer saved.", "success");
+        setDirty("offer", false);
+      } catch (err) {
+        errEl.textContent = "Save failed (called anyway; route may be missing): " + err.message;
+        announce("Offer save failed — " + err.message);
+      } finally {
+        button.disabled = false;
+      }
+    }
+
+    document.getElementById("offer-form").addEventListener("submit", saveOffer);
+
+    // ------------------------------------------------------------- pricebook
+
+    function fillPriceRow(row, item) {
+      row.dataset.service = item.service || "";
+      row.querySelector("[data-role='label']").textContent = item.label || item.service || "";
+      row.querySelector("[data-role='service']").textContent = "service: " + (item.service || "?") + " — currency INR";
+      const door = row.querySelector("[data-role='door']");
+      if (item.doorOpener) door.hidden = false; else door.hidden = true;
+      row.querySelector("[data-role='desc']").textContent = (item.description || "") + (item.assumption ? " — " + item.assumption : "");
+      const min = item.price ? item.price.min : null;
+      const max = item.price ? item.price.max : null;
+      row.querySelector(`input[name="min"]`).value = min === null || min === undefined ? "" : String(min);
+      row.querySelector(`input[name="max"]`).value = max === null || max === undefined ? "" : String(max);
+      const bd = item.buildDays;
+      row.querySelector(`input[name="build-days-min"]`).value = bd ? String(bd[0]) : "";
+      row.querySelector(`input[name="build-days-max"]`).value = bd ? String(bd[1]) : "";
+      row.querySelector("input[name='note']").value = item.assumption || "";
+    }
+
+    function renderPriceBook(items, failureNote) {
+      const container = document.getElementById("pricebook-rows");
+      container.replaceChildren();
+      state.priceBookItems = [];
+      const template = document.getElementById("pricebook-row-template");
+      for (const item of items || []) {
+        const row = template.content.firstElementChild.cloneNode(true);
+        fillPriceRow(row, item);
+        container.appendChild(row);
+        state.priceBookItems.push(item);
+      }
+      const errEl = document.getElementById("pricebook-error");
+      errEl.textContent = failureNote || "";
+      if (failureNote) {
+        const note = document.createElement("p");
+        note.className = "hint";
+        note.textContent = "No book loaded (endpoint failed) — showing an empty draft; the DRAFT label still applies.";
+        container.appendChild(note);
+      }
+      setDirty("pricebook", false);
+    }
+
+    async function loadPriceBook() {
+      state.priceBookFailed = false;
+      if (!state.wsId) { renderPriceBook([], ""); return; }
+      try {
+        const data = await apiFetch("/api/workspaces/" + encodeURIComponent(state.wsId) + "/pricebook");
+        renderPriceBook(Array.isArray(data) ? data : data.items || [], "");
+      } catch (err) {
+        state.priceBookFailed = true;
+        renderPriceBook([], "Failed to load price book (called anyway; route may be missing): " + err.message + " — DRAFT, EDIT BEFORE USE still applies to the empty draft.");
+        announce("Price book: " + err.message);
+      }
+    }
+
+    function collectPriceRows() {
+      const rows = Array.from(document.querySelectorAll("#pricebook-rows .price-row"));
+      const items = [];
+      const errors = [];
+      for (const row of rows) {
+        const service = row.dataset.service;
+        if (!service) continue;
+        const stateItem = state.priceBookItems.find(i => i.service === service) || {};
+        const minText = row.querySelector(`input[name="min"]`).value.trim();
+        const maxText = row.querySelector(`input[name="max"]`).value.trim();
+        const bminText = row.querySelector(`input[name="build-days-min"]`).value.trim();
+        const bmaxText = row.querySelector(`input[name="build-days-max"]`).value.trim();
+        const note = row.querySelector("input[name='note']").value.trim();
+        let price = null;
+        if (minText !== "" || maxText !== "") {
+          if (minText === "" || maxText === "") {
+            errors.push(service + ": min and max must both be set (or both empty for 'price not set')");
+            continue;
+          }
+          const min = Number(minText);
+          const max = Number(maxText);
+          if (!Number.isFinite(min) || !Number.isFinite(max)) {
+            errors.push(service + ": min/max must be numbers (NaN rejected)");
+            continue;
+          }
+          if (min < 0 || max < 0) {
+            errors.push(service + ": negative min/max rejected");
+            continue;
+          }
+          if (max >= 100000000) {
+            errors.push(service + ": max must be below 100000000");
+            continue;
+          }
+          if (min > max) {
+            errors.push(service + ": min INR (" + min + ") is greater than max INR (" + max + ") — NOT accepted silently");
+            continue;
+          }
+          price = { currency: "INR", min, max };
+        }
+        let buildDays = null;
+        if (bminText !== "" || bmaxText !== "") {
+          if (bminText === "" || bmaxText === "") {
+            errors.push(service + ": build time min and max must both be set (or both empty)");
+            continue;
+          }
+          const bdmin = Number(bminText);
+          const bdmax = Number(bmaxText);
+          if (!Number.isInteger(bdmin) || !Number.isInteger(bdmax)) {
+            errors.push(service + ": build days must be whole numbers (NaN rejected)");
+            continue;
+          }
+          if (bdmin < 0 || bdmax < 0) {
+            errors.push(service + ": negative build days rejected");
+            continue;
+          }
+          if (bdmin > bdmax) {
+            errors.push(service + ": build time min (" + bdmin + ") is greater than max (" + bdmax + ")");
+            continue;
+          }
+          buildDays = [bdmin, bdmax];
+        }
+        if (note === "") {
+          errors.push(service + ": note is required (a draft book must carry an assumption line)");
+          continue;
+        }
+        items.push({
+          service,
+          label: stateItem.label || service,
+          description: stateItem.description || "",
+          buildDays,
+          price,
+          assumption: note,
+          doorOpener: Boolean(stateItem.doorOpener)
+        });
+      }
+      return { items, errors };
+    }
+
+    async function savePriceBook() {
+      const errEl = document.getElementById("pricebook-error");
+      errEl.textContent = "";
+      const { items, errors } = collectPriceRows();
+      if (!state.wsId) { errEl.textContent = "Select a workspace first."; return; }
+      if (errors.length > 0) {
+        errEl.textContent = errors.join("\n") + "\nNothing was sent.";
+        announce("Price book: " + errors.length + " validation problem(s) — nothing was sent.");
+        return;
+      }
+      if (items.length === 0) {
+        errEl.textContent = "No price rows to save (the draft is empty because the book could not be loaded).";
+        return;
+      }
+      const button = document.getElementById("pricebook-save");
+      button.disabled = true;
+      try {
+        await apiFetch("/api/workspaces/" + encodeURIComponent(state.wsId) + "/pricebook", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ items })
+        });
+        announce("Price book saved.", "success");
+        setDirty("pricebook", false);
+      } catch (err) {
+        errEl.textContent = "Save failed (called anyway; route may be missing): " + err.message;
+        announce("Price book save failed — " + err.message);
+      } finally {
+        button.disabled = false;
+      }
+    }
+
+    document.getElementById("pricebook-save").addEventListener("click", savePriceBook);
+
+    // -------------------------------------------------------------- branding
+
+    async function loadBranding() {
+      const errEl = document.getElementById("branding-error");
+      errEl.textContent = "";
+      if (!state.wsId) return;
+      try {
+        const b = await apiFetch("/api/workspaces/" + encodeURIComponent(state.wsId) + "/branding");
+        const form = document.getElementById("branding-form");
+        form.elements["display-name"].value = b.displayName || "";
+        form.elements["accent"].value = b.accent || "";
+        form.elements["logo-url"].value = b.logoUrl || "";
+        form.elements["sender-name"].value = b.senderName || "";
+        state.brandingExtras = {
+          contactLine: b.contactLine,
+          reportFooter: b.reportFooter,
+          hidePoweredBy: b.hidePoweredBy
+        };
+        updateLogoPreview(b.logoUrl || "");
+        setDirty("branding", false);
+      } catch (err) {
+        errEl.textContent = "Failed to load branding (called anyway; route may be missing): " + err.message;
+        announce("Branding: " + err.message);
+      }
+    }
+
+    function validateBranding(form) {
+      const problems = [];
+      const displayName = form.elements["display-name"].value.trim();
+      if (displayName.length < 1 || displayName.length > 80) problems.push("brand display name must be 1–80 chars");
+      const accent = form.elements["accent"].value.trim();
+      if (accent !== "" && !/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.test(accent)) {
+        problems.push("accent colour must be #rgb or #rrggbb hex (or empty for default)");
+      }
+      const logo = form.elements["logo-url"].value.trim();
+      let logoBlocked = false;
+      if (logo !== "") {
+        const lowered = logo.toLowerCase();
+        if (lowered.startsWith("javascript:") || lowered.startsWith("data:") || lowered.startsWith("vbscript:")) {
+          logoBlocked = true;
+        } else if (!lowered.startsWith("https://")) {
+          logoBlocked = true;
+        }
+        if (logo.length > 500) logoBlocked = true;
+      }
+      const senderName = form.elements["sender-name"].value;
+      if (senderName.length > 300) problems.push("sender name must be at most 300 chars");
+      updateLogoPreview(logoBlocked ? null : logo);
+      return { displayName, accent, logo, senderName, problems };
+    }
+
+    function updateLogoPreview(value) {
+      const img = document.getElementById("branding-logo-preview");
+      const note = document.getElementById("branding-logo-note");
+      if (!value) {
+        img.hidden = true;
+        img.removeAttribute("src");
+        note.textContent = value === null
+          ? "Logo placeholder shown — the URL looks invalid, but saving is never blocked by the logo."
+          : "";
+        return;
+      }
+      note.textContent = "Logo preview: if the image is broken a placeholder shows instead — save is never blocked.";
+      img.hidden = false;
+      img.alt = "Logo preview (placeholder shown if the image is broken)";
+      img.referrerPolicy = "no-referrer";
+      img.decoding = "async";
+      img.src = value;
+    }
+
+    document.getElementById("branding-logo-preview").addEventListener("error", () => {
+      const img = document.getElementById("branding-logo-preview");
+      img.hidden = true;
+      img.removeAttribute("src");
+      document.getElementById("branding-logo-note").textContent =
+        "Logo preview unavailable (broken or missing image) — placeholder shown instead; the URL is still saved and saving is not blocked.";
+    });
+
+    async function saveBranding(e) {
+      e.preventDefault();
+      const errEl = document.getElementById("branding-error");
+      errEl.textContent = "";
+      const form = e.target;
+      const v = validateBranding(form);
+      if (!state.wsId) {
+        errEl.textContent = "Select a workspace first.";
+        return;
+      }
+      if (v.problems.length > 0) {
+        errEl.textContent = v.problems.join("\n") + "\nNothing was sent.";
+        announce("Branding: " + v.problems.length + " validation problem(s) — nothing was sent.");
+        return;
+      }
+      const body = { displayName: v.displayName, senderName: v.senderName === "" ? undefined : v.senderName, ...state.brandingExtras };
+      if (v.accent !== "") body.accent = v.accent;
+      if (v.logo !== "") body.logoUrl = v.logo;
+      const button = document.getElementById("branding-save");
+      button.disabled = true;
+      try {
+        await apiFetch("/api/workspaces/" + encodeURIComponent(state.wsId) + "/branding", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body)
+        });
+        announce("Branding saved.", "success");
+        setDirty("branding", false);
+      } catch (err) {
+        errEl.textContent = "Save failed (called anyway; route may be missing): " + err.message;
+        announce("Branding save failed — " + err.message);
+      } finally {
+        button.disabled = false;
+      }
+    }
+
+    document.getElementById("branding-form").addEventListener("submit", saveBranding);
+
+    // ---------------------------------------------------------------- apikey
+
+    function maskKey(key) {
+      if (typeof key !== "string" || key.length === 0) return "ls_…";
+      const prefix = key.slice(0, 8);
+      const suffix = key.length >= 12 ? key.slice(-4) : "****";
+      return prefix + "…" + suffix;
+    }
+
+    function keyRowHtml(k) {
+      const masked = maskKey(k.prefix || "");
+      const scope = (k.scopes && k.scopes.join(", ")) || "?";
+      const status = k.revokedAt ? "REVOKED" : "active";
+      const lastUsed = k.lastUsedAt ? String(k.lastUsedAt).slice(0, 10) : "never";
+      const btn = k.revokedAt
+        ? ""
+        : `<button type="button" class="btn-sm btn-secondary revoke-btn" data-key-id="${esc(k.id)}" data-masked="${esc(masked)}" aria-label="Revoke key ${esc(masked)}">Revoke</button>`;
+      return `<div class="key-row"><code>${esc(masked)}</code><span class="badge">${esc("scope: " + scope)}</span><span class="badge">${esc(status)}</span><span class="hint">created ${esc(String(k.createdAt || "?").slice(0, 10))}, last used ${esc(lastUsed)}</span>${btn}</div>`;
+    }
+
+    function renderKeys(keys) {
+      const list = document.getElementById("apikey-list");
+      if (!keys || keys.length === 0) {
+        list.innerHTML = `<p class="hint" id="apikey-none">${esc("none — create one")}</p>`;
+      } else {
+        list.innerHTML = keys.map(keyRowHtml).join("");
+      }
+      updateRevokeButtons();
+      for (const btn of list.querySelectorAll(".revoke-btn")) {
+        btn.addEventListener("click", onRevokeClick);
+      }
+    }
+
+    function updateRevokeButtons() {
+      for (const btn of document.querySelectorAll(".revoke-btn")) {
+        btn.disabled = state.createInFlight;
+        btn.title = state.createInFlight ? "Blocked while a key is being created" : "Two-step: click again to confirm";
+      }
+    }
+
+    async function loadKeys() {
+      const errEl = document.getElementById("apikey-error");
+      errEl.textContent = "";
+      if (!state.wsId) { renderKeys([]); return; }
+      try {
+        const keys = await apiFetch("/api/workspaces/" + encodeURIComponent(state.wsId) + "/keys");
+        renderKeys(Array.isArray(keys) ? keys : keys.keys || []);
+      } catch (err) {
+        renderKeys([]);
+        errEl.textContent = "Failed to load keys (called anyway; route may be missing): " + err.message;
+        announce("API keys: " + err.message);
+      }
+    }
+
+    async function onCreateKey() {
+      const errEl = document.getElementById("apikey-error");
+      errEl.textContent = "";
+      const onceBox = document.getElementById("apikey-new");
+      errEl.textContent = "";
+      if (!state.wsId) { errEl.textContent = "Select a workspace first."; return; }
+      onceBox.hidden = true;
+      state.createInFlight = true;
+      updateRevokeButtons();
+      document.getElementById("apikey-create").disabled = true;
+      try {
+        const scopes = [document.getElementById("apikey-scopes").value];
+        const created = await apiFetch("/api/workspaces/" + encodeURIComponent(state.wsId) + "/keys", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ scopes })
+        });
+        const fullKey = created && created.key;
+        if (typeof fullKey !== "string" || fullKey === "") {
+          announce("Key created, but the server did not return the full key (contract expects it shown once).");
+        } else {
+          const input = document.getElementById("apikey-new-key");
+          input.value = fullKey;
+          onceBox.hidden = false;
+          input.focus();
+          input.select();
+          announce("API key created — copy it now; it is shown this once and never logged. Stored copy is masked as " + maskKey(fullKey) + ".");
+        }
+        await loadKeys();
+      } catch (err) {
+        errEl.textContent = "Create failed (called anyway; route may be missing): " + err.message;
+        announce("API key create failed — " + err.message);
+      } finally {
+        state.createInFlight = false;
+        updateRevokeButtons();
+        document.getElementById("apikey-create").disabled = false;
+      }
+    }
+
+    async function onRevokeClick(e) {
+      const btn = e.target;
+      if (state.createInFlight) {
+        announce("Revoke is blocked while a key create is in flight.");
+        return;
+      }
+      if (btn.dataset.armed !== "1") {
+        btn.dataset.armed = "1";
+        btn.textContent = "Confirm revoke";
+        announce("Revoke armed for key " + (btn.dataset.masked || "") + ": click 'Confirm revoke' again within 5 s, otherwise it re-arms off.");
+        clearTimeout(btn._timer);
+        btn._timer = setTimeout(() => {
+          btn.dataset.armed = "";
+          btn.textContent = "Revoke";
+        }, 5000);
+        return;
+      }
+      clearTimeout(btn._timer);
+      btn.dataset.armed = "";
+      btn.textContent = "Revoke";
+      try {
+        await apiFetch("/api/workspaces/" + encodeURIComponent(state.wsId) + "/keys/" + encodeURIComponent(btn.dataset.keyId), { method: "DELETE" });
+        announce("API key revoked.", "success");
+        await loadKeys();
+      } catch (err) {
+        document.getElementById("apikey-error").textContent = "Revoke failed (called anyway; route may be missing): " + err.message;
+        announce("API key revoke failed — " + err.message);
+      }
+    }
+
+    document.getElementById("apikey-create").addEventListener("click", onCreateKey);
+
+    // -------------------------------------------------------------- outreach
+
+    async function loadOutreach() {
+      const errEl = document.getElementById("outreach-error");
+      errEl.textContent = "";
+      if (!state.wsId) return;
+      try {
+        const o = await apiFetch("/api/workspaces/" + encodeURIComponent(state.wsId) + "/outreach");
+        const form = document.getElementById("outreach-form");
+        form.elements["sender-email"].value = o.senderEmail || "";
+        form.elements["daily-cap"].value = o.dailyCap === undefined || o.dailyCap === null ? "" : String(o.dailyCap);
+        form.elements["opt-out-text"].value = o.optOutText || "";
+        const enabled = document.getElementById("outreach-enabled");
+        enabled.textContent = o.sendingEnabled === true ? "yes (server)" : o.sendingEnabled === false ? "no (server)" : "unknown (server did not say)";
+        setDirty("outreach", false);
+      } catch (err) {
+        document.getElementById("outreach-enabled").textContent = "unknown (endpoint failed)";
+        errEl.textContent = "Failed to load outreach settings (called anyway; route may be missing): " + err.message;
+        announce("Outreach: " + err.message);
+      }
+    }
+
+    async function saveOutreach(e) {
+      e.preventDefault();
+      const errEl = document.getElementById("outreach-error");
+      errEl.textContent = "";
+      const form = e.target;
+      const senderEmail = form.elements["sender-email"].value.trim();
+      const capText = form.elements["daily-cap"].value.trim();
+      const problems = [];
+      if (!state.wsId) problems.push("select a workspace first");
+      if (senderEmail !== "" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(senderEmail)) problems.push("sender email does not look like an email address");
+      if (capText !== "") {
+        const cap = Number(capText);
+        if (!Number.isFinite(cap) || !Number.isInteger(cap)) problems.push("daily cap must be a whole number (NaN rejected)");
+        else if (cap < 0) problems.push("daily cap must be ≥ 0 (negative rejected)");
+      }
+      if (problems.length > 0) {
+        errEl.textContent = problems.join("\n") + "\nNothing was sent.";
+        announce("Outreach: " + problems.length + " validation problem(s) — nothing was sent.");
+        return;
+      }
+      const body = {
+        senderEmail,
+        dailyCap: capText === "" ? undefined : Number(capText),
+        optOutText: form.elements["opt-out-text"].value
+      };
+      const button = document.getElementById("outreach-save");
+      button.disabled = true;
+      try {
+        await apiFetch("/api/workspaces/" + encodeURIComponent(state.wsId) + "/outreach", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body)
+        });
+        announce("Outreach settings saved.", "success");
+        setDirty("outreach", false);
+      } catch (err) {
+        errEl.textContent = "Save failed (called anyway; route may be missing): " + err.message;
+        announce("Outreach save failed — " + err.message);
+      } finally {
+        button.disabled = false;
+      }
+    }
+
+    document.getElementById("outreach-form").addEventListener("submit", saveOutreach);
+
+    // ------------------------------------------------------------------ plan
+
+    async function loadPlan() {
+      const errEl = document.getElementById("plan-error");
+      errEl.textContent = "";
+      const summary = document.getElementById("plan-summary");
+      summary.textContent = "—";
+      if (!state.wsId) return;
+      try {
+        const data = await apiFetch("/api/workspaces/" + encodeURIComponent(state.wsId) + "/usage");
+        const usage = data.usage || data;
+        const limits = data.limits || {};
+        const usageLine = (name, used, limit) =>
+          name + ": " + (used === undefined ? "?" : String(used)) + " of " + (limit === undefined || limit === null ? "?" : String(limit));
+        const atLimit = [];
+        const pairs = [
+          ["leads", usage.leads, limits.leadsPerMonth],
+          ["dossiers", usage.dossiers, limits.dossiersPerMonth],
+          ["tokens in", usage.tokensIn, limits.tokensPerMonth],
+          ["API calls", usage.apiCalls, limits.apiCallsPerMonth]
+        ];
+        for (const [name, used, limit] of pairs) {
+          if (typeof used === "number" && typeof limit === "number" && limit > 0 && used >= limit) atLimit.push(name);
+        }
+        let html = "";
+        const planText = data.plan !== undefined ? String(data.plan) : "not provided by the server";
+        html += `<p><strong>Plan:</strong> ${esc(planText)}</p>`;
+        html += `<p><strong>Used vs limit (this month):</strong> ${esc(usageLine("leads", usage.leads, limits.leadsPerMonth))} · ${esc(usageLine("dossiers", usage.dossiers, limits.dossiersPerMonth))} · ${esc(usageLine("tokens in", usage.tokensIn, limits.tokensPerMonth))} · ${esc(usageLine("API calls", usage.apiCalls, limits.apiCallsPerMonth))}</p>`;
+        if (atLimit.length > 0) {
+          html += `<p><span class="badge warn" role="alert">${esc("AT LIMIT: " + atLimit.join(", "))}</span><strong> at or over limit — new work may be refused.</strong></p>`;
+        }
+        const invoiceUrl = data.invoiceUrl || usage.invoiceUrl;
+        const safe = typeof invoiceUrl === "string" && /^https:\/\//i.test(invoiceUrl.trim()) ? invoiceUrl.trim() : null;
+        if (safe) {
+          html += `<p><strong>Last invoice:</strong> <a href="${esc(safe)}" target="_blank" rel="noopener noreferrer">${esc(safe)}</a></p>`;
+        } else {
+          html += `<p><strong>Last invoice:</strong> no invoice yet</p>`;
+        }
+        summary.innerHTML = html;
+      } catch (err) {
+        summary.textContent = "—";
+        errEl.textContent = "Failed to load plan/usage (called anyway; route may be missing): " + err.message;
+        announce("Plan & usage: " + err.message);
+      }
+    }
+
+    // ------------------------------------------------------------------ init
+
+    async function loadAllSections() {
+      await Promise.all([
+        loadOffer(),
+        loadPriceBook(),
+        loadBranding(),
+        loadKeys(),
+        loadOutreach(),
+        loadPlan()
+      ]);
+    }
+
+    function init() {
+      if (isMock) {
+        document.getElementById("back-link").textContent = "← Leads (mock)";
+      }
+      watchDirty();
+      loadWorkspaces();
+    }
+
+    init();
+  </script>
+</body>
+</html>

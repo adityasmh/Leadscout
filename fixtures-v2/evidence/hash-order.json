@@ -1,0 +1,39 @@
+{
+  "name": "hash-order",
+  "raw": {
+    "name": "Fixture Hash Order",
+    "category": "travel",
+    "city": "Navi Mumbai",
+    "website": "https://fixture-hash.example",
+    "source": "osm",
+    "sourceUrl": "https://www.openstreetmap.org/node/1212121212"
+  },
+  "enrichment": {
+    "summary": "Fixture travel agency for hash stability test.",
+    "emails": [],
+    "phones": ["+919876512121"],
+    "socials": {},
+    "signals": []
+  },
+  "pages": [
+    {
+      "url": "https://fixture-hash.example/",
+      "body": "<!DOCTYPE html><html><head><title>Fixture Hash Order Home</title></head><body><h1>Home</h1><p>Plan your next holiday with Fixture Hash Order.</p></body></html>",
+      "fetchedAt": "2026-10-07T00:00:00.000Z"
+    },
+    {
+      "url": "https://fixture-hash.example/about",
+      "body": "<!DOCTYPE html><html><head><title>About Fixture Hash Order</title></head><body><h1>About</h1><p>We are a Navi Mumbai based travel agency.</p></body></html>",
+      "fetchedAt": "2026-10-07T00:00:00.000Z"
+    },
+    {
+      "url": "https://fixture-hash.example/contact",
+      "body": "<!DOCTYPE html><html><head><title>Contact Fixture Hash Order</title></head><body><h1>Contact</h1><p>Call us to book flights, hotels and packages.</p></body></html>",
+      "fetchedAt": "2026-10-07T00:00:00.000Z"
+    }
+  ],
+  "expected": {
+    "bizKey": "fixture-hash.example",
+    "hashStable": true
+  }
+}

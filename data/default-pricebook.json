@@ -1,0 +1,155 @@
+[
+  {
+    "service": "website",
+    "label": "Website",
+    "description": "A new website built for the business.",
+    "buildDays": null,
+    "price": null,
+    "assumption": "Price not set yet; final quote after a short call.",
+    "doorOpener": false
+  },
+  {
+    "service": "website-redesign",
+    "label": "Website redesign",
+    "description": "Refresh and modernise an existing website.",
+    "buildDays": null,
+    "price": null,
+    "assumption": "Price not set yet; final quote after a short call.",
+    "doorOpener": false
+  },
+  {
+    "service": "automation",
+    "label": "Automation",
+    "description": "Connect tools and automate repetitive workflows.",
+    "buildDays": null,
+    "price": null,
+    "assumption": "Price not set yet; final quote after a short call.",
+    "doorOpener": false
+  },
+  {
+    "service": "ai-chatbot",
+    "label": "AI chatbot",
+    "description": "Add an AI chatbot to answer enquiries 24/7.",
+    "buildDays": null,
+    "price": null,
+    "assumption": "Price not set yet; final quote after a short call.",
+    "doorOpener": false
+  },
+  {
+    "service": "whatsapp-automation",
+    "label": "WhatsApp automation",
+    "description": "Automate replies and follow-ups over WhatsApp.",
+    "buildDays": null,
+    "price": null,
+    "assumption": "Price not set yet; final quote after a short call.",
+    "doorOpener": false
+  },
+  {
+    "service": "seo",
+    "label": "SEO",
+    "description": "Improve search rankings and organic visibility.",
+    "buildDays": null,
+    "price": null,
+    "assumption": "Price not set yet; final quote after a short call.",
+    "doorOpener": false
+  },
+  {
+    "service": "crm-setup",
+    "label": "CRM setup",
+    "description": "Set up a CRM to track leads and customers.",
+    "buildDays": null,
+    "price": null,
+    "assumption": "Price not set yet; final quote after a short call.",
+    "doorOpener": false
+  },
+  {
+    "service": "booking-system",
+    "label": "Booking system",
+    "description": "Add online booking and appointment scheduling.",
+    "buildDays": null,
+    "price": null,
+    "assumption": "Price not set yet; final quote after a short call.",
+    "doorOpener": false
+  },
+  {
+    "service": "ecommerce",
+    "label": "E-commerce",
+    "description": "Add products, cart and payments to sell online.",
+    "buildDays": null,
+    "price": null,
+    "assumption": "Price not set yet; final quote after a short call.",
+    "doorOpener": false
+  },
+  {
+    "service": "ai-voice-agent",
+    "label": "AI voice agent",
+    "description": "Add an AI voice assistant for calls.",
+    "buildDays": null,
+    "price": null,
+    "assumption": "Price not set yet; final quote after a short call.",
+    "doorOpener": false
+  },
+  {
+    "service": "lead-gen",
+    "label": "Lead generation",
+    "description": "Run paid and organic campaigns to bring in leads.",
+    "buildDays": null,
+    "price": null,
+    "assumption": "Price not set yet; final quote after a short call.",
+    "doorOpener": false
+  },
+  {
+    "service": "free-audit",
+    "label": "Free website and enquiry check",
+    "description": "A free review of the website and enquiry flow.",
+    "buildDays": null,
+    "price": { "currency": "INR", "min": 0, "max": 0 },
+    "assumption": "Price not set yet; final quote after a short call.",
+    "doorOpener": true
+  },
+  {
+    "service": "brand-film",
+    "label": "Brand film",
+    "description": "A short brand or corporate film about the business.",
+    "buildDays": null,
+    "price": null,
+    "assumption": "Price not set yet; final quote after a short call.",
+    "doorOpener": false
+  },
+  {
+    "service": "social-reels",
+    "label": "Social reels",
+    "description": "Short-form reels and social video.",
+    "buildDays": null,
+    "price": null,
+    "assumption": "Price not set yet; final quote after a short call.",
+    "doorOpener": false
+  },
+  {
+    "service": "property-walkthrough",
+    "label": "Property walkthrough",
+    "description": "Real-estate project films and walkthroughs, including drone.",
+    "buildDays": null,
+    "price": null,
+    "assumption": "Price not set yet; final quote after a short call.",
+    "doorOpener": false
+  },
+  {
+    "service": "wedding-event-film",
+    "label": "Wedding and event film",
+    "description": "Wedding, event and conference coverage.",
+    "buildDays": null,
+    "price": null,
+    "assumption": "Price not set yet; final quote after a short call.",
+    "doorOpener": false
+  },
+  {
+    "service": "product-shoot",
+    "label": "Product shoot",
+    "description": "Product and catalogue photo or video shoot.",
+    "buildDays": null,
+    "price": null,
+    "assumption": "Price not set yet; final quote after a short call.",
+    "doorOpener": false
+  }
+]

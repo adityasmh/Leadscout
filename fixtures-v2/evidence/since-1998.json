@@ -1,0 +1,29 @@
+{
+  "name": "since-1998",
+  "raw": {
+    "name": "Fixture Since 1998",
+    "category": "repair",
+    "city": "Navi Mumbai",
+    "website": "https://fixture-since.example",
+    "source": "osm",
+    "sourceUrl": "https://www.openstreetmap.org/node/6666666666"
+  },
+  "enrichment": {
+    "summary": "Fixture repair shop established in 1998.",
+    "emails": [],
+    "phones": ["+919876566666"],
+    "socials": {},
+    "signals": []
+  },
+  "pages": [
+    {
+      "url": "https://fixture-since.example/",
+      "body": "<!DOCTYPE html><html><head><title>Fixture Since 1998</title></head><body><h1>About Us</h1><p>Since 1998 we have served the Navi Mumbai community with honest repairs.</p></body></html>",
+      "fetchedAt": "2026-10-07T00:00:00.000Z"
+    }
+  ],
+  "expected": {
+    "bizKey": "fixture-since.example",
+    "sinceYear": 1998
+  }
+}

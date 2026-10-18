@@ -1,0 +1,74 @@
+{
+  "name": "missing senderName fixture",
+  "expected": { "senderFallback": "Test Workspace" },
+  "input": {
+    "lead": {
+      "id": "lead-missing-sender",
+      "workspaceId": "ws-test",
+      "name": "Fixture No Sender Salon",
+      "category": "salon",
+      "city": "Testpur",
+      "country": "India",
+      "source": "fixture",
+      "sourceUrl": "https://fixture-nosender.example.com/",
+      "summary": "Fake salon with no senderName provided.",
+      "emails": [],
+      "phones": ["+91 98765 43216"],
+      "socials": {},
+      "signals": ["appointment-based", "no-online-booking", "has-phone"],
+      "score": 70,
+      "fit": [
+        { "service": "booking-system", "score": 80, "reason": "no booking" }
+      ],
+      "angle": "",
+      "status": "new",
+      "notes": "",
+      "createdAt": "2026-10-07T00:00:00.000Z"
+    },
+    "evidence": [
+      {
+        "id": "E1",
+        "kind": "absence",
+        "url": "https://fixture-nosender.example.com/",
+        "quote": "Checked home and contact pages; no online booking widget found.",
+        "field": "signal:no-online-booking",
+        "fetchedAt": "2026-10-07T00:00:00.000Z"
+      },
+      {
+        "id": "E2",
+        "kind": "page-text",
+        "url": "https://fixture-nosender.example.com/",
+        "quote": "Fixture No Sender Salon offers walk-in appointments.",
+        "field": "signal:appointment-based",
+        "fetchedAt": "2026-10-07T00:00:00.000Z"
+      }
+    ],
+    "facts": {},
+    "score": { "total": 70, "fit": 80, "reach": 60, "timing": 50, "gate": "template", "reasons": [] },
+    "priceBook": {
+      "workspaceId": "ws-test",
+      "version": 7,
+      "updatedAt": "2026-10-07T00:00:00.000Z",
+      "items": [
+        { "service": "booking-system", "label": "Booking system", "description": "Add online booking and appointment scheduling.", "buildDays": [4, 7], "price": { "currency": "INR", "min": 15000, "max": 25000 }, "assumption": "Final quote after a short call.", "doorOpener": false }
+      ]
+    },
+    "explainer": {
+      "id": "explainer-salon-in-en",
+      "category": "salon",
+      "country": "India",
+      "language": "en",
+      "howItWorks": ["Clients call or message to book a slot."],
+      "whereAutomationHelps": [
+        { "service": "booking-system", "point": "Self-booking removes phone tag and no-shows." }
+      ],
+      "promptVersion": "2026-10-07-1",
+      "tokensIn": 0,
+      "tokensOut": 0,
+      "createdAt": "2026-10-07T00:00:00.000Z",
+      "reviewed": true
+    },
+    "workspaceName": "Test Workspace",
+    "offer": { "services": ["booking-system"], "description": "Test offer" }
+  }
+}

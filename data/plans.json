@@ -1,0 +1,36 @@
+{
+  "_note": "editable defaults, not market prices",
+  "starter": {
+    "monthlyPrice": { "value": 499900, "assumption": true, "unit": "paise" },
+    "includedLeads": { "value": 100, "assumption": true },
+    "includedDossiers": { "value": 10, "assumption": true },
+    "includedPolishCalls": { "value": 50, "assumption": true },
+    "overagePerLead": { "value": 3333, "assumption": true, "unit": "paise" },
+    "overagePerDossier": { "value": 16667, "assumption": true, "unit": "paise" },
+    "workspaceLimits": {
+      "maxWorkspaces": { "value": 1, "assumption": true }
+    }
+  },
+  "growth": {
+    "monthlyPrice": { "value": 1499900, "assumption": true, "unit": "paise" },
+    "includedLeads": { "value": 500, "assumption": true },
+    "includedDossiers": { "value": 75, "assumption": true },
+    "includedPolishCalls": { "value": 500, "assumption": true },
+    "overagePerLead": { "value": 2667, "assumption": true, "unit": "paise" },
+    "overagePerDossier": { "value": 13333, "assumption": true, "unit": "paise" },
+    "workspaceLimits": {
+      "maxWorkspaces": { "value": 3, "assumption": true }
+    }
+  },
+  "agency": {
+    "monthlyPrice": { "value": 4999900, "assumption": true, "unit": "paise" },
+    "includedLeads": { "value": 2500, "assumption": true },
+    "includedDossiers": { "value": 500, "assumption": true },
+    "includedPolishCalls": { "value": 5000, "assumption": true },
+    "overagePerLead": { "value": 2000, "assumption": true, "unit": "paise" },
+    "overagePerDossier": { "value": 10000, "assumption": true, "unit": "paise" },
+    "workspaceLimits": {
+      "maxWorkspaces": { "value": 999, "assumption": true }
+    }
+  }
+}

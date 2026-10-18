@@ -1,0 +1,10 @@
+node_modules
+.git
+.env
+.env.*
+!.env.example
+*.db
+data/*.db
+data/lists
+data/call-recordings
+*.log

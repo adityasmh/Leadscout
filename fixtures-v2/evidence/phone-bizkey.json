@@ -1,0 +1,23 @@
+{
+  "name": "phone-bizkey",
+  "raw": {
+    "name": "Fixture Salon 03",
+    "category": "salon",
+    "city": "Navi Mumbai",
+    "country": "IN",
+    "phone": "+91 98765 43212",
+    "source": "osm",
+    "sourceUrl": "https://some-directory.example/listing/123"
+  },
+  "enrichment": {
+    "summary": "Fixture salon for testing.",
+    "emails": [],
+    "phones": ["+919876543212"],
+    "socials": {},
+    "signals": []
+  },
+  "pages": [],
+  "expected": {
+    "bizKey": "+919876543212"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "id": "browser-social",
+  "name": "Browser & social",
+  "description": "Instagram, Facebook pages, LinkedIn company pages, Google Maps/Places and WhatsApp Business lookups, plus Instagram vendor discovery.",
+  "region": "global",
+  "enable": "LEADSCOUT_PLUGINS=browser-social",
+  "channelFlags": [
+    "LEADSCOUT_BROWSER",
+    "LEADSCOUT_INDIA_TIER_C",
+    "LEADSCOUT_CDP_URL",
+    "CHANNEL_CH_INSTAGRAM_VENDORS"
+  ],
+  "channels": [
+    "instagram-business",
+    "facebook-pages",
+    "linkedin-company",
+    "google-maps-places",
+    "whatsapp-business",
+    "ch-instagram-vendors"
+  ],
+  "defaultOn": false,
+  "warning": "ToS-sensitive. See the warning at the top of this README."
+}

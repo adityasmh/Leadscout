@@ -1,0 +1,67 @@
+{
+  "name": "large evidence fixture",
+  "expected": { "promptMax": 14000 },
+  "input": {
+    "lead": {
+      "id": "lead-large-evidence",
+      "workspaceId": "ws-test",
+      "name": "Fixture Large Evidence Coaching",
+      "category": "coaching-centre",
+      "city": "Testpur",
+      "country": "India",
+      "source": "fixture",
+      "sourceUrl": "https://fixture-large.example.com/",
+      "summary": "Fake coaching centre with a very long evidence list for prompt length testing.",
+      "emails": ["study@fixture-large.example.com"],
+      "phones": ["+91 98765 43220"],
+      "socials": {},
+      "signals": ["no-analytics", "has-phone", "has-email"],
+      "score": 62,
+      "fit": [
+        { "service": "seo", "score": 60, "reason": "no analytics" }
+      ],
+      "angle": "",
+      "status": "new",
+      "notes": "",
+      "createdAt": "2026-10-07T00:00:00.000Z"
+    },
+    "evidence": [
+      {
+        "id": "E1",
+        "kind": "absence",
+        "url": "https://fixture-large.example.com/",
+        "quote": "Checked home page source; no Google Analytics, Plausible or Matomo script found. This is a fake coaching centre fixture used only for testing prompt length and evidence truncation behaviour in the dossier pipeline.",
+        "field": "signal:no-analytics",
+        "fetchedAt": "2026-10-07T00:00:00.000Z"
+      }
+    ],
+    "facts": {},
+    "score": { "total": 62, "fit": 60, "reach": 80, "timing": 50, "gate": "template", "reasons": [] },
+    "priceBook": {
+      "workspaceId": "ws-test",
+      "version": 11,
+      "updatedAt": "2026-10-07T00:00:00.000Z",
+      "items": [
+        { "service": "seo", "label": "SEO", "description": "Improve search rankings and organic visibility.", "buildDays": [10, 20], "price": { "currency": "INR", "min": 12000, "max": 20000 }, "assumption": "Final quote after a short call.", "doorOpener": false }
+      ]
+    },
+    "explainer": {
+      "id": "explainer-coaching-in-en",
+      "category": "coaching-centre",
+      "country": "India",
+      "language": "en",
+      "howItWorks": ["Students and parents search for batches and results online."],
+      "whereAutomationHelps": [
+        { "service": "seo", "point": "Search visibility brings more enrolment enquiries." }
+      ],
+      "promptVersion": "2026-10-07-1",
+      "tokensIn": 0,
+      "tokensOut": 0,
+      "createdAt": "2026-10-07T00:00:00.000Z",
+      "reviewed": true
+    },
+    "workspaceName": "Test Workspace",
+    "offer": { "services": ["seo"], "description": "Test offer" },
+    "senderName": "Test Sender"
+  }
+}

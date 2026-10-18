@@ -1,0 +1,58 @@
+{
+  "id": "example-dental",
+  "version": 1,
+  "label": "Example dental clinics (fake stand-in niche)",
+  "owner": "shared",
+  "visibility": "shared",
+  "note": "A tiny second example niche pack shipped with order NP1 so the attach/detach mechanism is proven with two niches. Clearly fake, generic dental copy only; no real business, price or fact.",
+  "categories": [
+    {
+      "id": "dental-clinic",
+      "label": "Dental clinic",
+      "aliases": ["dental clinic", "dentist", "dental surgeon", "dental care"],
+      "buyerReason": "Dental clinics buy online booking, recall reminders and a modern site to keep appointment slots full.",
+      "videoNeed": "medium",
+      "need": "bookings",
+      "queries": [
+        "dental clinic in {area} {city}",
+        "dentist {city}",
+        "best dental clinic {city}"
+      ]
+    }
+  ],
+  "cities": [
+    { "name": "Pune", "tier": 1, "areas": ["Baner", "Kothrud"] }
+  ],
+  "seasonality": {
+    "category": "dental-clinic",
+    "country": "India",
+    "peakMonths": [6, 7, 8],
+    "note": "Fake stand-in seasonality for the example pack only.",
+    "basis": "order NP1 example"
+  },
+  "signals": [
+    {
+      "id": "aligner-interest",
+      "meaning": "the clinic advertises clear aligners or braces",
+      "kind": "context",
+      "favours": ["booking-system"]
+    }
+  ],
+  "serviceRules": {
+    "signals": {
+      "aligner-interest": { "kind": "context", "phrase": "the clinic advertises clear aligners or braces" }
+    },
+    "services": [
+      {
+        "id": "booking-system",
+        "signals": { "aligner-interest": 12 },
+        "reasons": {
+          "aligner-interest": "the clinic advertises aligners, so online consultation booking would fit"
+        }
+      }
+    ]
+  },
+  "sources": {
+    "dental-clinic": ["google-places", "websearch"]
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "note": "Fake invalid fixture: contains a digit.",
+  "category": "demo-category",
+  "country": "FA",
+  "howItWorks": [
+    "Customers call 24 hours a day to ask the same questions."
+  ],
+  "whereAutomationHelps": [
+    { "service": "automation", "point": "Answer repeat questions at any hour." }
+  ]
+}

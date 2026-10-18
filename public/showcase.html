@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Showcase - Leadscout</title>
+<style>
+  :root{
+    --bg:#f5f6f8; --fg:#16181d; --muted:#5b6472; --panel:#ffffff; --border:#dfe3e8;
+    --accent:#1f6feb; --bar:#9dc0f7; --good:#137333;
+  }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; background:var(--bg); color:var(--fg);
+    font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif; }
+  a{ color:var(--accent); }
+  .wrap{ max-width:1000px; margin:0 auto; padding:16px; }
+  header.top{ display:flex; flex-wrap:wrap; gap:10px; align-items:baseline; justify-content:space-between; }
+  header.top h1{ margin:0; font-size:22px; }
+  header.top .sub{ color:var(--muted); margin:4px 0 0; }
+  .brand{ font-size:13px; color:var(--muted); text-transform:uppercase; letter-spacing:.05em; }
+  .chips{ margin:8px 0 0; display:flex; flex-wrap:wrap; gap:6px; }
+  .chip{ background:#e7f0ff; color:#1f4ea8; border-radius:999px; padding:2px 10px; font-size:12px; }
+  section{ background:var(--panel); border:1px solid var(--border); border-radius:10px; padding:14px; margin-top:14px; }
+  section h2{ margin:0 0 10px; font-size:16px; }
+  .steps{ display:grid; grid-template-columns:repeat(6,1fr); gap:8px; }
+  @media (max-width:760px){ .steps{ grid-template-columns:repeat(3,1fr); } }
+  @media (max-width:420px){ .steps{ grid-template-columns:repeat(2,1fr); } }
+  .step{ border:1px solid var(--border); border-radius:8px; padding:10px; background:var(--bg); }
+  .step .n{ font-size:24px; font-weight:700; font-variant-numeric:tabular-nums; }
+  .step .k{ font-weight:600; }
+  .step .d{ color:var(--muted); font-size:12px; }
+  table{ width:100%; border-collapse:collapse; }
+  th,td{ text-align:left; padding:8px 6px; border-bottom:1px solid var(--border); vertical-align:middle; }
+  th{ font-size:12px; text-transform:uppercase; letter-spacing:.03em; color:var(--muted); }
+  .bar{ display:inline-block; width:120px; max-width:40vw; height:10px; border-radius:5px; background:#e3e8ef; overflow:hidden; vertical-align:middle; margin-right:6px; }
+  .bar > span{ display:block; height:100%; background:var(--bar); }
+  .cards{ display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:10px; }
+  .card{ border:1px solid var(--border); border-radius:8px; padding:12px; background:var(--bg); display:flex; flex-direction:column; gap:6px; }
+  .card .name{ font-weight:700; font-size:16px; }
+  .card .meta{ color:var(--muted); font-size:13px; }
+  .card .score{ font-weight:700; }
+  .card .gap{ font-size:14px; }
+  .card .svc{ font-size:13px; color:var(--muted); }
+  .card .actions{ display:flex; gap:8px; margin-top:auto; padding-top:6px; }
+  .btn{ display:inline-block; border:1px solid var(--border); border-radius:6px; padding:8px 12px; text-decoration:none; font-weight:600; font-size:13px; background:var(--panel); color:var(--fg); }
+  .btn.call{ background:var(--accent); border-color:var(--accent); color:#fff; }
+  .empty{ color:var(--muted); }
+  .calls{ list-style:none; margin:0; padding:0; }
+  .calls li{ padding:8px 0; border-bottom:1px solid var(--border); }
+  .calls .when{ color:var(--muted); font-size:12px; }
+  .picker{ list-style:none; margin:0; padding:0; }
+  .picker li{ margin:0 0 8px; }
+  .picker a{ font-weight:600; font-size:17px; }
+  .toolbar{ margin-top:14px; }
+  .toolbar a{ margin-right:14px; }
+  @media print{
+    :root{ --bg:#fff; --panel:#fff; --fg:#000; --muted:#333; }
+    body{ background:#fff; }
+    .wrap{ max-width:none; padding:0; }
+    .no-print{ display:none !important; }
+    section{ border:1px solid #bbb; break-inside:avoid; page-break-inside:avoid; }
+    .card{ break-inside:avoid; page-break-inside:avoid; }
+    a{ color:#000; text-decoration:none; }
+    .bar > span{ background:#555; }
+    .btn{ border:1px solid #999; color:#000; background:#fff; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brand">Leadscout showcase</div>
+  <header class="top" id="header"></header>
+  <div id="app"><p class="empty">Loading...</p></div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var params = new URLSearchParams(window.location.search);
+  var WS = params.get("ws") || "";
+
+  function esc(v){
+    return String(v === null || v === undefined ? "" : v).replace(/[&<>"']/g, function(c){
+      return { "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[c];
+    });
+  }
+  function num(v){ var n = Number(v); return isFinite(n) ? n : 0; }
+  function telHref(phone){ return "tel:" + String(phone || "").replace(/[^0-9+]/g, ""); }
+  function setHtml(id, html){ var node = document.getElementById(id); if (node) node.innerHTML = html; }
+  function note(msg){ return '<p class="empty">' + esc(msg) + '</p>'; }
+  function when(iso){
+    var t = Date.parse(iso);
+    if (isNaN(t)) return "";
+    try { return new Date(t).toLocaleString(); } catch (e) { return iso; }
+  }
+
+  function getJson(path){
+    return fetch(path, { headers: { "accept": "application/json" } }).then(function(res){
+      return res.text().then(function(t){
+        var body = null;
+        try { body = t ? JSON.parse(t) : null; } catch (e) { body = null; }
+        return { status: res.status, body: body };
+      });
+    });
+  }
+
+  function renderHeader(data){
+    var ws = data.workspace || {};
+    var offer = data.offer || {};
+    var services = Array.isArray(offer.services) ? offer.services : [];
+    var chips = services.map(function(s){ return '<span class="chip">' + esc(s) + '</span>'; }).join("");
+    var desc = offer.description ? '<p class="sub">' + esc(offer.description) + '</p>' : "";
+    setHtml("header",
+      '<div><h1>' + esc(ws.name || "Workspace") + '</h1>' + desc +
+      (chips ? '<div class="chips">' + chips + '</div>' : "") + '</div>' +
+      '<div class="toolbar no-print"><a href="index.html">Leads</a>' +
+      '<a href="dossier.html?ws=' + encodeURIComponent(ws.id || WS) + '">Brief</a>' +
+      '<a href="calls.html?ws=' + encodeURIComponent(ws.id || WS) + '">Call desk</a></div>');
+  }
+
+  function renderSteps(data){
+    var f = data.funnel || {};
+    var calls = Array.isArray(data.recentCalls) ? data.recentCalls.length : 0;
+    var steps = [
+      { k: "Find", d: "businesses discovered", n: f.discovered },
+      { k: "Understand", d: "profiles understood", n: f.understood },
+      { k: "Score", d: "leads scored", n: f.scored },
+      { k: "Brief", d: "briefs ready", n: f.dossierReady },
+      { k: "Call", d: "leads you can reach", n: f.contactable },
+      { k: "Learn", d: "calls logged", n: calls }
+    ];
+    setHtml("steps", steps.map(function(s){
+      return '<div class="step"><div class="n">' + esc(num(s.n)) + '</div>' +
+        '<div class="k">' + esc(s.k) + '</div><div class="d">' + esc(s.d) + '</div></div>';
+    }).join(""));
+  }
+
+  function renderCategories(data){
+    var rows = Array.isArray(data.categories) ? data.categories : [];
+    if (rows.length === 0){
+      setHtml("categories", note("No categories to show yet; this workspace has no leads."));
+      return;
+    }
+    var body = rows.map(function(c){
+      var pct = Math.max(0, Math.min(100, num(c.avgScore)));
+      return '<tr><td>' + esc(c.category) + '</td><td>' + esc(num(c.leads)) + '</td>' +
+        '<td><span class="bar"><span style="width:' + pct + '%"></span></span>' + esc(num(c.avgScore)) + '</td>' +
+        '<td>' + esc(c.topService || "not set") + '</td></tr>';
+    }).join("");
+    setHtml("categories",
+      '<table><thead><tr><th>Category</th><th>Leads</th><th>Average score</th><th>Most recommended service</th></tr></thead><tbody>' +
+      body + '</tbody></table>');
+  }
+
+  function renderTopLeads(data){
+    var leads = Array.isArray(data.topLeads) ? data.topLeads : [];
+    if (leads.length === 0){
+      setHtml("topLeads", note("No leads to show yet; run a discovery job for this workspace."));
+      return;
+    }
+    setHtml("topLeads", '<div class="cards">' + leads.map(function(l){
+      var call = l.phone ? '<a class="btn call" href="' + esc(telHref(l.phone)) + '">Call</a>' : "";
+      var brief = '<a class="btn" href="dossier.html?ws=' + encodeURIComponent(WS) +
+        '&lead=' + encodeURIComponent(l.id) + '">Open brief</a>';
+      return '<div class="card">' +
+        '<div class="name">' + esc(l.name) + '</div>' +
+        '<div class="meta">' + esc(l.category) + (l.area ? " &middot; " + esc(l.area) : "") +
+        ' &middot; score <span class="score">' + esc(num(l.score)) + '</span></div>' +
+        '<div class="gap">' + esc(l.gapHeadline || "No evidenced gap recorded for this lead.") + '</div>' +
+        '<div class="svc">Recommended: ' + esc(l.topService || "not set") + '</div>' +
+        '<div class="actions">' + call + brief + '</div></div>';
+    }).join("") + '</div>');
+  }
+
+  function renderCalls(data){
+    var wsId = (data.workspace && data.workspace.id) || WS;
+    var calls = Array.isArray(data.recentCalls) ? data.recentCalls : [];
+    var head = '<h2>Call desk</h2><p class="no-print"><a href="calls.html?ws=' +
+      encodeURIComponent(wsId) + '">Open the call desk</a></p>';
+    if (calls.length === 0){
+      setHtml("calls", head + note("No calls logged for this workspace yet."));
+      return;
+    }
+    var items = calls.map(function(c){
+      return '<li><div><strong>' + esc(c.leadName || "Lead") + '</strong> &middot; ' +
+        esc(c.outcome || "logged") + ' &middot; ' + esc(c.channel || "call") + '</div>' +
+        '<div class="when">' + esc(when(c.at)) + '</div>' +
+        (c.nextAction ? '<div>' + esc(c.nextAction) + '</div>' : "") + '</li>';
+    }).join("");
+    setHtml("calls", head + '<ul class="calls">' + items + '</ul>');
+  }
+
+  function shell(){
+    return '<section aria-label="How it works"><h2>How it works</h2><div class="steps" id="steps"></div></section>' +
+      '<section aria-label="Where the opportunity is"><h2>Where the opportunity is</h2><div id="categories"></div></section>' +
+      '<section aria-label="Best leads right now"><h2>Best leads right now</h2><div id="topLeads"></div></section>' +
+      '<section aria-label="Call desk"><div id="calls"></div></section>';
+  }
+
+  function showPicker(){
+    setHtml("header", '<div><h1>Choose a workspace</h1><p class="sub">Open the showcase for one workspace.</p></div>');
+    setHtml("app", note("Loading workspaces..."));
+    getJson("/api/workspaces").then(function(res){
+      if (res.status !== 200 || !Array.isArray(res.body)){
+        setHtml("app", note("Could not load the workspace list. Open this page from the Leadscout server."));
+        return;
+      }
+      if (res.body.length === 0){
+        setHtml("app", note("No workspaces yet. Create one from the Leads page, then come back."));
+        return;
+      }
+      var items = res.body.map(function(w){
+        return '<li><a href="showcase.html?ws=' + encodeURIComponent(w.id) + '">' + esc(w.name) + '</a></li>';
+      }).join("");
+      setHtml("app", '<section><h2>Workspaces</h2><ul class="picker">' + items + '</ul></section>');
+    }).catch(function(){
+      setHtml("app", note("Could not load the workspace list. Check the connection and reload."));
+    });
+  }
+
+  function showShowcase(){
+    setHtml("app", shell());
+    setHtml("header", '<div><h1>Loading workspace...</h1></div>');
+    setHtml("steps", note("Loading..."));
+    setHtml("categories", note("Loading..."));
+    setHtml("topLeads", note("Loading..."));
+    setHtml("calls", note("Loading..."));
+    getJson("/api/workspaces/" + encodeURIComponent(WS) + "/showcase").then(function(res){
+      if (res.status === 404){
+        setHtml("header", '<div><h1>Workspace not found</h1></div>');
+        setHtml("app", note("This workspace was not found. Pick another one."));
+        return;
+      }
+      if (res.status !== 200 || !res.body){
+        setHtml("app", note("Could not load the showcase for this workspace. Check the connection and reload."));
+        return;
+      }
+      renderHeader(res.body);
+      renderSteps(res.body);
+      renderCategories(res.body);
+      renderTopLeads(res.body);
+      renderCalls(res.body);
+    }).catch(function(){
+      setHtml("app", note("Could not load the showcase for this workspace. Check the connection and reload."));
+    });
+  }
+
+  if (WS) showShowcase(); else showPicker();
+})();
+</script>
+</body>
+</html>

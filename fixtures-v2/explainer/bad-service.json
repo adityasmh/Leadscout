@@ -1,0 +1,11 @@
+{
+  "note": "Fake invalid fixture: uses an unknown service id.",
+  "category": "demo-category",
+  "country": "FA",
+  "howItWorks": [
+    "Owners keep handwritten ledgers and lose track of leads."
+  ],
+  "whereAutomationHelps": [
+    { "service": "rocket-ship", "point": "This service does not exist in the price book." }
+  ]
+}
