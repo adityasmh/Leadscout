@@ -5,3 +5,4 @@ import "./ch-weddingsutra.js";
 import "./ch-venues.js";
 import "./ch-expos-awards.js";
 import "./ch-event-organisers.js";
+import "./ch-websearch-discovery.js";

@@ -1,12 +1,12 @@
 # Leadscout plugins
 
 Core Leadscout only ships generic channels (OpenStreetMap/Overpass discovery, the generic
-site reader, web search, company intel, dev forums, open data, podcasts, YouTube). Anything tied
+site reader, company intel, dev forums, open data, podcasts, YouTube). Anything tied
 to one country, one industry vertical, or to a logged-in browser lives here and is **off by default**.
 
 | Plugin | What it adds | Default | Warning level |
 |---|---|---|---|
-| [`wedding-events`](wedding-events/README.md) | 6 wedding / event-industry directories and expos | off | low (public pages) |
+| [`wedding-events`](wedding-events/README.md) | 7 wedding / event-industry channels: directories, venues, expos, web-search discovery | off | low (public pages) |
 | [`india-directories`](india-directories/README.md) | 18 Indian consumer / B2B / jobs / real-estate directories | off | high (many are browser-only, Tier C) |
 | [`browser-social`](browser-social/README.md) | Instagram, Facebook, LinkedIn, Google Maps, WhatsApp, IG vendors | off | **highest** (platform ToS) |
 | [`_template`](_template/README.md) | copy-paste starter for your own plugin | not loadable | none |

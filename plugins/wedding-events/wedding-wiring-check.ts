@@ -8,18 +8,18 @@
 // dials out. Does not import src/company/, so no sandbox preamble is needed.
 //
 // Run (from the repo root):
-//   npx tsx src/wedding-wiring-check.ts
+//   npx tsx plugins/wedding-events/wedding-wiring-check.ts
 
-import "./channels/index.js"; // side-effect: self-registers every channel adapter
+import "../../src/channels/index.js"; // side-effect: self-registers every channel adapter
 
 import assert from "node:assert/strict";
 import { existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
-import { channelAdapters, adaptersFor, runDiscovery } from "./channels/registry.js";
-import { buildQueries as websearchBuildQueries } from "./channels/ch-websearch-discovery.js";
-import type { ChannelAdapter, ChannelDeps } from "./channels/types.js";
-import type { RawLead } from "./types.js";
-import type { ReachResult } from "./reach.js";
+import { channelAdapters, adaptersFor, runDiscovery } from "../../src/channels/registry.js";
+import { buildQueries as websearchBuildQueries } from "./ch-websearch-discovery.js";
+import type { ChannelAdapter, ChannelDeps } from "../../src/channels/types.js";
+import type { RawLead } from "../../src/types.js";
+import type { ReachResult } from "../../src/reach.js";
 
 // ---- the adapters this order wires (WE2..WE9) -------------------------------
 
@@ -37,7 +37,7 @@ const WIRED: { file: string; id: string; env: string }[] = [
 const CATEGORIES = ["wedding-planner", "banquet-hall", "event-company"];
 const WEBSEARCH_ID = "ch-websearch-discovery";
 
-const channelsDir = fileURLToPath(new URL("./channels/", import.meta.url));
+const channelDirs = ["./", "../browser-social/", "../../src/channels/"].map((d) => fileURLToPath(new URL(d, import.meta.url)));
 
 // ---- fixtures (clearly fake; real directory card shapes) --------------------
 
@@ -133,7 +133,7 @@ async function main(): Promise<void> {
   // The import specifier uses a ".js" suffix (ES modules), but the sources on
   // disk are ".ts"; a wired file counts as present when either exists.
   const onDisk = (file: string): boolean =>
-    existsSync(`${channelsDir}${file}`) || existsSync(`${channelsDir}${file.replace(/\.js$/, ".ts")}`);
+    channelDirs.some((d) => existsSync(`${d}${file}`) || existsSync(`${d}${file.replace(/\.js$/, ".ts")}`));
   const existing = WIRED.filter((w) => onDisk(w.file));
   const missing = WIRED.filter((w) => !onDisk(w.file));
   console.log(`wired adapters present on disk: ${existing.length}/${WIRED.length}`);

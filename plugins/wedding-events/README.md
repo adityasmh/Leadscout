@@ -5,8 +5,8 @@ Public wedding-vendor directories, venue sites and expo / award lists, for selli
 - **Region / vertical:** India-first, vertical: weddings & events
 - **Default:** off
 - **Enable:** `LEADSCOUT_PLUGINS=wedding-events` (comma-add to other plugins)
-- **Per-channel switches:** `CHANNEL_CH_WEDMEGOOD`, `CHANNEL_CH_WEDDINGWIRE_IN`, `CHANNEL_CH_WEDDINGSUTRA`, `CHANNEL_CH_VENUES`, `CHANNEL_CH_EXPOS_AWARDS`, `CHANNEL_CH_EVENT_ORGANISERS` (each channel's file header says exactly which one it reads)
-- **Channels (adapter ids):** `ch-wedmegood`, `ch-weddingwire-in`, `ch-weddingsutra`, `venuelook / ch-venues`, `ch-expos-awards`, `ch-event-organisers`
+- **Per-channel switches:** `CHANNEL_CH_WEDMEGOOD`, `CHANNEL_CH_WEDDINGWIRE_IN`, `CHANNEL_CH_WEDDINGSUTRA`, `CHANNEL_CH_VENUES`, `CHANNEL_CH_EXPOS_AWARDS`, `CHANNEL_CH_EVENT_ORGANISERS`, `CHANNEL_CH_WEBSEARCH_DISCOVERY` (each channel's file header says exactly which one it reads)
+- **Channels (adapter ids):** `ch-wedmegood`, `ch-weddingwire-in`, `ch-weddingsutra`, `venuelook / ch-venues`, `ch-expos-awards`, `ch-event-organisers`, `ch-websearch-discovery`
 - **Files:** `ch-event-organisers.ts`, `ch-expos-awards.ts`, `ch-venues.ts`, `ch-weddingsutra.ts`, `ch-weddingwire-in.ts`, `ch-wedmegood.ts`; one `*-check.ts` per adapter (offline, fixtures only)
 
 ## Legal and etiquette

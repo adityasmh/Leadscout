@@ -6,14 +6,14 @@
 // Run (from the repo root):
 //   npx tsx src/channels/ch-websearch-discovery-check.ts
 import assert from "node:assert/strict";
-import type { ChannelDeps, ReachReadPageFn, ReachSearchFn } from "./types.js";
+import type { ChannelDeps, ReachReadPageFn, ReachSearchFn } from "../../src/channels/types.js";
 import {
   chWebsearchDiscovery, parseWebsearchPage, websearchSignals, confidence,
   buildQueries, MAX_QUERIES, ENABLE_ENV, WEBSEARCH_CATEGORIES,
 } from "./ch-websearch-discovery.js";
 import type { WebsearchFields } from "./ch-websearch-discovery.js";
-import type { RawLead } from "../types.js";
-import type { ReachResult } from "../reach.js";
+import type { RawLead } from "../../src/types.js";
+import type { ReachResult } from "../../src/reach.js";
 
 // --- fixtures -----------------------------------------------------------------
 // Search-result listings (recorded structure: a JSON results array of

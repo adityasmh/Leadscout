@@ -33,7 +33,9 @@ npm start            # the real thing: http://localhost:8790
 ```
 
 `npm run demo` starts its own throwaway server on a random port with a temp database, so it can never
-touch real data. `npm start` creates `data/leadscout.db` (empty) on first use.
+touch real data. `npm start` creates `data/leadscout.db` (empty) on first use. It prints `.env not found. Continuing without it.`
+when you have not created a `.env` yet: that is normal. Port 8790 taken? `LEADSCOUT_PORT=8890 npm start`.
+Verify it is up: `curl localhost:8790/api/health` (it answers `{"ok":true,...}`).
 
 Want discovery from the live map? Point Leadscout at an Overpass (OpenStreetMap) endpoint:
 
@@ -102,7 +104,7 @@ that returns `{answer}` works.
 
 ## Plugins
 
-Core Leadscout ships only generic channels (OpenStreetMap discovery, a generic site reader, web search,
+Core Leadscout ships only generic channels (OpenStreetMap discovery, a generic site reader,
 company intel, dev forums, open data, podcasts, YouTube). Anything tied to **one region, one industry
 vertical, or a logged-in browser** is an opt-in plugin in [`plugins/`](plugins/README.md):
 

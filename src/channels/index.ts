@@ -1,8 +1,7 @@
-﻿// Core channel adapters self-register by being imported here.
+// Core channel adapters self-register by being imported here.
 // Region- and vertical-specific adapters live in plugins/ and are opt-in via
 // LEADSCOUT_PLUGINS (see src/plugins.ts and plugins/README.md).
 
-import "./ch-websearch-discovery.js";
 import "./company-intel.js";
 import "./devforums.js";
 import "./opendata.js";

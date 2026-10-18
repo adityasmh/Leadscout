@@ -19,11 +19,11 @@
 // fetched byte is neutralised with reach.sanitizeUntrusted and evidence is
 // marked untrusted: true. The limiter (ChannelDeps.limiter.sleep) is awaited
 // between page reads so paging stays polite.
-import { extractSocialLinks, parseSearchOutput, sanitizeUntrusted } from "../reach.js";
-import { reachBlocked } from "./types.js";
-import type { ChannelAdapter, ChannelDeps, ChannelEvidence, ChannelStatus, DiscoverQuery } from "./types.js";
-import type { RawLead } from "../types.js";
-import { registerChannel } from "./registry.js";
+import { extractSocialLinks, parseSearchOutput, sanitizeUntrusted } from "../../src/reach.js";
+import { reachBlocked } from "../../src/channels/types.js";
+import type { ChannelAdapter, ChannelDeps, ChannelEvidence, ChannelStatus, DiscoverQuery } from "../../src/channels/types.js";
+import type { RawLead } from "../../src/types.js";
+import { registerChannel } from "../../src/channels/registry.js";
 
 export const WEBSEARCH_CHANNEL_ID = "ch-websearch-discovery";
 const MAX_TEXT = 20000;
