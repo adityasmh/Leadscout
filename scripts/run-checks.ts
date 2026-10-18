@@ -53,7 +53,9 @@ function runOne(file: string): Promise<{ file: string; ok: boolean; ms: number; 
   });
 }
 
-const queue = [...files];
+// Checks that count temp folders created by a sibling check must not overlap with it: run them alone, last.
+const SERIAL_LAST = /pipeline-timing-cleanup-check/;
+const queue = files.filter((f) => !SERIAL_LAST.test(f));
 const results: Awaited<ReturnType<typeof runOne>>[] = [];
 await Promise.all(
   Array.from({ length: CONCURRENCY }, async () => {
@@ -65,6 +67,12 @@ await Promise.all(
     }
   }),
 );
+for (const f of files.filter((x) => SERIAL_LAST.test(x))) {
+  const r = await runOne(f);
+  results.push(r);
+  console.log(`${r.ok ? "PASS" : "FAIL"} ${r.file} (${(r.ms / 1000).toFixed(1)}s)`);
+  if (!r.ok) console.log(r.tail.replace(/^/gm, "    "));
+}
 rmSync(tmp, { recursive: true, force: true });
 const failed = results.filter((r) => !r.ok);
 console.log(`\n${results.length - failed.length}/${results.length} checks passed`);
