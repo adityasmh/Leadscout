@@ -311,7 +311,7 @@ function parseRefineReply(text: string): string[] {
 
 function sanitiseLine(line: string): string {
   return String(line)
-    .replace(/^[\s\-*ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢\d.)\]]+/, "")
+    .replace(/^[\s\-*•\d.)\]]+/, "")
     .replace(/[\u2018\u2019]/g, "'")
     .replace(/[\u201C\u201D]/g, '"')
     .replace(/[\r\n\t]+/g, " ")

@@ -343,7 +343,7 @@ function htmlEscape(text: string): string {
 }
 
 function formatRupees(paise: number): string {
-  return `ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¹${(paise / 100).toFixed(2)}`;
+  return `₹${(paise / 100).toFixed(2)}`;
 }
 
 function safeBranding(workspaceId: string): Branding {
@@ -412,7 +412,7 @@ export function renderInvoiceHtml(invoice: Invoice): string {
       <div class="meta">
         <div>Invoice: <strong>${htmlEscape(invoice.invoiceNumber)}</strong></div>
         <div>Plan: ${htmlEscape(invoice.planId)}</div>
-        <div>Period: ${htmlEscape(invoice.period.from.slice(0, 10))} ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“ ${htmlEscape(invoice.period.to.slice(0, 10))}</div>
+        <div>Period: ${htmlEscape(invoice.period.from.slice(0, 10))} – ${htmlEscape(invoice.period.to.slice(0, 10))}</div>
       </div>
     </header>
     <h1>Summary</h1>
